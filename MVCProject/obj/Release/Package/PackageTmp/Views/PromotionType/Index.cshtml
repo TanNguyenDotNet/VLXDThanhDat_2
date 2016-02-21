@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MVCProject.Models.PromotionType>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hình thức khuyến mãi</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExRate)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.ProTypeName, "Edit", new { id = item.ID })
+        </td>
+        <td width="25%">
+            @Html.DisplayFor(modelItem => item.AddType)
+        </td>
+        <td width="25%">
+            @Html.DisplayFor(modelItem => item.ExRate)
+        </td>
+    </tr>
+}
+
+</table>

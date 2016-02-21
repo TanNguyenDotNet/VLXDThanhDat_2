@@ -1,0 +1,172 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
+    
+    List<string> roles = (List<string>)ViewData["AccessList"];
+}
+
+@using (Html.BeginForm("Index", "Product", FormMethod.Get, new { id = "productViewForm" }))
+{
+<h2>Sản phẩm</h2>
+
+<p>
+    @if(roles.Contains("1")){ 
+        @Html.ActionLink("Thêm mới", "Create") 
+        @Html.Raw(" :::: ")
+    }
+    @if(roles.Contains("9"))
+    {
+        <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a> 
+        @Html.Raw("|") 
+    }
+    @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
+</p>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, order = ViewBag.Order, 
+    filter = ViewBag.Filter, size=size, catid=catid }))
+<table class="table">
+    <tr>
+        <td align="right" width="10%">
+            Danh mục:
+        </td>
+        <td align="left" width="18%">
+            <select class="form-control" name="catid" id="catid" onchange="productViewForm.submit()">
+                <option value="0">Chọn danh mục</option>
+                @foreach (var i in listCat)
+                {
+                    <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")   }>
+                        @i.Title
+                    </option>
+                }
+            </select>
+        </td>
+        <td align="right" width="10%">
+            Sản phẩm:
+        </td>
+        <td align="left" width="18%">
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="7%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                }
+            </select>
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <th>
+            Tên sản phẩm
+        </th>
+        <th>
+            Mã sản phẩm
+        </th>
+        <th>
+            Mã danh mục
+        </th>
+        <th>
+            Nhà cung cấp
+        </th>
+        <th>
+            Hiện/Ẩn
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            ĐVT
+        </th>
+        <th>
+            Giá
+        </th>
+        <th>
+           BH
+        </th>
+        <th>
+           Đã xóa
+        </th>
+        <th>
+            Thêm
+            </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if(roles.Contains("2"))
+            {
+                @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @item.ProductName
+            }
+        </td>
+        <td align="center">
+            @Html.DisplayFor(modelItem => item.ItemCode)
+        </td>
+        <td align="center">
+            @Html.DisplayFor(modelItem => item.CatID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Show)
+        </td>
+        <td>
+            @if (item.DateCreate != null)
+            {
+                DateTime.Parse(item.DateCreate.ToString()).ToString("dd/MM/yyyy");
+            }
+            &nbsp;
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Unit)
+        </td>
+        <td align="center">
+            @if (item.Price != null){
+                double.Parse(item.Price.ToString()).ToString("#,###.00");
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Warranty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDel)
+        </td>
+        <td>
+            @if(roles.Contains("17"))
+            {
+                @Html.ActionLink("Tên", "Create/" + item.ID, "ProductName") 
+                @Html.Raw(" | ")
+            }
+            @if (roles.Contains("7"))
+            {
+                @Html.ActionLink("Giá", "Create/" + item.ID, "ProductPrice")
+                @Html.Raw(" | ")
+            }
+            @if (roles.Contains("5"))
+            {
+                @Html.ActionLink("KM", "Create/" + item.ID, "Promotion")
+            }
+        </td>
+    </tr>
+}
+
+</table>
+}

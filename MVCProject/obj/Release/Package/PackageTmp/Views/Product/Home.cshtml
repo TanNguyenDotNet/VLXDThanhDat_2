@@ -1,0 +1,200 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    List<MVCProject.Models.ProductImage> imgList = (List<MVCProject.Models.ProductImage>)ViewData["ImageList"];
+    
+    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
+
+    Dictionary<long, decimal> pList = (Dictionary<long, decimal>)ViewData["PriceList"];
+    Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
+
+    string name = "";
+    double price = 0;
+}
+
+@using (Html.BeginForm("Home", "Product", FormMethod.Get, new { id = "productViewForm" }))
+{
+<h2>Sản phẩm</h2>
+@Html.PagedListPager(Model, page => Url.Action("Home", new { page, order = ViewBag.Order, 
+    filter = ViewBag.Filter, size=size, catid=catid }))
+<table class="table">
+    <tr>
+        <td align="right" width="10%">
+            Danh mục:
+        </td>
+        <td align="left" width="18%">
+            <select class="form-control" name="catid" id="catid" onchange="filterFromSubmit()">
+                <option value="0">Chọn danh mục</option>
+                @foreach (var i in listCat)
+                {
+                    <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")  }>
+                        @i.Title
+                        </option>
+                }
+            </select>
+
+        </td>
+        <td align="right" width="10%">
+            Sản phẩm:
+        </td>
+        <td align="left" width="18%">
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="7%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")  }>@s</option>
+                }
+            </select>
+        </td>
+        <td>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" onclick="filterFromSubmit()" class="btn btn-default" value="Tìm Kiếm" />
+                    @if(ViewData["CartCount"] != "0"){
+                        <input type="button" onclick="GoToCart();" class="btn btn-default" value="(@ViewData["CartCount"]) Xem hóa đơn" />
+                    }
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<script>
+    function GoToCart() {
+        window.location = '../OrderDetail/Index';
+    }
+    function filterFromSubmit() {
+        productViewForm.submit();
+    }
+
+    function AddToCart(code) {
+        var val = document.getElementById("Cart").value;
+        if(val.indexOf(code) == -1)
+        {
+            if(val != '') val += ',';
+            val += code;
+            document.getElementById("Cart").value = val;
+            alert("Thêm đơn hàng thành công!");
+            productViewForm.submit();
+        }
+        else
+            alert("Sản phẩm đã được chọn!");
+    }
+
+
+</script>
+
+<table class="table">
+    <tr>
+        <th>
+        </th>
+        <th>
+            Tên mặt hàng
+        </th>
+        <th>
+            Mã hàng
+        </th>
+        <th>
+            ĐVT
+        </th>
+        <th>
+            Giá
+        </th>
+        <th>
+            Bảo hành
+        </th>
+        <th width="12%">
+            Thêm đơn hàng
+        </th>
+    </tr>
+    @if (Model.Count() > 0) 
+    { 
+        foreach (var item in Model) {
+            <tr>
+                <td>
+                    @if (imgList != null && imgList.Count() > 0) {
+                        string img = "";
+                
+                        try
+                        {
+                            MVCProject.Models.ProductImage i = imgList.Single(c => c.ProductCode == item.ItemCode && c.ImageAddIn == "Intro");
+                    
+                            if (i != null && i.Image != null && i.Image != "")
+                            {
+                                if (i.ImageLink != null && i.ImageLink != "")
+                                {
+                                    img += "<a href='" + i.ImageLink + "' alt='" + item.ProductName + "'/>";
+                                }
+
+                                img += "<img class='product-intro' src='../Images/Intro/" + i.Image + "' title='" + item.ProductName + "'/>";
+
+                                if (i.ImageLink != null && i.ImageLink != "")
+                                {
+                                    img += "</a>";
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            img = "<img class='product-intro' src='../Images/Intro/no-image.png' alt='" + item.ProductName + "'/>";
+                        }
+                    
+                        @Html.Raw(img);
+                    }
+                    </td>
+                <td>
+                    @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
+                        name = nList[item.ID];
+                    }
+                    else { 
+                        name = item.ProductName; 
+                    }
+                    @name
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.ItemCode)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Unit)
+                </td>
+                <td align="right">
+                    @if (pList != null && pList.Count > 0 && pList.Keys.Contains(item.ID))
+                    {
+                        price = double.Parse(pList[item.ID].ToString());
+                    }
+                    else
+                    {
+                        if(item.Price != null)
+                        {price = Double.Parse(item.Price.ToString());}
+                        else
+                        {price = 0;}
+                    }
+                    @price.ToString("#,###.00")
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Warranty)
+                </td>
+                <td align="center">
+                    <a href="#" onclick="AddToCart('@item.ItemCode');">
+                        <img class='add-button-disable' src='../Images/Control/add-image.png' alt='@item.ProductName' />
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+    </table>
+    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../OrderDetail/Index"> Xem hóa đơn</a></span>
+    <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
+}
+

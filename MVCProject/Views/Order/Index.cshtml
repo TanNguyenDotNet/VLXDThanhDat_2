@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MVCProject.Models.Order>
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
+}
+
+<h2>Danh sách đơn hàng</h2>
+<p>
+@if (roles.Contains("11"))
+{
+    <a href="../ProductCode/Create/?code=OC">Cấu hình mã hóa đơn</a>
+}
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            In đơn hàng  
+        </th>
+        <th>
+            Mã đơn hàng
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            Tổng tiền trước thuế
+        </th>
+        <th>
+            Thuế suất
+        </th>
+        <th>
+            Tổng thanh toán
+        </th>
+        <th>
+            Giảm giá
+        </th>
+        <th>
+            Ngày xử lý
+        </th>
+        <th>
+            Ngày giao
+        </th>
+        <th>
+            Tình trạng
+        </th>
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="../ReportView/Index/?code=@item.OrderCode">In</a>
+                </td>
+                <td>
+@if (roles.Contains("15")) { 
+                   <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a> 
+}
+else
+{
+    @item.OrderCode
+}
+                </td>
+                <td align="center">
+                    @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
+                </td>
+                <td align="right">
+                    @item.TotalWithoutTax.ToString("#,###.00")
+                </td>
+                <td align="right">
+                    @item.Tax
+                </td>
+                <td align="right">
+                    @item.Total.ToString("#,###.00")
+                </td>
+                <td align="right">
+                    @item.Discount.ToString("#,###.00")
+                </td>
+                <td align="center">
+                    @{
+                        string sdate = "";
+                        if (item.DateProcessed != null && item.DateProcessed != "")
+                        {
+                            sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                        }
+                    }
+                    @sdate
+                </td>
+                <td align="center">
+                    @if (item.DateShip != null && item.DateShip != "")
+                    {
+                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                    }
+                    @sdate
+                </td>
+                <td>
+                    @{
+            string state = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
+                item.State == "2" ? "Đã xử lý" : item.State == "2" ? "Đã chuyển hàng" : "";
+                    }
+                    @state
+                </td>
+            </tr>
+        }
+    }
+</table>

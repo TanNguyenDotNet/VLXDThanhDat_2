@@ -1,0 +1,72 @@
+﻿@model IEnumerable<MVCProject.Models.ProductPrice>
+
+@{
+    ViewBag.Title = "Danh sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
+    string name = "";
+    List<string> roles = (List<string>)ViewData["AccessList"];
+}
+
+<h2>Giá sản phẩm</h2>
+<p>
+@if (roles.Contains("7"))
+{
+    @Html.ActionLink("Thêm mới", "Create")
+}
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Sản phẩm
+        </th>
+        <th width="10%">
+            Giá
+        </th>
+        <th width="10%">
+           Ngày tạo
+        </th>
+        <th width="20%">
+            Mô tả
+        </th>
+        <th width="15%">
+            Mã tỉnh/thành phố
+        </th>
+        <th width="10%">&nbsp;</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
+                        name = nList[item.ID];
+                    }
+                    else { 
+                        name = ""; 
+                    }
+                    @name
+        </td>
+        <td align="right">
+            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
+        </td>
+        <td>
+            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationID)
+        </td>
+        <td>
+            
+            @if (roles.Contains("8"))
+            {
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.ID })
+            }
+        </td>
+    </tr>
+}
+
+</table>

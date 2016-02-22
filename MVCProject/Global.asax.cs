@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +17,8 @@ namespace MVCProject
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            aspnetEntities db = new aspnetEntities();
+            Application["listProduct"] = db.Products.ToList();
         }
     }
 }

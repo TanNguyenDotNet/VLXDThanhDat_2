@@ -1,5 +1,6 @@
 ﻿using MVCProject.Common;
 using MVCProject.Models;
+using MVCProject.Report;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,57 +12,54 @@ namespace MVCProject.Controllers
 {
     public class ReportViewController : Controller
     {
-        private string Location, AccountInfo, OrderCode, State;
         // GET: ReportView
+        private retailEntities db = new retailEntities();
+        private aspnetEntities _db = new aspnetEntities();
+        private Datasets.DataSetRetails dsDetail = new Datasets.DataSetRetails();
+        private InvoiceDetailRptParams InvoiceRptParams;
         public ActionResult Index()
         {
-            string Reportpath = Request.MapPath(Request.ApplicationPath) + @"Report\ReportOrderDetail.rdlc";
-            //ViewBag.ReportViewer = Report.ShowReport.ProcessShowReport(pathReport,"",;
+            string path = Request.MapPath(Request.ApplicationPath) + @"Report\ReportOrderDetail.rdlc";
+            GetDetail();
+            ViewBag.ReportViewer = ShowReport.ProcessShowReport(path, "DataSetOrderDetail", dsDetail.Tables["OrdersDetail"], InvoiceRptParams.rptParams);
             return View();
         }
-        
-        private IEnumerable<Models.OrdersDetail> AdminViewOrder()
+        #region function
+        List<OrdersDetail> GetDetail()
         {
             string code = Request.QueryString["code"];
             if (code == null) return null;
-            
-            using (retailEntities db= new retailEntities())
+            var o = db.Orders.SingleOrDefault(c => c.OrderCode == code);
+            var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
+
+            foreach (var item in list)
             {
-                using (aspnetEntities _db = new aspnetEntities())
-                {
-                    string connString = db.Database.Connection.ConnectionString;
-                    
-                    //var o = db.Orders.Single(c => c.OrderCode == code);
-                    //if (o.State == "0")
-                    //{
-                    //    o.State = "1";
-                    //    db.SaveChanges();
-                    //}
-                    //var us = _db.AspNetUsers.Single(c => c.Id == o.IDAccount);
-                    //string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
-                    //var u = _db.AppNetUserTypes.Find(enu);
-                    //var l = _db.Locations.Find(u.LocationID);
-
-                    //ViewData["Location"] = l;
-                    //ViewData["AccountInfo"] = u;
-                    //ViewData["OrderCode"] = code;
-                    //ViewData["State"] = o.State;
-
-                    //var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
-                    //List<Models.Product> lp = new List<Product>();
-                    //foreach (var od in list)
-                    //{
-                    //    if (od.IDProduct > 0)
-                    //    {
-                    //        var p = _db.Products.Single(c => c.ID == od.IDProduct);
-                    //        lp.Add(p);
-                    //    }
-                    //}
-
-                    //ViewData["ProductList"] = lp;
-                    //return list;
-                }
+                DataRow dr = dsDetail.OrdersDetail.NewRow();
+                dr["IDProduct"] = item.IDProduct;
+                dr["ProductCode"] = item.ProductCode;
+                dr["Amount"] = item.Amount;
+                dr["Price"] = item.Price;
+                dr["Tax"] = item.Tax;
+                dr["Total"] = item.Total;
+                dr["ProductName"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().ProductName;
+                dr["Unit"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().Unit;
+                dsDetail.OrdersDetail.Rows.Add(dr);
             }
+            InvoiceRptParams = new InvoiceDetailRptParams();
+            InvoiceRptParams.Address = "";
+            InvoiceRptParams.AmountInWord = "";
+            InvoiceRptParams.CellPhone = "";
+            InvoiceRptParams.Contact = "";
+            InvoiceRptParams.Discount = "";
+            InvoiceRptParams.Name = "";
+            InvoiceRptParams.Total = "";
+            InvoiceRptParams.TotalVAT = "";
+            InvoiceRptParams.VAT = "";
+            InvoiceRptParams.InvoiceNum = "";
+            InvoiceRptParams.InvoiceDate = "";
+
+            return list;
         }
+        #endregion
     }
 }

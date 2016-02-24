@@ -19,7 +19,7 @@ namespace MVCProject.Report
         public string Discount { set { rptParams.Add(new ReportParameter("Discount", value)); } }
         public string VAT { set { rptParams.Add(new ReportParameter("VAT", value)); } }
         public string TotalVAT { set { rptParams.Add(new ReportParameter("TotalVAT", value)); } }
-        public string AmountInWord { set { rptParams.Add(new ReportParameter("AmountInWord", value)); } }
+        public string AmountInWord { set { rptParams.Add(new ReportParameter("AmountInWords", value)); } }
         public InvoiceDetailRptParams()
         {
             rptParams = new List<ReportParameter>();

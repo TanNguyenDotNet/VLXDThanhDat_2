@@ -340,7 +340,7 @@ namespace MVCProject.Datasets {
             
             private global::System.Data.DataColumn columnDiscount;
             
-            private global::System.Data.DataColumn columnNameProduct;
+            private global::System.Data.DataColumn columnProductName;
             
             private global::System.Data.DataColumn columnUnit;
             
@@ -483,9 +483,9 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NameProductColumn {
+            public global::System.Data.DataColumn ProductNameColumn {
                 get {
-                    return this.columnNameProduct;
+                    return this.columnProductName;
                 }
             }
             
@@ -534,7 +534,7 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public OrdersDetailRow AddOrdersDetailRow(long IDProduct, decimal Price, int Amount, bool ReturnGood, System.DateTime DateOfOrder, string Tax, decimal Total, string Description, string ProductCode, bool RequestByUser, string OrderCode, decimal Discount, string NameProduct, string Unit) {
+            public OrdersDetailRow AddOrdersDetailRow(long IDProduct, decimal Price, int Amount, bool ReturnGood, System.DateTime DateOfOrder, string Tax, decimal Total, string Description, string ProductCode, bool RequestByUser, string OrderCode, decimal Discount, string ProductName, string Unit) {
                 OrdersDetailRow rowOrdersDetailRow = ((OrdersDetailRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -550,18 +550,11 @@ namespace MVCProject.Datasets {
                         RequestByUser,
                         OrderCode,
                         Discount,
-                        NameProduct,
+                        ProductName,
                         Unit};
                 rowOrdersDetailRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrdersDetailRow);
                 return rowOrdersDetailRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public OrdersDetailRow FindByID(long ID) {
-                return ((OrdersDetailRow)(this.Rows.Find(new object[] {
-                            ID})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -594,7 +587,7 @@ namespace MVCProject.Datasets {
                 this.columnRequestByUser = base.Columns["RequestByUser"];
                 this.columnOrderCode = base.Columns["OrderCode"];
                 this.columnDiscount = base.Columns["Discount"];
-                this.columnNameProduct = base.Columns["NameProduct"];
+                this.columnProductName = base.Columns["ProductName"];
                 this.columnUnit = base.Columns["Unit"];
             }
             
@@ -627,29 +620,17 @@ namespace MVCProject.Datasets {
                 base.Columns.Add(this.columnOrderCode);
                 this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDiscount);
-                this.columnNameProduct = new global::System.Data.DataColumn("NameProduct", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNameProduct);
+                this.columnProductName = new global::System.Data.DataColumn("ProductName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductName);
                 this.columnUnit = new global::System.Data.DataColumn("Unit", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUnit);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnID}, true));
                 this.columnID.AutoIncrement = true;
                 this.columnID.AutoIncrementSeed = -1;
                 this.columnID.AutoIncrementStep = -1;
-                this.columnID.AllowDBNull = false;
                 this.columnID.ReadOnly = true;
-                this.columnID.Unique = true;
-                this.columnIDProduct.AllowDBNull = false;
-                this.columnPrice.AllowDBNull = false;
-                this.columnAmount.AllowDBNull = false;
-                this.columnReturnGood.AllowDBNull = false;
                 this.columnTax.MaxLength = 10;
-                this.columnTotal.AllowDBNull = false;
-                this.columnDescription.AllowDBNull = false;
                 this.columnDescription.MaxLength = 255;
-                this.columnProductCode.AllowDBNull = false;
                 this.columnProductCode.MaxLength = 50;
-                this.columnRequestByUser.AllowDBNull = false;
                 this.columnOrderCode.MaxLength = 50;
             }
             
@@ -1018,13 +999,6 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public OrdersRow FindByID(long ID) {
-                return ((OrdersRow)(this.Rows.Find(new object[] {
-                            ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 OrdersDataTable cln = ((OrdersDataTable)(base.Clone()));
                 cln.InitVars();
@@ -1087,20 +1061,12 @@ namespace MVCProject.Datasets {
                 base.Columns.Add(this.columnOrderCode);
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnID}, true));
-                this.columnIDAccount.AllowDBNull = false;
                 this.columnIDAccount.MaxLength = 50;
-                this.columnDateCreate.AllowDBNull = false;
                 this.columnDateCreate.MaxLength = 20;
                 this.columnDateShip.MaxLength = 20;
-                this.columnTotalWithoutTax.AllowDBNull = false;
                 this.columnTax.MaxLength = 10;
-                this.columnTotal.AllowDBNull = false;
-                this.columnDiscount.AllowDBNull = false;
                 this.columnDeliveryMan.MaxLength = 50;
                 this.columnDescription.MaxLength = 256;
-                this.columnState.AllowDBNull = false;
                 this.columnState.MaxLength = 2;
                 this.columnDateProcessed.MaxLength = 20;
                 this.columnTaxID.MaxLength = 15;
@@ -1108,9 +1074,7 @@ namespace MVCProject.Datasets {
                 this.columnID.AutoIncrement = true;
                 this.columnID.AutoIncrementSeed = -1;
                 this.columnID.AutoIncrementStep = -1;
-                this.columnID.AllowDBNull = false;
                 this.columnID.ReadOnly = true;
-                this.columnID.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1255,7 +1219,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public long ID {
                 get {
-                    return ((long)(this[this.tableOrdersDetail.IDColumn]));
+                    try {
+                        return ((long)(this[this.tableOrdersDetail.IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ID\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.IDColumn] = value;
@@ -1266,7 +1235,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public long IDProduct {
                 get {
-                    return ((long)(this[this.tableOrdersDetail.IDProductColumn]));
+                    try {
+                        return ((long)(this[this.tableOrdersDetail.IDProductColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDProduct\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.IDProductColumn] = value;
@@ -1277,7 +1251,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal Price {
                 get {
-                    return ((decimal)(this[this.tableOrdersDetail.PriceColumn]));
+                    try {
+                        return ((decimal)(this[this.tableOrdersDetail.PriceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Price\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.PriceColumn] = value;
@@ -1288,7 +1267,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int Amount {
                 get {
-                    return ((int)(this[this.tableOrdersDetail.AmountColumn]));
+                    try {
+                        return ((int)(this[this.tableOrdersDetail.AmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.AmountColumn] = value;
@@ -1299,7 +1283,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool ReturnGood {
                 get {
-                    return ((bool)(this[this.tableOrdersDetail.ReturnGoodColumn]));
+                    try {
+                        return ((bool)(this[this.tableOrdersDetail.ReturnGoodColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReturnGood\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.ReturnGoodColumn] = value;
@@ -1342,7 +1331,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal Total {
                 get {
-                    return ((decimal)(this[this.tableOrdersDetail.TotalColumn]));
+                    try {
+                        return ((decimal)(this[this.tableOrdersDetail.TotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Total\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.TotalColumn] = value;
@@ -1353,7 +1347,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Description {
                 get {
-                    return ((string)(this[this.tableOrdersDetail.DescriptionColumn]));
+                    try {
+                        return ((string)(this[this.tableOrdersDetail.DescriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Description\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.DescriptionColumn] = value;
@@ -1364,7 +1363,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string ProductCode {
                 get {
-                    return ((string)(this[this.tableOrdersDetail.ProductCodeColumn]));
+                    try {
+                        return ((string)(this[this.tableOrdersDetail.ProductCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductCode\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.ProductCodeColumn] = value;
@@ -1375,7 +1379,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool RequestByUser {
                 get {
-                    return ((bool)(this[this.tableOrdersDetail.RequestByUserColumn]));
+                    try {
+                        return ((bool)(this[this.tableOrdersDetail.RequestByUserColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RequestByUser\' in table \'OrdersDetail\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrdersDetail.RequestByUserColumn] = value;
@@ -1416,17 +1425,17 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string NameProduct {
+            public string ProductName {
                 get {
                     try {
-                        return ((string)(this[this.tableOrdersDetail.NameProductColumn]));
+                        return ((string)(this[this.tableOrdersDetail.ProductNameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NameProduct\' in table \'OrdersDetail\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductName\' in table \'OrdersDetail\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableOrdersDetail.NameProductColumn] = value;
+                    this[this.tableOrdersDetail.ProductNameColumn] = value;
                 }
             }
             
@@ -1444,6 +1453,66 @@ namespace MVCProject.Datasets {
                 set {
                     this[this.tableOrdersDetail.UnitColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDNull() {
+                return this.IsNull(this.tableOrdersDetail.IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDNull() {
+                this[this.tableOrdersDetail.IDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDProductNull() {
+                return this.IsNull(this.tableOrdersDetail.IDProductColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDProductNull() {
+                this[this.tableOrdersDetail.IDProductColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPriceNull() {
+                return this.IsNull(this.tableOrdersDetail.PriceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPriceNull() {
+                this[this.tableOrdersDetail.PriceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAmountNull() {
+                return this.IsNull(this.tableOrdersDetail.AmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAmountNull() {
+                this[this.tableOrdersDetail.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsReturnGoodNull() {
+                return this.IsNull(this.tableOrdersDetail.ReturnGoodColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetReturnGoodNull() {
+                this[this.tableOrdersDetail.ReturnGoodColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1472,6 +1541,54 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotalNull() {
+                return this.IsNull(this.tableOrdersDetail.TotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotalNull() {
+                this[this.tableOrdersDetail.TotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDescriptionNull() {
+                return this.IsNull(this.tableOrdersDetail.DescriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDescriptionNull() {
+                this[this.tableOrdersDetail.DescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsProductCodeNull() {
+                return this.IsNull(this.tableOrdersDetail.ProductCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetProductCodeNull() {
+                this[this.tableOrdersDetail.ProductCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRequestByUserNull() {
+                return this.IsNull(this.tableOrdersDetail.RequestByUserColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRequestByUserNull() {
+                this[this.tableOrdersDetail.RequestByUserColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsOrderCodeNull() {
                 return this.IsNull(this.tableOrdersDetail.OrderCodeColumn);
             }
@@ -1496,14 +1613,14 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNameProductNull() {
-                return this.IsNull(this.tableOrdersDetail.NameProductColumn);
+            public bool IsProductNameNull() {
+                return this.IsNull(this.tableOrdersDetail.ProductNameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNameProductNull() {
-                this[this.tableOrdersDetail.NameProductColumn] = global::System.Convert.DBNull;
+            public void SetProductNameNull() {
+                this[this.tableOrdersDetail.ProductNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1537,7 +1654,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string IDAccount {
                 get {
-                    return ((string)(this[this.tableOrders.IDAccountColumn]));
+                    try {
+                        return ((string)(this[this.tableOrders.IDAccountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDAccount\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.IDAccountColumn] = value;
@@ -1548,7 +1670,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string DateCreate {
                 get {
-                    return ((string)(this[this.tableOrders.DateCreateColumn]));
+                    try {
+                        return ((string)(this[this.tableOrders.DateCreateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DateCreate\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.DateCreateColumn] = value;
@@ -1575,7 +1702,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal TotalWithoutTax {
                 get {
-                    return ((decimal)(this[this.tableOrders.TotalWithoutTaxColumn]));
+                    try {
+                        return ((decimal)(this[this.tableOrders.TotalWithoutTaxColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalWithoutTax\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.TotalWithoutTaxColumn] = value;
@@ -1602,7 +1734,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal Total {
                 get {
-                    return ((decimal)(this[this.tableOrders.TotalColumn]));
+                    try {
+                        return ((decimal)(this[this.tableOrders.TotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Total\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.TotalColumn] = value;
@@ -1613,7 +1750,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal Discount {
                 get {
-                    return ((decimal)(this[this.tableOrders.DiscountColumn]));
+                    try {
+                        return ((decimal)(this[this.tableOrders.DiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Discount\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.DiscountColumn] = value;
@@ -1656,7 +1798,12 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string State {
                 get {
-                    return ((string)(this[this.tableOrders.StateColumn]));
+                    try {
+                        return ((string)(this[this.tableOrders.StateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'State\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.StateColumn] = value;
@@ -1715,11 +1862,40 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public long ID {
                 get {
-                    return ((long)(this[this.tableOrders.IDColumn]));
+                    try {
+                        return ((long)(this[this.tableOrders.IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ID\' in table \'Orders\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableOrders.IDColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDAccountNull() {
+                return this.IsNull(this.tableOrders.IDAccountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDAccountNull() {
+                this[this.tableOrders.IDAccountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDateCreateNull() {
+                return this.IsNull(this.tableOrders.DateCreateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDateCreateNull() {
+                this[this.tableOrders.DateCreateColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1736,6 +1912,18 @@ namespace MVCProject.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotalWithoutTaxNull() {
+                return this.IsNull(this.tableOrders.TotalWithoutTaxColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotalWithoutTaxNull() {
+                this[this.tableOrders.TotalWithoutTaxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTaxNull() {
                 return this.IsNull(this.tableOrders.TaxColumn);
             }
@@ -1744,6 +1932,30 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTaxNull() {
                 this[this.tableOrders.TaxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotalNull() {
+                return this.IsNull(this.tableOrders.TotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotalNull() {
+                this[this.tableOrders.TotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountNull() {
+                return this.IsNull(this.tableOrders.DiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountNull() {
+                this[this.tableOrders.DiscountColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1768,6 +1980,18 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDescriptionNull() {
                 this[this.tableOrders.DescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsStateNull() {
+                return this.IsNull(this.tableOrders.StateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetStateNull() {
+                this[this.tableOrders.StateColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1804,6 +2028,18 @@ namespace MVCProject.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetOrderCodeNull() {
                 this[this.tableOrders.OrderCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDNull() {
+                return this.IsNull(this.tableOrders.IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDNull() {
+                this[this.tableOrders.IDColumn] = global::System.Convert.DBNull;
             }
         }
         

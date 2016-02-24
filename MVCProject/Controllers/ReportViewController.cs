@@ -29,7 +29,7 @@ namespace MVCProject.Controllers
         {
             string code = Request.QueryString["code"];
             if (code == null) return null;
-            var o = db.Orders.SingleOrDefault(c => c.OrderCode == code);
+            var o = db.Orders.Where(c => c.OrderCode == code).FirstOrDefault();
             var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
 
             foreach (var item in list)
@@ -47,16 +47,16 @@ namespace MVCProject.Controllers
             }
             InvoiceRptParams = new InvoiceDetailRptParams();
             InvoiceRptParams.Address = "";
-            InvoiceRptParams.AmountInWord = "";
+            InvoiceRptParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(o.Total.ToString().Replace(".00", "")));
             InvoiceRptParams.CellPhone = "";
             InvoiceRptParams.Contact = "";
             InvoiceRptParams.Discount = "";
             InvoiceRptParams.Name = "";
-            InvoiceRptParams.Total = "";
-            InvoiceRptParams.TotalVAT = "";
-            InvoiceRptParams.VAT = "";
-            InvoiceRptParams.InvoiceNum = "";
-            InvoiceRptParams.InvoiceDate = "";
+            InvoiceRptParams.Total = o.TotalWithoutTax.ToString("n0");
+            InvoiceRptParams.TotalVAT = o.Total.ToString("n0");
+            InvoiceRptParams.VAT = o.Tax.ToString();
+            InvoiceRptParams.InvoiceNum = o.OrderCode;
+            InvoiceRptParams.InvoiceDate = DateTime.ParseExact(o.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
 
             return list;
         }

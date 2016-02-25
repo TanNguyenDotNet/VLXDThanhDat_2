@@ -31,6 +31,10 @@ namespace MVCProject.Controllers
             if (code == null) return null;
             var o = db.Orders.Where(c => c.OrderCode == code).FirstOrDefault();
             var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
+            var us = _db.AspNetUsers.Single(c => c.Id == o.IDAccount);
+            string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = _db.AppNetUserTypes.Find(enu);
+            var l = _db.Locations.Find(u.LocationID);
 
             foreach (var item in list)
             {
@@ -46,12 +50,12 @@ namespace MVCProject.Controllers
                 dsDetail.OrdersDetail.Rows.Add(dr);
             }
             InvoiceRptParams = new InvoiceDetailRptParams();
-            InvoiceRptParams.Address = "";
+            InvoiceRptParams.Address = u.Address + ", Q." + u.District;
             InvoiceRptParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(o.Total.ToString().Replace(".00", "")));
-            InvoiceRptParams.CellPhone = "";
+            InvoiceRptParams.CellPhone = u.Phone;
             InvoiceRptParams.Contact = "";
             InvoiceRptParams.Discount = "";
-            InvoiceRptParams.Name = "";
+            InvoiceRptParams.Name = u.DisplayName;
             InvoiceRptParams.Total = o.TotalWithoutTax.ToString("n0");
             InvoiceRptParams.TotalVAT = o.Total.ToString("n0");
             InvoiceRptParams.VAT = o.Tax.ToString();

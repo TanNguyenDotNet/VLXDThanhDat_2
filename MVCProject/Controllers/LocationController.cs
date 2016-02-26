@@ -20,24 +20,28 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            return View(db.Locations.ToList());
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
+
+            return View(db.Locations.OrderBy(c=>c.Order).ToList());
         }
 
         // GET: /Location/Details/5
         public ActionResult Details(int? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Location location = db.Locations.Find(id);
-            if (location == null)
-            {
-                return HttpNotFound();
-            }
-            return View(location);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Location location = db.Locations.Find(id);
+            //if (location == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(location);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         // GET: /Location/Create
@@ -45,6 +49,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "23"))
+                return RedirectToAction("AccessDenied", "Account");
             return View();
         }
 
@@ -57,6 +63,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "23"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 db.Locations.Add(location);
@@ -72,6 +81,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "24"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -93,6 +105,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "24"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 db.Entry(location).State = EntityState.Modified;
@@ -105,18 +120,19 @@ namespace MVCProject.Controllers
         // GET: /Location/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Location location = db.Locations.Find(id);
-            if (location == null)
-            {
-                return HttpNotFound();
-            }
-            return View(location);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Location location = db.Locations.Find(id);
+            //if (location == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(location);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         // POST: /Location/Delete/5
@@ -124,12 +140,13 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //Location location = db.Locations.Find(id);
+            //db.Locations.Remove(location);
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         protected override void Dispose(bool disposing)

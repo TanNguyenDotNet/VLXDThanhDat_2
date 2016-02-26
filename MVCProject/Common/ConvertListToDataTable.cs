@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MVCProject.Common
 {
-    public class ConvertListToDataTable
+    public static class ConvertListToDataTable
     {
         public static DataTable ToDataTable<T>(this IList<T> data)
         {

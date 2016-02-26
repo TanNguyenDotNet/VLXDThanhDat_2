@@ -4,6 +4,7 @@ using MVCProject.Report;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,12 +18,18 @@ namespace MVCProject.Controllers
         private aspnetEntities _db = new aspnetEntities();
         private Datasets.DataSetRetails dsDetail = new Datasets.DataSetRetails();
         private InvoiceDetailRptParams InvoiceRptParams;
+        private byte[] byte_pdf = null;
         public ActionResult Index()
         {
             string path = Request.MapPath(Request.ApplicationPath) + @"Report\ReportOrderDetail.rdlc";
             GetDetail();
-            ViewBag.ReportViewer = ShowReport.ProcessShowReport(path, "DataSetOrderDetail", dsDetail.Tables["OrdersDetail"], InvoiceRptParams.rptParams);
+            ViewBag.ReportViewer = ShowReport.ProcessShowReport(path, "DataSetOrderDetail", dsDetail.Tables["OrdersDetail"], InvoiceRptParams.rptParams,out byte_pdf);
+            TempData["bytePDF"] = byte_pdf;
             return View();
+        }
+        public ActionResult ViewPDF()
+        {
+            return File((byte[])TempData["bytePDF"], "application/pdf");
         }
         #region function
         List<OrdersDetail> GetDetail()
@@ -53,8 +60,8 @@ namespace MVCProject.Controllers
             InvoiceRptParams.Address = u.Address + ", Q." + u.District;
             InvoiceRptParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(o.Total.ToString().Replace(".00", "")));
             InvoiceRptParams.CellPhone = u.Phone;
-            InvoiceRptParams.Contact = "";
-            InvoiceRptParams.Discount = "";
+            InvoiceRptParams.Contact = "_";
+            InvoiceRptParams.Discount = "_";
             InvoiceRptParams.Name = u.DisplayName;
             InvoiceRptParams.Total = o.TotalWithoutTax.ToString("n0");
             InvoiceRptParams.TotalVAT = o.Total.ToString("n0");

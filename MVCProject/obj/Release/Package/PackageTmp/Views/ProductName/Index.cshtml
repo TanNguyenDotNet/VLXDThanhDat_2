@@ -1,25 +1,28 @@
 ﻿@model IEnumerable<MVCProject.Models.ProductName>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách tên sản phẩm theo vùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
+    Dictionary<int, string> cities = (Dictionary<int, string>)ViewData["CityNameList"];
 }
 
-<h2>Index</h2>
-
+<h2>@ViewBag.Title</h2>
+@if(roles.Contains("1")){
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm mới", "Create")
 </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProductID)
+            Mã
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Tên
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LocationID)
+            Vùng
         </th>
         <th></th>
     </tr>
@@ -33,12 +36,9 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LocationID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @if (cities.Keys.Contains(int.Parse(item.LocationID.ToString()))) { 
+                @cities[int.Parse(item.LocationID.ToString())]
+            }
         </td>
     </tr>
 }

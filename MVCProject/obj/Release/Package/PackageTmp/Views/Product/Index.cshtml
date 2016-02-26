@@ -75,11 +75,12 @@
         <th>
             Mã sản phẩm
         </th>
-        <th>
-            Mã danh mục
-        </th>
+        
         <th>
             Nhà cung cấp
+        </th>
+        <!--<th>
+            Mã danh mục
         </th>
         <th>
             Hiện/Ẩn
@@ -88,14 +89,16 @@
             Ngày tạo
         </th>
         <th>
+           BH
+        </th>    
+            -->
+        <th>
             ĐVT
         </th>
         <th>
             Giá
         </th>
-        <th>
-           BH
-        </th>
+        
         <th>
            Đã xóa
         </th>
@@ -119,11 +122,12 @@
         <td align="center">
             @Html.DisplayFor(modelItem => item.ItemCode)
         </td>
-        <td align="center">
-            @Html.DisplayFor(modelItem => item.CatID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.SupplierID)
+        </td>
+        <!--<td align="center">
+            @Html.DisplayFor(modelItem => item.CatID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Show)
@@ -136,17 +140,15 @@
             &nbsp;
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Warranty)
+        </td>-->
+        <td>
             @Html.DisplayFor(modelItem => item.Unit)
         </td>
+        <td align="right">
+            @double.Parse(item.Price.ToString()).ToString("#,###")
+        </td>
         <td align="center">
-            @if (item.Price != null){
-                double.Parse(item.Price.ToString()).ToString("#,###.00");
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Warranty)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.IsDel)
         </td>
         <td>

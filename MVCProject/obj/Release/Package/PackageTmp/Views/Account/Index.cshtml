@@ -26,7 +26,8 @@
 
 @foreach (var item in Model) {
     string actname = "Phân quyền", action = "Roles";
-    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", false, MVCProject.Common.EncryptType.TripleDES);
+    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", 
+        false, MVCProject.Common.EncryptType.TripleDES);
     if (!types.Keys.Contains(en))
     {
         en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", false, MVCProject.Common.EncryptType.TripleDES);

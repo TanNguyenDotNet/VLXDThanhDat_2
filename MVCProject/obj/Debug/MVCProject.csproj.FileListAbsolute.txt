@@ -183,3 +183,5 @@ C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\RdlCompile.cac
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\RdlCompile.compiled
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.dll
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.pdb
+D:\Projects\MVC\WebThanhDat\MVCProject\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\Projects\MVC\WebThanhDat\MVCProject\bin\ReportViewerForMvc.dll

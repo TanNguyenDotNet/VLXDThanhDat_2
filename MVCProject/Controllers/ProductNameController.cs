@@ -20,25 +20,28 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
+            ViewData["CityNameList"] = Common.Commons.GetCityName(db.Locations.ToList());
             return View(db.ProductNames.ToList());
         }
 
         // GET: /ProductName/Details/5
         public ActionResult Details(long? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductName productname = db.ProductNames.Find(id);
-            if (productname == null)
-            {
-                return HttpNotFound();
-            }
-            return View(productname);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //ProductName productname = db.ProductNames.Find(id);
+            //if (productname == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(productname);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         // GET: /ProductName/Create
@@ -46,6 +49,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "17"))
+                return RedirectToAction("AccessDenied", "Account");
 
             var pp = new Models.ProductName();
             if (id != null) pp.ProductID = (long)id;
@@ -65,6 +70,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "17"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 productname.UserId = User.Identity.GetUserId();
@@ -81,6 +89,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "18"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -102,6 +113,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "18"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 db.Entry(productname).State = EntityState.Modified;
@@ -114,18 +128,19 @@ namespace MVCProject.Controllers
         // GET: /ProductName/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductName productname = db.ProductNames.Find(id);
-            if (productname == null)
-            {
-                return HttpNotFound();
-            }
-            return View(productname);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //ProductName productname = db.ProductNames.Find(id);
+            //if (productname == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(productname);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         // POST: /ProductName/Delete/5
@@ -133,12 +148,13 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            ProductName productname = db.ProductNames.Find(id);
-            db.ProductNames.Remove(productname);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //ProductName productname = db.ProductNames.Find(id);
+            //db.ProductNames.Remove(productname);
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         protected override void Dispose(bool disposing)

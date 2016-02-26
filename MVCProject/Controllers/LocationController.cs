@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -16,14 +17,16 @@ namespace MVCProject.Controllers
         private aspnetEntities db = new aspnetEntities();
 
         // GET: /Location/
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
 
-            return View(db.Locations.OrderBy(c=>c.Order).ToList());
+            IEnumerable<Models.Location> list = GetList(filter);
+            return View(list.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 10 : (int)size));
         }
 
         // GET: /Location/Details/5
@@ -68,8 +71,10 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
+                location.Order = UpdateOrder(location.ID, location.Order);
                 db.Locations.Add(location);
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
 
@@ -108,10 +113,11 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "24"))
                 return RedirectToAction("AccessDenied", "Account");
 
+            
+
             if (ModelState.IsValid)
             {
-                db.Entry(location).State = EntityState.Modified;
-                db.SaveChanges();
+                UpdateOrder(location.ID, location.Order);
                 return RedirectToAction("Index");
             }
             return View(location);
@@ -156,6 +162,62 @@ namespace MVCProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        private IEnumerable<Location> GetList(string filter)
+        {
+            IEnumerable<Models.Location> list = null;
+            if (filter != null && filter != "")
+                list = db.Locations.Where(c => c.LocationName.Contains(filter));
+            else
+                list = db.Locations;
+            return list.OrderBy(o => o.Order).ToList();
+        }
+
+        private int UpdateOrder(int? id, int? beginFrom)
+        {
+            int m = 0;
+            var max = db.Locations.Max(c => c.Order);
+            m = (int)max;
+            Models.Location l = null;
+            if (id != null && id > 0)
+            {
+                l = db.Locations.Single(c => c.ID == id);
+            }
+
+            if ((l == null || l.Order != beginFrom) && (beginFrom != null && beginFrom > 0))
+            {
+                
+                if (l != null && l.Order > beginFrom)
+                {
+                    var list = db.Locations.Where(c => c.Order < l.Order && c.Order >= beginFrom).ToList().OrderBy(o => o.Order);
+                    foreach (var u in list)
+                        u.Order = u.Order + 1;
+                }
+                else if (l != null && l.Order < beginFrom)
+                {
+                    var list = db.Locations.Where(c => c.Order > l.Order && c.Order <= beginFrom).ToList().OrderBy(o => o.Order);
+                    foreach (var u in list)
+                        u.Order = u.Order - 1;
+                }
+                else if(beginFrom < m)
+                {
+                    var list1 = db.Locations.Where(c => c.Order >= beginFrom).ToList().OrderBy(o => o.Order);
+                    int i = (int)beginFrom + 1;
+                    foreach (var u in list1)
+                    {
+                        u.Order = i;
+                        i++;
+                    }
+                }
+                m = (int)beginFrom;
+                if (l != null)
+                    l.Order = m;
+            }
+                        
+            db.SaveChanges();
+            return m;
         }
     }
 }

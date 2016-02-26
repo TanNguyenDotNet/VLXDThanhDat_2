@@ -1,33 +1,82 @@
-﻿@model IEnumerable<MVCProject.Models.Location>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Location>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách vùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "10"; }
+
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("Index", "Location", FormMethod.Get, new { id = "productViewForm" }))
+{
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <p>
+        @if (roles.Contains("23"))
+        {
+            @Html.ActionLink("Thêm mới", "Create")
+        }
+    </p>
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    order = ViewBag.Order,
+    filter = ViewBag.Filter,
+    size = size
+}))
+<table class="table">
+    <tr>
+        <td align="right" width="10%">
+            Tên vùng:
+        </td>
+        <td align="left" width="18%">
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="7%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                }
+            </select>
+        </td>
+        <td align="right" width="10%">
+            &nbsp;
+        </td>
+        <td align="left" width="18%">
+            &nbsp;
+        </td>
+    </tr>
+</table>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.LocationName)
+            Tên vùng
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LocationCode)
+            Mã vùng
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Order)
+            Thứ tự
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.LocationName)
+            @if (roles.Contains("24"))
+            {
+                @Html.ActionLink(item.LocationName, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @item.LocationName
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LocationCode)
@@ -35,12 +84,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.Order)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
     </tr>
 }
 
 </table>
+}

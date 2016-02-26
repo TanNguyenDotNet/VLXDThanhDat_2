@@ -120,3 +120,5 @@ D:\Projects\MVC\WebThanhDat\MVCProject\obj\Release\RdlCompile.cache
 D:\Projects\MVC\WebThanhDat\MVCProject\obj\Release\RdlCompile.compiled
 D:\Projects\MVC\WebThanhDat\MVCProject\obj\Release\MVCProject.dll
 D:\Projects\MVC\WebThanhDat\MVCProject\obj\Release\MVCProject.pdb
+D:\Projects\MVC\WebThanhDat\MVCProject\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\Projects\MVC\WebThanhDat\MVCProject\bin\ReportViewerForMvc.dll

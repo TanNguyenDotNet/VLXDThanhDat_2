@@ -161,15 +161,18 @@ namespace MVCProject.Controllers
 
             var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
             List<Models.Product> lp = new List<Product>();
+            double total = 0;
             foreach (var od in list)
             {
                 if (od.IDProduct > 0)
                 {
+                    total += (double)od.Total;
                     var p = _db.Products.Single(c => c.ID == od.IDProduct);
                     lp.Add(p);
                 }
             }
 
+            ViewData["Total"] = total;
             ViewData["ProductList"] = lp;
             return list;
         }

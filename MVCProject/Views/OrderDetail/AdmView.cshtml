@@ -74,22 +74,20 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.IDProduct)
+            Sản phẩm
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Price)
+        <th width="9%">
+            Giá
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Amount)
+        <th width="9%">
+            Số lượng
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.DateOfOrder)
+       
+        <th width="9%">
+            Thuế suất
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Tax)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Total)
+        <th width="9%">
+            Thành tiền
         </th>
 
     </tr>
@@ -104,7 +102,6 @@
             var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
             @Html.Raw(p.ProductName);
                     }
-                    @item.IDProduct
                 </td>
                 <td align="right">
                     @item.Price.ToString("#,###.00")
@@ -112,9 +109,7 @@
                 <td align="right">
                     @item.Amount
                 </td>
-                <td>
-                    @DateTime.Now.ToString("dd/MM/yyyy")
-                </td>
+                
                 <td align="right">
                     @Html.DisplayFor(modelItem => item.Tax)%
                 </td>
@@ -125,8 +120,8 @@
         }
 
         <tr>
-            <td colspan="5" align="right">Tổng cộng: </td>
-            <td align="right">@ViewData["Total"]</td>
+            <td colspan="4" align="right">Tổng cộng: </td>
+            <td align="right">@double.Parse(ViewData["Total"].ToString()).ToString("#,###.00")</td>
         </tr>
     }
 </table>

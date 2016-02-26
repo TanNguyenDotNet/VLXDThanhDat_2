@@ -332,7 +332,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/26/2015 15:47:36</publishTime>
     </File>
     <File Include="Views/Product/Create.cshtml">
-      <publishTime>12/27/2015 11:39:55</publishTime>
+      <publishTime>02/21/2016 21:30:49</publishTime>
     </File>
     <File Include="Views/Product/Delete.cshtml">
       <publishTime>12/16/2015 17:18:18</publishTime>
@@ -452,7 +452,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/15/2015 08:49:05</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/03/2016 13:14:37</publishTime>
+      <publishTime>02/21/2016 21:31:14</publishTime>
     </File>
   </ItemGroup>
 </Project>

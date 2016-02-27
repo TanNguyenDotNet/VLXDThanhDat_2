@@ -25,7 +25,6 @@ namespace MVCProject.Controllers
                 Response.Redirect("~/OrderDetail/Details");
                 return null;
             }
-
            
             ViewData["UserName"] = User.Identity.GetUserName();
             return View(u);

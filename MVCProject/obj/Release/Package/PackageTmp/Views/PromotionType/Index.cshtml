@@ -3,13 +3,15 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 <h2>Hình thức khuyến mãi</h2>
-
+@if(roles.Contains("21")){
 <p>
     @Html.ActionLink("Thêm mới", "Create")
 </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -26,7 +28,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+        @if(roles.Contains("21")){
             @Html.ActionLink(item.ProTypeName, "Edit", new { id = item.ID })
+        }
+        else
+        {
+            @item.ProTypeName
+        }
         </td>
         <td width="25%">
             @Html.DisplayFor(modelItem => item.AddType)

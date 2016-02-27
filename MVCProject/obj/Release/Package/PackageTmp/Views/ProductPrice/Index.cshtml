@@ -33,19 +33,28 @@
         <th width="15%">
             Mã tỉnh/thành phố
         </th>
-        <th width="10%">&nbsp;</th>
+       
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
-                        name = nList[item.ID];
+            @if (nList != null && nList.Count > 0 && nList.Keys.Contains(long.Parse(item.ProductID.ToString())))
+            {
+                name = nList[long.Parse(item.ProductID.ToString())];
                     }
                     else { 
                         name = ""; 
                     }
-                    @name
+            @if (roles.Contains("8"))
+            {
+                @Html.ActionLink(name, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @name
+            }
+                    
         </td>
         <td align="right">
             @Double.Parse(item.Price.ToString()).ToString("#,###.00")
@@ -58,13 +67,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LocationID)
-        </td>
-        <td>
-            
-            @if (roles.Contains("8"))
-            {
-                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.ID })
-            }
         </td>
     </tr>
 }

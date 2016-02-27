@@ -213,6 +213,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
+                return RedirectToAction("AccessDenied", "Account");
+
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             return View();
         }
@@ -226,6 +229,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
+                return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)
             {

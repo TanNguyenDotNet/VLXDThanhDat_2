@@ -1,11 +1,11 @@
 ﻿@model MVCProject.Models.Location
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Chỉnh sửa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -13,45 +13,45 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Location</h4>
+        <h4>Vùng</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationName, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Tên vùng:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LocationName)
+                @Html.TextBoxFor(model => model.LocationName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.LocationName)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationCode, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Mã vùng:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LocationCode)
+                @Html.TextBoxFor(model => model.LocationCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.LocationCode)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Thứ tự:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Order)
+                @Html.TextBoxFor(model => model.Order, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Order)
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Lưu Lại" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Về danh sách", "Index")
 </div>
 
 @section Scripts {

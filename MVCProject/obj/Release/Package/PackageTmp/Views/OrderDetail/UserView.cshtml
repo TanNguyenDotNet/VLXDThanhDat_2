@@ -31,22 +31,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.IDProduct)
+            Sản phẩm
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Price)
+        <th width="9%">
+            Giá
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Amount)
+        <th width="9%">
+            Số lượng
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.DateOfOrder)
+        <th width="9%">
+            Thuế suất
         </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Tax)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Total)
+        <th width="9%">
+            Thành tiền
         </th>
 
     </tr>
@@ -68,9 +65,6 @@
                 </td>
                 <td align="right">
                     @item.Amount
-                </td>
-                <td>
-                    @DateTime.Now.ToString("dd/MM/yyyy")
                 </td>
                 <td align="right">
                     @Html.DisplayFor(modelItem => item.Tax)%
@@ -94,13 +88,13 @@
     <table class="table">
         <tr>
             <th align="left">
-                @Html.DisplayNameFor(model => model.IDProduct)
+                Sản phẩm
             </th>
             <th align="left">
-                @Html.DisplayNameFor(model => model.Amount)
+                Số lượng
             </th>
             <th align="left">
-                @Html.DisplayNameFor(model => model.Description)
+                Mô tả
             </th>
         </tr>
         @foreach (var item in Model)

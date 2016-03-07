@@ -5,54 +5,49 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Thêm mới</h2>
-
-@using (Html.BeginForm()) 
-{
+<form action="/ProductName/Create" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+    <section class="content-header">
+        <h2>Thêm mới</h2>
         <h4>Tên sản phẩm theo vùng</h4>
-        <hr />
         @Html.ValidationSummary(true)
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Sản phẩm</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProductID, (IEnumerable<SelectListItem>)ViewBag.ProductList,
-                    "Chọn sản phẩm", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ProductID)
+    </section>
+    <section class="content">
+        <div class='arrage-popup'>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.ProductID, (IEnumerable<SelectListItem>)ViewBag.ProductList,
+                        "Chọn sản phẩm", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProductID)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Tên</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Name">Tên</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Tỉnh/thành phố</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
-                    "Chọn tỉnh/thành phố", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LocationID)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="LocationID">Tỉnh/thành phố</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
+                        "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationID)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Lưu Lại" class="btn btn-default" />
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
             </div>
+            <div class="clearfix"></div>
         </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Về danh sách", "Index")
-</div>
+    </section>
+</form>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -8,67 +8,68 @@
     string name = "";
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
-
-<h2>Giá sản phẩm</h2>
-<p>
-@if (roles.Contains("7"))
-{
-    @Html.ActionLink("Thêm mới", "Create")
-}
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Sản phẩm
-        </th>
-        <th width="10%">
-            Giá
-        </th>
-        <th width="10%">
-           Ngày tạo
-        </th>
-        <th width="20%">
-            Mô tả
-        </th>
-        <th width="15%">
-            Mã tỉnh/thành phố
-        </th>
+<section class="content-header">
+    <h2>
+        Giá sản phẩm
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("7"))
+        {
+            <a href="~/ProductPrice/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        }
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #3c8dbc; color:#fff">
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Ngày tạo</th>
+                    <th>Mô tả</th>
+                    <th>Mã tỉnh/thành phố</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row" style="text-align:left">
+                            @if (nList != null && nList.Count > 0 && nList.Keys.Contains(long.Parse(item.ProductID.ToString())))
+                            {
+                                name = nList[long.Parse(item.ProductID.ToString())];
+                            }
+                            else
+                            {
+                                name = "";
+                            }
+                            @if (roles.Contains("8"))
+                            {
+                                @Html.ActionLink(name, "Edit", new { id = item.ID })
+                            }
+                            else
+                            {
+                                @name
+                            }
+                        </th>
+                        <td align="right">
+                            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
+                        </td>
+                        <td>
+                            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LocationID)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
        
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if (nList != null && nList.Count > 0 && nList.Keys.Contains(long.Parse(item.ProductID.ToString())))
-            {
-                name = nList[long.Parse(item.ProductID.ToString())];
-                    }
-                    else { 
-                        name = ""; 
-                    }
-            @if (roles.Contains("8"))
-            {
-                @Html.ActionLink(name, "Edit", new { id = item.ID })
-            }
-            else
-            {
-                @name
-            }
-                    
-        </td>
-        <td align="right">
-            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
-        </td>
-        <td>
-            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationID)
-        </td>
-    </tr>
-}
-
-</table>
+    </div>
+    <!-- Your Page Content Here -->
+</section><!-- /.content -->

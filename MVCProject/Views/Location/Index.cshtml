@@ -9,83 +9,94 @@
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-<h2>@ViewBag.Title</h2>
-@using (Html.BeginForm("Index", "Location", FormMethod.Get, new { id = "productViewForm" }))
-{
-
-    <p>
-        @if (roles.Contains("23"))
-        {
-            @Html.ActionLink("Thêm mới", "Create")
-        }
-    </p>
-@Html.PagedListPager(Model, page => Url.Action("Index", new
-{
-    page,
-    order = ViewBag.Order,
-    filter = ViewBag.Filter,
-    size = size
-}))
-<table class="table">
-    <tr>
-        <td align="right" width="10%">
-            Tên vùng:
-        </td>
-        <td align="left" width="18%">
-            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
-        </td>
-        <td align="right" width="7%">
-            Số dòng:
-        </td>
-        <td align="left" width="7%">
-            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
-                @for (int s = 10; s <= 50; s += 10)
-                {
-                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
-                }
-            </select>
-        </td>
-        <td align="right" width="10%">
-            &nbsp;
-        </td>
-        <td align="left" width="18%">
-            &nbsp;
-        </td>
-    </tr>
-</table>
-<table class="table">
-    <tr>
-        <th>
-            Tên vùng
-        </th>
-        <th>
-            Mã vùng
-        </th>
-        <th>
-            Thứ tự
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if (roles.Contains("24"))
+<form action="~/Location" method="get" id="productViewForm">
+    <section class="content-header">
+        <h2>
+            Sản phẩm
+        </h2>
+        <div class="arrange-button">
+            @if (roles.Contains("23"))
             {
-                @Html.ActionLink(item.LocationName, "Edit", new { id = item.ID })
+                <a href="~/Location/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
             }
-            else
-            {
-                @item.LocationName
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Order)
-        </td>
-    </tr>
-}
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Tên vùng</span>
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                    </div>
+                    </div>
+                    <div class="form-group col-sm-4">
 
-</table>
-}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                                {
+                                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="background-color: #3c8dbc; color:#fff">
+                            <th>
+                                Tên vùng
+                            </th>
+                            <th>
+                                Mã vùng
+                            </th>
+                            <th>
+                                Thứ tự
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                    @if (roles.Contains("24"))
+                                    {
+                                        @Html.ActionLink(item.LocationName, "Edit", new { id = item.ID })
+                                    }
+                                    else
+                                    {
+                                        @item.LocationName
+                                    }
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LocationCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Order)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <nav style="text-align:right">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new
+                    {
+                        page,
+                        order = ViewBag.Order,
+                        filter = ViewBag.Filter,
+                        size = size
+                    }))
+                </nav>
+            </div>
+        </div>
+    </section>
+</form>

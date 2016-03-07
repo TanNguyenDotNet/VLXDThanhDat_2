@@ -7,59 +7,70 @@
     Dictionary<int,string> location = (Dictionary<int,string>)ViewBag.LocationList;
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
-<h2>@ViewBag.Title</h2>
-@if(roles.Contains("12")){
-<p>
-    @Html.ActionLink("Thêm mới", "Register")
-</p>
-}
-<table class="table">
-    <tr>
-        <th>
-            Tên đăng nhập
-        </th>
-        <th>
-            Tên cá nhân/đại lý
-        </th>
-        <th width="10%">#</th>
-    </tr>
-
-@foreach (var item in Model) {
-    string actname = "Phân quyền", action = "Roles";
-    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", 
-        false, MVCProject.Common.EncryptType.TripleDES);
-    if (!types.Keys.Contains(en))
-    {
-        en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", false, MVCProject.Common.EncryptType.TripleDES);
-        actname = "Thông tin đại lý";
-        action = "Agent";
-    }
-    string name = "";
-    if (!types.Keys.Contains(en))
-    {
-        name = item.UserName;
-    }
-    else
-    {
-        name = types[en];
-    }
-    
-    if ((action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
-    { 
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-  
-                @name
-            </td>
-            <td>
-                @Html.ActionLink(actname, action, new { id = item.UserName })
-            </td>
-        </tr>
-    }
-    
-}
-
-</table>
+<section class="content-header">
+    <h2>
+        @ViewBag.Title
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("12"))
+        {
+            <a href="~/Account/Register" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        }
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #3c8dbc; color:#fff">
+                    <th>
+                        Tên đăng nhập
+                    </th>
+                    <th>
+                        Tên cá nhân/đại lý
+                    </th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    string actname = "Phân quyền", action = "Roles";
+                    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", 
+                        false, MVCProject.Common.EncryptType.TripleDES);
+                    if (!types.Keys.Contains(en))
+                    {
+                        en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", false, MVCProject.Common.EncryptType.TripleDES);
+                        actname = "Thông tin đại lý";
+                        action = "Agent";
+                    }
+                    string name = "";
+                    if (!types.Keys.Contains(en))
+                    {
+                        name = item.UserName;
+                    }
+                    else
+                    {
+                        name = types[en];
+                    }
+                    
+                    if ((action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
+                    { 
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </th>
+                            <td>
+                  
+                                @name
+                            </td>
+                            <td>
+                                @Html.ActionLink(actname, action, new { id = item.UserName })
+                            </td>
+                        </tr>
+                    }
+                    
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

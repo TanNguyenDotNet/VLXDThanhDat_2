@@ -326,6 +326,12 @@
     <Content Include="Images\Details\IMG_21122015_5268801.jpg" />
     <Content Include="Images\Details\IMG_21122015_7002026.png" />
     <Content Include="Images\Details\no-image.png" />
+    <Content Include="Images\imgs\add.png" />
+    <Content Include="Images\imgs\avatar5.png" />
+    <Content Include="Images\imgs\bg.png" />
+    <Content Include="Images\imgs\dollar-price-tag.png" />
+    <Content Include="Images\imgs\name-tag.png" />
+    <Content Include="Images\imgs\promotions.png" />
     <Content Include="Images\Intro\IMG_21122015_2730545.jpg" />
     <Content Include="Images\Intro\IMG_21122015_4818283.png" />
     <Content Include="Images\Intro\IMG_21122015_9027834.png" />
@@ -477,6 +483,7 @@
     <Content Include="Views\Account\Agent.cshtml" />
     <Content Include="Views\Account\Roles.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report\ReportOrderDetail.rdlc" />

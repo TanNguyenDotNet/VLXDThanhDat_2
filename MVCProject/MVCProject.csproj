@@ -314,9 +314,13 @@
   <ItemGroup>
     <Content Include="App_Data\dbo_090116.sql" />
     <Content Include="App_Data\retail.sql" />
+    <Content Include="Content\AdminLTE.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
+    <Content Include="Content\modalStyles.css" />
+    <Content Include="Content\skin-blue.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

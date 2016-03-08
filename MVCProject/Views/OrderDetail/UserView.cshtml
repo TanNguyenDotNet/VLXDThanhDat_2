@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MVCProject.Models.OrdersDetail>
 
 @{
-    ViewBag.Title = "UserView";
+    ViewBag.Title = "Thông Tin Đơn Hàng";
     Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
     MVCProject.Models.AppNetUserType u = (MVCProject.Models.AppNetUserType)ViewData["AccountInfo"];
     MVCProject.Models.Location l = (MVCProject.Models.Location)ViewData["Location"];
@@ -9,103 +9,114 @@
 }
 
 
-<h2>Thông tin đơn hàng</h2>
-
-<br style="clear:both" />
-<h4>I. Thông tin đại lý:</h4>
-<table class="account-info">
-    <tr>
-        <td>Tên cá nhân/đại lý: <strong>@u.DisplayName</strong></td>
-        <td width="30%">Mã số thuế: <strong>@u.TaxID</strong></td>
-    </tr>
-    <tr>
-        <td>Địa chỉ: <strong>@u.Address @u.District</strong></td>
-        <td>Tỉnh/thành phố: <strong>@lname</strong></td>
-    </tr>
-    <tr>
-        <td>Điện thoại: <strong>@u.Phone</strong> - Fax: <strong>@u.Fax</strong></td>
-        <td>Email: <strong>@u.Email</strong></td>
-    </tr>
-</table>
-<h4>II. Sản phẩm yêu cầu:</h4>
-<table class="table">
-    <tr>
-        <th>
-            Sản phẩm
-        </th>
-        <th width="9%">
-            Giá
-        </th>
-        <th width="9%">
-            Số lượng
-        </th>
-        <th width="9%">
-            Thuế suất
-        </th>
-        <th width="9%">
-            Thành tiền
-        </th>
-
-    </tr>
-    @if (Model != null && Model.Count() > 0)
-    {
-        foreach (var item in Model)
-        {
-            if (item.RequestByUser) { continue; }
-            <tr>
-                <td>
-                    @{
-            var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
-            @Html.Raw(p.ProductName);
-                    }
-                    @item.IDProduct
-                </td>
-                <td align="right">
-                    @item.Price.ToString("#,###.00")
-                </td>
-                <td align="right">
-                    @item.Amount
-                </td>
-                <td align="right">
-                    @Html.DisplayFor(modelItem => item.Tax)%
-                </td>
-                <td align="right">
-                    @item.Total.ToString("#,###.00")
-                </td>
+<section class="content-header">
+  <h2>
+    @ViewBag.Title
+  </h2>
+</section>
+<!-- Main content -->
+<section class="content">
+<div class="table-responsive">
+    <h3>I. Thông Tin Đại Lý:</h3>
+    <div class="left-info col-md-6">
+      <p>Tên cá nhân / đại lý: <strong class="detail-info">@u.DisplayName</strong></p>
+      <p>Đại chỉ: <strong>@u.Address @u.District</strong></p>
+      <p>Điện thoại:<strong>@u.Phone</strong> - Fax:<strong>@u.Fax</strong></p>
+    </div>
+    <div class="right-info col-md-6">
+      <p>Mã số thuế: <strong>@u.TaxID</strong></p>
+      <p>Tỉnh/thành phố: <strong>@lname</strong></p>
+      <p>Email: <strong>@u.Email</strong></p>
+    </div>
+</div>
+<div class="table-responsive">
+<h3>II. Sản phẩm yêu cầu:</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr style="background-color: #3c8dbc; color:#fff">
+                <th>
+                    Sản phẩm
+                </th>
+                <th width="9%">
+                    Giá
+                </th>
+                <th width="9%">
+                    Số lượng
+                </th>
+                <th width="9%">
+                    Thuế suất
+                </th>
+                <th width="9%">
+                    Thành tiền
+                </th>
             </tr>
-        }
-
-        <tr>
-            <td colspan="5" align="right">Tổng cộng: </td>
-            <td align="right">@ViewData["Total"]</td>
-        </tr>
-    }
-</table>
-<br style="clear:both;" />
-@if (Model != null && Model.Count() > 0)
-{
-    <h4>III. Sản phẩm ngoài danh mục:</h4>
-    <table class="table">
-        <tr>
-            <th align="left">
-                Sản phẩm
-            </th>
-            <th align="left">
-                Số lượng
-            </th>
-            <th align="left">
-                Mô tả
-            </th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            if (!item.RequestByUser || item.Description == "") { continue; }
-            <tr>
-                <td>@item.Description.Split('|')[0]</td>
-                <td>@item.Amount</td>
-                <td>@item.Description.Split('|')[1]</td>
-            </tr>
+        </thead>
+        @if (Model != null && Model.Count() > 0)
+            {
+        <tbody>
+            
+                @foreach (var item in Model)
+                {
+                    if (item.RequestByUser) { continue; }
+                    <tr>
+                        <th style="text-align:left">
+                            @{
+                    var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
+                    @Html.Raw(p.ProductName);
+                            }
+                            @item.IDProduct
+                        </th>
+                        <td align="right">
+                            @item.Price.ToString("#,###")
+                        </td>
+                        <td align="right">
+                            @item.Amount
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.Tax)%
+                        </td>
+                        <td align="right">
+                            @item.Total.ToString("#,###")
+                        </td>
+                    </tr>
+                }
+        </tbody>
         }
     </table>
+    <div class="arrange-button">
+        <p>Tổng Cộng: <span>@ViewData["Total"]</span></p>
+    </div>
+</div>
+<div class="table-responsive" style="display:none">
+@if (Model != null && Model.Count() > 0)
+{
+    <h3>III. Sản Phẩm Ngoài Danh Mục:</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr style="background-color: #3c8dbc; color:#fff">
+                <th align="left">
+                    Sản phẩm
+                </th>
+                <th align="left">
+                    Số lượng
+                </th>
+                <th align="left">
+                    Mô tả
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (!item.RequestByUser || item.Description == "") { continue; }
+                <tr>
+                    <th scope="row">@item.Description.Split('|')[0]</th>
+                    <td>@item.Amount</td>
+                    <td>@item.Description.Split('|')[1]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-
+</div>
+</section>

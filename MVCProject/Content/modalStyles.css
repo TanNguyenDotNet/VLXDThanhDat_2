@@ -171,6 +171,12 @@ body {
  color: #F39212;
  font-weight:bold;
 }
+.arrange-div {
+    padding-bottom:5px;
+}
+.arrange-div label{
+    line-height:30px;
+}
 .arrange-button p span {
  font-size:20px;
  font-weight:600;

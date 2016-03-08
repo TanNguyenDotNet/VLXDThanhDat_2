@@ -23,12 +23,17 @@ namespace MVCProject
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/frontend").Include(
+                      "~/Scripts/app.js",
+                      "~/Scripts/main.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/modalStyles.css",
                       "~/Content/AdminLTE.min.css",
-                      "~/Content/skin-blue.min.css"));
+                      "~/Content/skin-blue.min.css",
+                      "~/Content/jquery.datetimepicker.css"));
         }
     }
 }

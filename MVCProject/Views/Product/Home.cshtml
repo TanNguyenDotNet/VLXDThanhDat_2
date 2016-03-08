@@ -36,11 +36,11 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-4" style="float:left">
     
                         @if (ViewData["CartCount"] != "0")
                         {
-                            <input type="button" onclick="GoToCart();" class="btn btn-default" value="(@ViewData["CartCount"]) Xem hóa đơn" />
+                            <input type="button" onclick="GoToCart();" class="btn btn-info" value="(@ViewData["CartCount"]) Xem hóa đơn" />
                         }
                 </div>
                 <div class="form-group col-sm-3">

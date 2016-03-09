@@ -5,13 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="/Product/Create" method="post" enctype="multipart/form-data">
+<form action="~/ProductPrice/Create/" method="post" enctype="multipart/form-data">
     <section class="content-header">
         <h2>Thêm mới</h2>
         <h4>Giá sản phẩm</h4>
         @Html.ValidationSummary(true)
         @Html.AntiForgeryToken()
-     <section class="content">
         <div class='arrage-popup'>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
@@ -44,9 +43,9 @@
                 </div>
             </div>
             <div style="text-align:center" class="col-md-12">
-                    <input type="submit" value="Lưu Lại" class="btn btn-info" />
-                    <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
-                </div>
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
+            </div>
             <div class="clearfix"></div>
         </div>
     </section>

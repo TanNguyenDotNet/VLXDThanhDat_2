@@ -6,7 +6,7 @@
 }
 
 
-<form action="/ProductPrice/Edit">
+<form action="~/ProductPrice/Edit/" method="post">
     <section class="content-header">
         <h2>@ViewBag.Title</h2>
         @Html.AntiForgeryToken()
@@ -33,7 +33,7 @@
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
             </div>
-            
+
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Description">Mô tả</label>
                 <div class="col-md-6">
@@ -41,16 +41,16 @@
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>
-            
+
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="LocationID">Tỉnh/thành phố</label>
                 <div class="col-md-6">
-                   @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
                  "Chọn tỉnh/thành phố", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.LocationID)
                 </div>
             </div>
-            
+
             <div style="text-align:center" class="col-md-12">
                 <input type="submit" value="Lưu Lại" class="btn btn-info" />
                 <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>

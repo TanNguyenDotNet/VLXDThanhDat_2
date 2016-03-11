@@ -1,0 +1,51 @@
+﻿@model MVCProject.Models.LocationSub
+@if (!Request.IsAuthenticated)
+{
+    Response.Redirect("~/Account/Login");
+    return;
+}
+@{
+    ViewBag.Title = "Danh mục vùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/LocationSub/Create" method="post" enctype="multipart/form-data">
+    <section class="content-header">
+        <h2>Thêm mới khu vực</h2>
+        <h4></h4>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+    </section>
+    <section class="content">
+        <div class='arrage-popup'>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Title">Tên khu vực:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Code">Tỉnh/Thành phố</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.IDLocation, (IEnumerable<SelectListItem>)ViewBag.LocationList,
+                 "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IDLocation)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Description">Mô tả:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/LocationSub/Index" class="btn btn-info">Về danh sách</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+</form>
+

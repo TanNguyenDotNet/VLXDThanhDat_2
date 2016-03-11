@@ -1,7 +1,7 @@
 ﻿@model PagedList.IPagedList<MVCProject.Models.Location>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Danh sách vùng";
+    ViewBag.Title = "Danh sách tỉnh/thành phố";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "10"; }
@@ -12,7 +12,7 @@
 <form action="~/Location" method="get" id="productViewForm">
     <section class="content-header">
         <h2>
-            Sản phẩm
+            Danh sách tỉnh/thành phố
         </h2>
         <div class="arrange-button">
             @if (roles.Contains("23"))

@@ -184,6 +184,9 @@
     <Compile Include="Common\ConvertListToDataTable.cs" />
     <Compile Include="Common\ConvertNumToWord.cs" />
     <Compile Include="Common\ExcelUtils.cs" />
+    <Compile Include="Common\Params.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Common\Security.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
@@ -191,6 +194,9 @@
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\LocationSubController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderDetailController.cs" />
     <Compile Include="Controllers\ProductCodeController.cs" />
@@ -250,6 +256,9 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Location.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LocationSub.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order.cs">
@@ -411,6 +420,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\LocationSub\index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -494,6 +506,7 @@
     <Content Include="Views\Account\Roles.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\LocationSub\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report\ReportOrderDetail.rdlc" />
@@ -505,6 +518,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

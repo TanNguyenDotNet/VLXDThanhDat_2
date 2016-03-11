@@ -1,0 +1,44 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Danh mục vùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   @* List<string> roles = (List<string>)ViewData["AccessList"];*@
+}
+
+<section class="content-header">
+    <h2>
+        Danh mục vùng
+    </h2>
+    <div class="arrange-button">
+        <a href="~/LocationSub/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #3c8dbc; color:#fff">
+                    <th>Tên vùng</th>
+                    <th>Tỉnh/Thành phố</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var item in Model.LocationSub)
+                    {
+                        <tr>
+                            <th>
+                                @item.name
+                            </th>
+                            <td>
+                                @item.locationName
+                            </td>
+                            <td>
+                                @item.description
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    </div>
+</section>

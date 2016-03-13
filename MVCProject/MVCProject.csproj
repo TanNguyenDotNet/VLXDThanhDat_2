@@ -203,6 +203,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductNameController.cs" />
     <Compile Include="Controllers\ProductPriceController.cs" />
+    <Compile Include="Controllers\ProductPriceLocationSubController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\PromotionTypeController.cs" />
     <Compile Include="Controllers\ReportViewController.cs" />
@@ -322,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\dbo_090116.sql" />
+    <Content Include="App_Data\dbo_110316.sql" />
     <Content Include="App_Data\retail.sql" />
     <Content Include="Content\AdminLTE.min.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -507,9 +509,10 @@
     <Content Include="Views\Account\AccessDenied.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\LocationSub\Create.cshtml" />
+    <Content Include="Views\ProductPriceLocationSub\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Report\ReportOrderDetail.rdlc" />
+    <Resource Include="Report\ReportOrderDetail.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

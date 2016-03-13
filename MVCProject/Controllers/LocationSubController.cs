@@ -20,7 +20,7 @@ namespace MVCProject.Controllers
             {
                 var query = (from a in _model.LocationSubs.ToList()
                              join b in _model.Locations.ToList() on a.IDLocation equals b.ID
-                             select new { name = a.Name, description = a.Description, locationName = b.LocationName }).ToList();
+                             select new { name = a.Name, description = a.Description, locationprice=a.LocationPrice, locationName = b.LocationName }).ToList();
                 List<ExpandoObject> joinData = new List<ExpandoObject>();
 
                 foreach (var item in query)
@@ -46,13 +46,16 @@ namespace MVCProject.Controllers
             //    return null;
             //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
                 //return RedirectToAction("AccessDenied", "Account");
-
-            ViewBag.LocationList = Common.Commons.GetLocationList(Params.ModelaspnetEntities);
-            return View();
+            using (var model = Params.ModelaspnetEntities)
+            {
+                ViewBag.LocationList = Common.Commons.GetLocationList(Params.ModelaspnetEntities);
+                return View();
+            }
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,IDLocation,Name,Description,IsDel")] LocationSub _LocationSub)
+        public ActionResult Create([Bind(Include = "ID,IDLocation,LocationPrice,Name,Description,IsDel")] LocationSub _LocationSub)
         {
             //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
             //    return null;

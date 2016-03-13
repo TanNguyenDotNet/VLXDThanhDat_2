@@ -25,12 +25,7 @@ namespace MVCProject.Common
         {
             get
             {
-                if (_aspnetEntities==null 
-                    ||_aspnetEntities.Database.Connection.State == System.Data.ConnectionState.Closed
-                    || _aspnetEntities.Database.Connection.State == System.Data.ConnectionState.Broken)
-                {
-                    _aspnetEntities = new aspnetEntities();
-                }
+                _aspnetEntities = new aspnetEntities();
                 return _aspnetEntities;
             }
         }

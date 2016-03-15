@@ -172,7 +172,7 @@ namespace MVCProject.Controllers
                 }
             }
 
-            ViewData["Total"] = total;
+            ViewData["Total"] = total.ToString("#,###");
             ViewData["ProductList"] = lp;
             return list;
         }
@@ -370,7 +370,7 @@ namespace MVCProject.Controllers
             }
 
             ViewData["ProductList"] = li;
-            ViewData["Total"] = Total.ToString("#,###.00");
+            ViewData["Total"] = Total.ToString("#,###");
 
             Session["CartDetails"] = cd;
 

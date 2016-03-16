@@ -46,24 +46,12 @@
     <table class="table table-striped">
         <thead>
             <tr style="background-color: #3c8dbc; color:#fff">
-                <th>
-                    @Html.DisplayNameFor(model => model.IDProduct)
-                </th>
-                <th width="15%">
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th width="15%">
-                    @Html.DisplayNameFor(model => model.Amount)
-                </th>
-                <th width="15%">
-                    @Html.DisplayNameFor(model => model.DateOfOrder)
-                </th>
-                <th width="15%">
-                    @Html.DisplayNameFor(model => model.Tax)
-                </th>
-                <th width="15%">
-                    @Html.DisplayNameFor(model => model.Total)
-                </th>
+                <th>Mã Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Số Lượng</th>
+                <th>Ngày Order</th>
+                <th>Thuế</th>
+                <th>Tổng</th>
             </tr>
         </thead>
         
@@ -90,7 +78,7 @@
                     @Html.DisplayFor(modelItem => item.Tax)%
                 </td>
                 <td align="right">
-                    @item.Total.ToString("#,###.00")
+                    @item.Total.ToString("#,###")
                 </td>
             </tr>
         </tbody>

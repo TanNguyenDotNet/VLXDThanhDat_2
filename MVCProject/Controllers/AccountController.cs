@@ -269,6 +269,7 @@ namespace MVCProject.Controllers
                 else
                 {
                     AddErrors(result);
+                    return RedirectToLocal("~/Account/Index?msg=" + result.Errors.ToList()[0]);
                 }
             }
 

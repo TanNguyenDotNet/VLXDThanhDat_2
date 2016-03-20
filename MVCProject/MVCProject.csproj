@@ -188,6 +188,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\Security.cs" />
+    <Compile Include="Common\UserType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\AspNetUserTypeController.cs" />

@@ -16,8 +16,11 @@ namespace MVCProject.Controllers
         // GET: /Order/
         public ActionResult Index()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            ViewBag.UserType = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
+
             if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "20"))
                 return RedirectToAction("AccessDenied", "Account");
 

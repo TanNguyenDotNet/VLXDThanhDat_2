@@ -245,5 +245,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="LocationSubs">
+      <EntityTypeMapping TypeName="Models.LocationSub">
+        <MappingFragment StoreEntitySet="LocationSub">
+          <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
+          <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

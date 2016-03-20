@@ -23,8 +23,9 @@ namespace MVCProject.Controllers
         public ActionResult Home(int? page, int? size, string filter, string order, string catid)
         {
             if (!Request.IsAuthenticated)
-                Response.Redirect("~/Account/Login");
+                return RedirectToAction("Login", "Account");
 
+            ViewBag.UserType = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
             InitItem(false);
             SetLocationDetail();
             IEnumerable<Models.Product> list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
@@ -36,7 +37,7 @@ namespace MVCProject.Controllers
         public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                Response.Redirect("~/Account/Login");
+                return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
@@ -309,7 +310,7 @@ namespace MVCProject.Controllers
                     Cart = Session["Cart"].ToString();
 
                 ViewData["Cart"] = Cart;
-                ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
+                Session["CartCount"] = ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
                 ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
             }
 

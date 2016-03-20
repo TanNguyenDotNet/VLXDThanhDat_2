@@ -10,6 +10,7 @@ namespace MVCProject.Common
 {
     public class Commons
     {
+        public static UserType UT { set; get; }
         public static IEnumerable<SelectListItem> GetLocationList(Models.aspnetEntities db)
         {
             return db.Locations.OrderBy(d=>d.Order).AsEnumerable()
@@ -112,29 +113,38 @@ namespace MVCProject.Common
 
             string en = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
-            bool redirect = false;
 
             try
             {
                 var i = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
                 if (i == null || i.Count == 0)
-                    redirect = true;
+                {
+                    res.Redirect("~/Account/Login");
+                    return false;
+                }
+                return true;
             }
             catch { return false; }
-
-            if (redirect)
-            {
-                try
-                {
-                    res.Redirect("~/Product/Home");
-                }
-                catch { }
-                return false;
-            }
-
-            return req.IsAuthenticated;
         }
 
+        public static UserType GetUserType(HttpRequestBase req, HttpResponseBase res, string username, Models.aspnetEntities db)
+        {
+            try
+            {
+                string ena = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
+                string end = Security.EncryptString("User:" + username + "~DeliveryMan", false, EncryptType.TripleDES);
+                var i = db.AppNetUserTypes.Where(d => d.Username == ena).ToList();
+                var id = db.AppNetUserTypes.Where(d => d.Username == end).ToList();
+                UserType rval = UserType.User;
+                if (i != null && i.Count > 0)
+                    rval = UserType.Administrator;
+                else if (id != null && id.Count > 0)
+                    rval = UserType.Delivery;
+                return rval;
+            }
+            catch { return UserType.None; }
+        }
+        // Save upload file
         public static string Save(HttpPostedFileBase file, string path, string name)
         {
             string reval = "";

@@ -17,7 +17,7 @@
 </section>
 <!-- Main content -->
 <section class="content">
-<form action="Order/Complete" method="get" id="completeOrderForm">
+<form action="/Order/Complete" method="get" id="completeOrderForm">
     @if(ViewData["State"].ToString() != "2" && roles.Contains("16"))
     {   <div class="row">
         <input type="hidden" id="OrderCode" name="OrderCode" value="@ViewData["OrderCode"]" />
@@ -99,7 +99,7 @@
                         }
                     </th>
                     <td align="right">
-                        @item.Price.ToString("#,###.00")
+                        @item.Price.ToString("#,###")
                     </td>
                     <td align="right">
                         @item.Amount
@@ -109,7 +109,7 @@
                         @Html.DisplayFor(modelItem => item.Tax)%
                     </td>
                     <td align="right">
-                        @item.Total.ToString("#,###.00")
+                        @item.Total.ToString("#,###")
                     </td>
                 </tr>
             }
@@ -117,7 +117,7 @@
          }
     </table>
     <div class="arrange-button">
-        <p>Tổng Cộng: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###.00")</span></p>
+        <p>Tổng Cộng: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
     </div>
 </div>
 <div class="table-responsive" style="display:none">

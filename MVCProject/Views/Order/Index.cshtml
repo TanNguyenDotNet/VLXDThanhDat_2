@@ -75,16 +75,16 @@
                                     @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
                                 </td>
                                 <td align="right">
-                                    @item.TotalWithoutTax.ToString("#,###.00")
+                                    @item.TotalWithoutTax.ToString("#,###")
                                 </td>
                                 <td align="right">
                                     @item.Tax
                                 </td>
                                 <td align="right">
-                                    @item.Total.ToString("#,###.00")
+                                    @item.Total.ToString("#,###")
                                 </td>
                                 <td align="right">
-                                    @item.Discount.ToString("#,###.00")
+                                    @item.Discount.ToString("#,###")
                                 </td>
                                 <td align="center">
                                     @{

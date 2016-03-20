@@ -175,7 +175,7 @@ namespace MVCProject.Controllers
                 }
             }
 
-            ViewData["Total"] = total;
+            ViewData["Total"] = total.ToString("#,###");
             ViewData["ProductList"] = lp;
             return list;
         }
@@ -373,7 +373,7 @@ namespace MVCProject.Controllers
             }
 
             ViewData["ProductList"] = li;
-            ViewData["Total"] = Total.ToString("#,###.00");
+            ViewData["Total"] = Total.ToString("#,###");
 
             Session["CartDetails"] = cd;
 
@@ -439,8 +439,8 @@ namespace MVCProject.Controllers
                 string quan = Request.QueryString["quan_" + i.ID];
                 cd[index, 2] = Request.QueryString["quan_" + i.ID] != null &&
                     Request.QueryString["quan_" + i.ID] != "" ? Request.QueryString["quan_" + i.ID] : quanSession;
-                var t = _db.Taxes.Single(c => c.ID == i.TaxID);
-                if(t != null && t.TaxRate > 0)
+                var t = _db.Taxes.Where(c => c.ID == i.TaxID).FirstOrDefault();//Ko co row
+                if(t != null )//&& t.TaxRate > 0) Thue 0%
                 cd[index, 3] = t.TaxRate.ToString();
                 index++;
             }

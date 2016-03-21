@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/MVCProject/obj/Debug
+/packages/EPPlus.4.0.5/lib
+/packages/EPPlus.4.0.5/EPPlus.4.0.5.nupkg
+/packages/EPPlus.4.0.5/EPPlus.4.0.5.nuspec

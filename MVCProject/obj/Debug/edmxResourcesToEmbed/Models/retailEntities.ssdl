@@ -26,12 +26,12 @@
     <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="IDProduct" Type="bigint" Nullable="false" />
     <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Amount" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="ReturnGood" Type="bit" Nullable="false" />
     <Property Name="DateOfOrder" Type="datetime" />
     <Property Name="Tax" Type="varchar" MaxLength="10" />
     <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Description" Type="nvarchar" MaxLength="255" />
+    <Property Name="Description" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="RequestByUser" Type="bit" Nullable="false" />
     <Property Name="OrderCode" Type="varchar" MaxLength="50" />

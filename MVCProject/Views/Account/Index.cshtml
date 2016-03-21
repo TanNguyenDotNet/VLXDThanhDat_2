@@ -6,11 +6,17 @@
     Dictionary<string,string> types = (Dictionary<string,string>)ViewBag.TypeList;
     Dictionary<int,string> location = (Dictionary<int,string>)ViewBag.LocationList;
     List<string> roles = (List<string>)ViewData["AccessList"];
+    string msg = Request.QueryString["msg"];
+    
 }
 <section class="content-header">
     <h2>
         @ViewBag.Title
     </h2>
+    <span style="color:red;font-weight:bold;">
+        @if (msg == null) { msg = ""; }
+        @msg
+        </span>
     <div class="arrange-button">
         @if (roles.Contains("12"))
         {
@@ -35,13 +41,23 @@
             <tbody>
                 @foreach (var item in Model) {
                     string actname = "Phân quyền", action = "Roles";
-                    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", 
+                    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", 
                         false, MVCProject.Common.EncryptType.TripleDES);
-                    if (!types.Keys.Contains(en))
+                    if (types.Keys.Contains(en))
                     {
-                        en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", false, MVCProject.Common.EncryptType.TripleDES);
                         actname = "Thông tin đại lý";
                         action = "Agent";
+                    }
+                    else
+                    {
+                        string end = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~DeliveryMan",
+                            false, MVCProject.Common.EncryptType.TripleDES);
+                        if (types.Keys.Contains(end))
+                        {
+                            en = end;
+                            actname = "Nhân viên giao hàng";
+                            action = null;
+                        }
                     }
                     string name = "";
                     if (!types.Keys.Contains(en))
@@ -53,7 +69,7 @@
                         name = types[en];
                     }
                     
-                    if ((action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
+                    if (action == null || (action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
                     { 
                         <tr>
                             <th scope="row" style="text-align:left">
@@ -64,7 +80,13 @@
                                 @name
                             </td>
                             <td>
-                                @Html.ActionLink(actname, action, new { id = item.UserName })
+                                @if (action != null) { 
+                                    @Html.ActionLink(actname, action, new { id = item.UserName })
+                                }
+                                else
+                                {
+                                    @actname
+                                }
                             </td>
                         </tr>
                     }

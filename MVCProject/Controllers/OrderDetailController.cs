@@ -21,8 +21,11 @@ namespace MVCProject.Controllers
         public ActionResult Index(long? id)
         {
             if (!Request.IsAuthenticated)
-                Response.Redirect("~/Account/Login");
+                return null;
 
+            Common.UserType ut = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
+            if (ut == UserType.Delivery)
+                Response.Redirect("~/Order/OrderList");
             if (!AddToCart(id))
                 return null;
 
@@ -172,7 +175,7 @@ namespace MVCProject.Controllers
                 }
             }
 
-            ViewData["Total"] = total;
+            ViewData["Total"] = total.ToString("#,###");
             ViewData["ProductList"] = lp;
             return list;
         }
@@ -195,7 +198,7 @@ namespace MVCProject.Controllers
                     string[] parts = s.Split('|');
                     Models.OrdersDetail od = new OrdersDetail
                     {
-                        Amount = int.Parse(parts[1]),
+                        Amount = parts[1],
                         DateOfOrder = DateTime.Now,
                         Description = parts[0] + "|" + parts[2],
                         IDProduct = 0,
@@ -220,7 +223,7 @@ namespace MVCProject.Controllers
                     if (!od.RequestByUser)
                     {
                         dicount += (decimal)od.Discount;
-                        totalouttax += (decimal)(od.Amount * od.Price);
+                        totalouttax += (decimal)(decimal.Parse(od.Amount) * od.Price);
                         total += od.Total;
                     }
 
@@ -329,8 +332,8 @@ namespace MVCProject.Controllers
                 Models.OrdersDetail od = new OrdersDetail();
                 od.IDProduct = long.Parse(cd[i, 0]);
                 od.Price = decimal.Parse(cd[i, 1]);
-                od.Amount = int.Parse(cd[i, 2]);
-                od.Tax = (cd[i,3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
+                od.Amount = cd[i, 2];
+                od.Tax = (cd[i,3] != null && cd[i,3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
                 od.RequestByUser = false;
 
                 decimal discount = 0;
@@ -360,17 +363,17 @@ namespace MVCProject.Controllers
                     }
                 }
 
-                od.Discount = (discount * od.Amount);
+                od.Discount = (discount * decimal.Parse(od.Amount));
                 double thue = (double)od.Price * (double)(double.Parse(od.Tax) / 100);
-                od.Total = (decimal) (od.Amount * ((double)od.Price + thue));
-                od.Total = od.Total - (discount * od.Amount);
+                od.Total = (decimal) (double.Parse(od.Amount) * ((double)od.Price + thue));
+                od.Total = od.Total - (discount * decimal.Parse(od.Amount));
 
                 Total += (double) od.Total;
                 listOd.Add(od);
             }
 
             ViewData["ProductList"] = li;
-            ViewData["Total"] = Total.ToString("#,###.00");
+            ViewData["Total"] = Total.ToString("#,###");
 
             Session["CartDetails"] = cd;
 

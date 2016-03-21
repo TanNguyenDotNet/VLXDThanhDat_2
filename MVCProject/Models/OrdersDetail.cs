@@ -17,7 +17,7 @@ namespace MVCProject.Models
         public long ID { get; set; }
         public long IDProduct { get; set; }
         public decimal Price { get; set; }
-        public int Amount { get; set; }
+        public string Amount { get; set; }
         public bool ReturnGood { get; set; }
         public Nullable<System.DateTime> DateOfOrder { get; set; }
         public string Tax { get; set; }

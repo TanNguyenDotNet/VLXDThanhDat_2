@@ -8,6 +8,7 @@
     MVCProject.Models.Location l = (MVCProject.Models.Location)ViewData["Location"];
     string lname = l != null ? l.LocationName : "";
     List<string> roles = (List<string>)ViewData["AccessList"];
+    Dictionary<string, string> delList = (Dictionary<string, string>)ViewBag.DeliveryList;
 }
 
 <section class="content-header">
@@ -24,8 +25,16 @@
         <div class="form-group col-sm-3">
            <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">Người Giao</span>
-              <input class="form-control" type="text" name="DeliveryMan" id="DeliveryMan" />
-            </div>
+              
+              <select name="DeliveryMan" id="DeliveryMan" class="form-control">
+                @if(delList != null && delList.Count > 0){
+                  foreach (string key in delList.Keys)
+                  {
+                      <option value="@key">@delList[key]</option> 
+                  }
+                }
+              </select>
+           </div>
         </div>
         <div class="form-group col-sm-3">
             <div class="input-group">
@@ -82,7 +91,9 @@
                 <th width="9%">
                     Thành tiền
                 </th>
-
+                <th width="9%">
+                    #
+                </th>
             </tr>
         </thead>
         @if (Model != null && Model.Count() > 0)
@@ -110,6 +121,9 @@
                     </td>
                     <td align="right">
                         @item.Total.ToString("#,###")
+                    </td>
+                    <td>
+                        @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID })
                     </td>
                 </tr>
             }

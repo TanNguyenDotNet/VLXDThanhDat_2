@@ -41,8 +41,15 @@ namespace MVCProject.Controllers
         {
             if (!Request.IsAuthenticated)
                 return null;
+            
+            Common.UserType ut = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
+
             string us = User.Identity.GetUserId();
-            var list = db.Orders.Where(c => c.IDAccount == us).ToList();
+            IEnumerable<Models.Order> list = null;
+            if(ut == Common.UserType.Delivery)
+                list = db.Orders.Where(c => c.DeliveryMan == us).ToList();
+            else
+                list = db.Orders.Where(c => c.IDAccount == us).ToList();
             return View(list);
         }
 

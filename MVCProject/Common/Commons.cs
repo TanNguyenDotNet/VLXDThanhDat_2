@@ -164,22 +164,54 @@ namespace MVCProject.Common
 
         public static Dictionary<string, string> GetFullName(List<Models.AppNetUserType> types)
         {
-            Dictionary<string, string> list = new Dictionary<string, string>();
-            foreach (Models.AppNetUserType type in types)
-                if (type.DisplayName != null && type.DisplayName != "")
-                    list.Add(type.Username, type.DisplayName);
-                else
-                    list.Add(type.Username, "");
-            return list;
+            try
+            {
+                Dictionary<string, string> list = new Dictionary<string, string>();
+                foreach (Models.AppNetUserType type in types)
+                    if (type.DisplayName != null && type.DisplayName != "")
+                        list.Add(type.Username, type.DisplayName);
+                    else
+                        list.Add(type.Username, "");
+                return list;
+            }
+            catch { return null; }
+        }
+
+        public static Dictionary<string, string> GetDeliveryList(Models.aspnetEntities db)
+        {
+            try
+            {
+                Dictionary<string, string> list = new Dictionary<string, string>();
+                foreach (Models.AspNetUser u in db.AspNetUsers)
+                {
+                    string enu = Security.EncryptString("User:" + u.UserName + "~DeliveryMan", false, EncryptType.TripleDES);
+                    List<Models.AppNetUserType> utl = db.AppNetUserTypes.Where(c => c.Username == enu).ToList();
+                    
+                    if (utl != null && utl.Count > 0)
+                    {
+                        if (utl[0].DisplayName != null && utl[0].DisplayName != "")
+                            list.Add(u.Id, utl[0].DisplayName);
+                        else
+                            list.Add(u.Id, u.UserName);
+                    }
+                }
+
+                return list;
+            }
+            catch { return null; }
         }
 
         public static Dictionary<int, string> GetCityName(List<Models.Location> citys)
         {
-            Dictionary<int, string> list = new Dictionary<int, string>();
-            foreach (Models.Location type in citys)
-                if (type.LocationName != null && type.LocationName != "")
-                    list.Add(type.ID, type.LocationName);
-            return list;
+            try
+            {
+                Dictionary<int, string> list = new Dictionary<int, string>();
+                foreach (Models.Location type in citys)
+                    if (type.LocationName != null && type.LocationName != "")
+                        list.Add(type.ID, type.LocationName);
+                return list;
+            }
+            catch { return null; }
         }
 
         public static bool CheckPermission(ViewDataDictionary ViewData, Models.aspnetEntities db, 

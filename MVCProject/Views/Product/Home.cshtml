@@ -92,9 +92,11 @@
                         <th>
                             Bảo hành
                         </th>
-                        <th>
-                            Thêm đơn hàng
-                        </th>
+                        @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User) { 
+                            <th>
+                                Thêm đơn hàng
+                            </th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -165,11 +167,13 @@
                                 <td align="center">
                                     @Html.DisplayFor(modelItem => item.Warranty)
                                 </td>
+                                @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User) {
                                 <td align="center">
                                     <a href="#" onclick="AddToCart('@item.ItemCode');">
                                         <img class='add-button-disable' src='../Images/imgs/add.png'  height="16" width="16" alt='@item.ProductName' />
                                     </a>
                                 </td>
+                                }
                             </tr>
                         }
                     }

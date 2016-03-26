@@ -75,7 +75,7 @@ namespace MVCProject.Controllers
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "15"))
                 return RedirectToAction("AccessDenied", "Account");
-
+            ViewBag.DeliveryList = Common.Commons.GetDeliveryList(_db);
             return View(AdminViewOrder(1));
         }
 
@@ -107,7 +107,22 @@ namespace MVCProject.Controllers
         // GET: /OrderDetail/Edit/5
         public ActionResult Edit(int? id)
         {
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Models.OrdersDetail od = db.OrdersDetails.Find(id);
+            if (od == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(od);
         }
 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

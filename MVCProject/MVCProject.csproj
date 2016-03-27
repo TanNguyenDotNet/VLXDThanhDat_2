@@ -514,6 +514,7 @@
     <Content Include="Views\LocationSub\Create.cshtml" />
     <Content Include="Views\ProductPriceLocationSub\index.cshtml" />
     <Content Include="Views\OrderDetail\Edit.cshtml" />
+    <Content Include="Views\OrderDetail\AddOrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

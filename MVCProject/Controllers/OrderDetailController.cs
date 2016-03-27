@@ -97,11 +97,38 @@ namespace MVCProject.Controllers
             return null;
         }
 
+        public ActionResult AddOrderDetail(string code)
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
+            ViewBag.ProductList = Common.Commons.GetProductList(_db);
+            ViewBag.PriceList = Common.Commons.GetPriceList(_db);
+            return View(new OrdersDetail { OrderCode = code });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id)
+        public ActionResult AddOrderDetail([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
+            "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
         {
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
+            if (ModelState.IsValid)
+            {
+                od.DateOfOrder = DateTime.Now;
+                od.RequestByUser = false;
+                db.OrdersDetails.Add(od);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(od);
         }
 
         // GET: /OrderDetail/Edit/5
@@ -128,9 +155,22 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit()
+        public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," + 
+            "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
         {
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(od).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("AdmView", new { code = od.OrderCode });
+            }
+
+            return View(db);
         }
 
         // GET: /OrderDetail/Delete/5

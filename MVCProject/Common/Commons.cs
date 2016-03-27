@@ -46,7 +46,7 @@ namespace MVCProject.Common
 
         public static IEnumerable<SelectListItem> GetProductList(Models.aspnetEntities db)
         {
-            return db.Products.AsEnumerable()
+            return db.Products.OrderBy(c=>c.ProductName).AsEnumerable()
                 .Select(d => new SelectListItem
                 {
                     Value = d.ID.ToString(),
@@ -172,6 +172,20 @@ namespace MVCProject.Common
                         list.Add(type.Username, type.DisplayName);
                     else
                         list.Add(type.Username, "");
+                return list;
+            }
+            catch { return null; }
+        }
+
+        public static Dictionary<long, string> GetPriceList(Models.aspnetEntities db)
+        {
+            try
+            {
+                Dictionary<long, string> list = new Dictionary<long, string>();
+                var pl = db.Products.ToList();
+                foreach (Models.Product p in pl)
+                    if (p.Price != null)
+                        list.Add(p.ID, double.Parse(p.Price.ToString()).ToString("#,###"));
                 return list;
             }
             catch { return null; }

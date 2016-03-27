@@ -1,8 +1,10 @@
 ﻿@model MVCProject.Models.OrdersDetail
 
 @{
-    ViewBag.Title = "Sửa chi tiết đơn hàng";
+    ViewBag.Title = "Thêm chi tiết đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<long, string> priceList = (Dictionary<long, string>)ViewBag.PriceList;
 }
 <section class="content-header">
     <h2>@ViewBag.Title</h2>
@@ -13,23 +15,20 @@
         @Html.AntiForgeryToken()
 <section class="content">
     <div class="arrage-popup">
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.ID)
-        @Html.HiddenFor(model => model.IDProduct)
-        @Html.HiddenFor(model => model.DateOfOrder)
-        @Html.HiddenFor(model => model.ReturnGood)
-        @Html.HiddenFor(model => model.Description)
-        @Html.HiddenFor(model => model.ProductCode)
-        @Html.HiddenFor(model => model.RequestByUser)
-        @Html.HiddenFor(model => model.OrderCode)
-
         <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Mã sản phẩm</label>
+            <label class="text-label col-md-2" for="UserName">Mã hóa đơn</label>
             <div class="col-md-6">
                 @Model.OrderCode
             </div>
         </div>
-
+        <div class="arrange-div form-group col-md-12">
+            <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.IDProduct, (IEnumerable<SelectListItem>)ViewBag.ProductList,
+                     "Chọn sản phẩm", new { @class = "form-control", @onchange = "setPrice(this.value);" })
+                @Html.ValidationMessageFor(model => model.IDProduct)
+            </div>
+        </div>
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Giá</label>
             <div class="col-md-6">
@@ -37,7 +36,6 @@
                 @Html.ValidationMessageFor(model => model.Price)
             </div>
         </div>
-
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Số lượng</label>
             <div class="col-md-6">
@@ -45,7 +43,6 @@
                 @Html.ValidationMessageFor(model => model.Amount)
             </div>
         </div>
-
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Thuế</label>
             <div class="col-md-6">
@@ -53,7 +50,6 @@
                 @Html.ValidationMessageFor(model => model.Tax)
             </div>
         </div>
-
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
             <div class="col-md-6">
@@ -61,7 +57,6 @@
                 @Html.ValidationMessageFor(model => model.Total)
             </div>
         </div>
-
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Giảm giá</label>
             <div class="col-md-6">
@@ -69,7 +64,6 @@
                 @Html.ValidationMessageFor(model => model.Discount)
             </div>
         </div>
-
         <div style="text-align:center" class="col-md-12">
             <input type="submit" value="Lưu Lại" class="btn btn-info" />
             <a href="~/OrderDetail/AdmView?code=@Model.OrderCode" class="btn btn-info">Về đơn hàng</a>
@@ -78,6 +72,17 @@
     </div>
 </section>
         <script>
+            var arr = [];
+            var f = document.odForm;
+
+            @foreach(long l in priceList.Keys){
+                @Html.Raw(string.Format("arr[{0}] = '{1}';", l, priceList[l]));
+            }
+
+            function setPrice(val) {
+                f.Price.value = arr[val];
+            }
+
             function check(control) {
                 if (isNaN(control.value)) {
                     alert('Số nhập không hợp lệ!');
@@ -87,7 +92,6 @@
                 return true;
             }
             function thanhtien() {
-                var f = document.odForm;
                 var dg = parseFloat(f.Price.value);
                 var sl = parseFloat(f.Amount.value);
                 var thue = parseFloat(f.Tax.value);

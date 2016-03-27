@@ -123,8 +123,6 @@ D:\Projects\MVC\WebThanhDat\MVCProject\obj\Debug\MVCProject.pdb
 D:\Projects\MVC\WebThanhDat\MVCProject\bin\Microsoft.ReportViewer.WebForms.DLL
 D:\Projects\MVC\WebThanhDat\MVCProject\bin\ReportViewerForMvc.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\MVCProject.csprojResolveAssemblyReference.cache
-D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\RdlCompile.cache
-D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\RdlCompile.compiled
 D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\MVCProject.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\MVCProject.pdb
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\MVCProject.dll.config
@@ -133,7 +131,6 @@ D:\Projects\ASPNet\ThanhDat\MVCProject\bin\MVCProject.pdb
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\Antlr3.Runtime.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\EntityFramework.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\EntityFramework.SqlServer.dll
-D:\Projects\ASPNet\ThanhDat\MVCProject\bin\EPPlus.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\Microsoft.AspNet.Identity.Core.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 D:\Projects\ASPNet\ThanhDat\MVCProject\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -251,3 +248,4 @@ C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.g.r
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.dll
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.pdb
 C:\Users\anhpt\Source\Repos\ASP.Net\ThanhDat\MVCProject\obj\Debug\MVCProject.csprojResolveAssemblyReference.cache
+D:\Projects\ASPNet\ThanhDat\MVCProject\obj\Debug\MVCProject.g.resources

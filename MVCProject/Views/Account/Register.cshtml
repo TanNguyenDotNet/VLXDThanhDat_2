@@ -52,7 +52,7 @@
             <div class="arrange-div form-group col-md-12">
                 @Html.LabelFor(model => model.LocationID, new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,//sửa chọn theo vùng locationSub
                         "Chọn tỉnh/thành phố", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.LocationID)
                 </div>

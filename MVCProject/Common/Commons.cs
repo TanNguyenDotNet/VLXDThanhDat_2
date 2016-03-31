@@ -20,7 +20,15 @@ namespace MVCProject.Common
                     Text = d.LocationName
                 });
         }
-
+        public static IEnumerable<SelectListItem> GetLocationSubList(Models.aspnetEntities db)
+        {
+            return db.LocationSubs.OrderBy(d => d.Name).AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.Name
+                });
+        }
         public static IEnumerable<SelectListItem> GetCatalogList(Models.aspnetEntities db, int? IgnoreID)
         {
             List<Models.Catalog> result = db.Catalogs.Where(d => d.ID != IgnoreID).ToList();

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVCProject.Models
 {
@@ -68,5 +69,19 @@ namespace MVCProject.Models
         [Display(Name = "Nhập lại mật khẩu")]
         [Compare("Password", ErrorMessage = "Mật khẩu và nhập lại không giống nhau.")]
         public string ConfirmPassword { get; set; }
+    }
+    public class LocationSubViewModel
+    {
+        [Required]
+        [Display(Name = "Tỉnh/Thành phố")]
+        public int IDLocation { get; set; }
+        [Required]
+        [Display(Name="Nhập tên")]
+        [StringLength(50,MinimumLength=3,ErrorMessage="Nhập tên")]
+        public string Name { get; set; }
+        [Required]
+        [Display(Name="Nhập %")]
+        [Range(0,99,ErrorMessage="Nhập số")]
+        public string LocationPrice { get; set; }
     }
 }

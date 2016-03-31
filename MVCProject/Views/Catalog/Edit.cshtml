@@ -10,7 +10,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="/Catalog/Edit">
+<form action="/Catalog/Edit" method="post" enctype="multipart/form-data">
     <section class="content-header">
         <h2>@ViewBag.Title</h2>
         <h4>Danh mục</h4>
@@ -50,11 +50,11 @@
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>
-            @Html.HiddenFor(model=>model.LocationID)        
+            @Html.HiddenFor(model => model.LocationID)
             <div style="text-align:center" class="col-md-12">
-                    <input type="submit" value="Lưu Lại" class="btn btn-info" />
-                    <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
-                </div>
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/Catalog/Index" class="btn btn-info">Về danh sách</a>
+            </div>
             <div class="clearfix"></div>
         </div>
     </section>

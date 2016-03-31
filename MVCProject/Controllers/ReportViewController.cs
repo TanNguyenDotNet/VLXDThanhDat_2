@@ -3,7 +3,9 @@ using MVCProject.Models;
 using MVCProject.Report;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -18,6 +20,7 @@ namespace MVCProject.Controllers
         private aspnetEntities _db = new aspnetEntities();
         private Datasets.DataSetRetails dsDetail = new Datasets.DataSetRetails();
         private InvoiceDetailRptParams InvoiceRptParams;
+        private InvoiceDetailParams InvoiceParams;
         private byte[] byte_pdf = null;
         public ActionResult Index()
         {
@@ -30,6 +33,67 @@ namespace MVCProject.Controllers
         public ActionResult ViewPDF()
         {
             return File((byte[])TempData["bytePDF"], "application/pdf");
+        }
+        public ActionResult InvoiceDetail()
+        {
+            dynamic model = new ExpandoObject();
+
+            using (var _modelAsp= Params.ModelaspnetEntities)
+            {
+                using (var _model = Params.ModelRetail)
+                {
+                    string code = Request.QueryString["code"];
+                    var _OrdersDetails = _model.OrdersDetails.Where(c => c.OrderCode == code).ToList();
+                    var _Orders = _model.Orders.Where(c => c.OrderCode == code).FirstOrDefault();
+                    
+                    var us = _modelAsp.AspNetUsers.Single(c => c.Id == _Orders.IDAccount);
+                    string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
+                    var u = _modelAsp.AppNetUserTypes.Find(enu);
+                    var l = _modelAsp.Locations.Find(u.LocationID);
+                    var query = (from a in _OrdersDetails
+                                 join b in _modelAsp.Products.ToList() on a.ProductCode equals b.ItemCode
+                                 select new {
+                                     _ProductCode = a.ProductCode, 
+                                     _Amount = a.Amount, 
+                                     _Price = a.Price, 
+                                     _Tax=a.Tax,
+                                     _Total=a.Total,
+                                     _ProductName=b.ProductName,
+                                     _Unit=b.Unit
+                                    }).ToList();
+                    List<ExpandoObject> joinData = new List<ExpandoObject>();
+
+                    foreach (var item in query)
+                    {
+                        IDictionary<string, object> itemExpando = new ExpandoObject();
+                        foreach (PropertyDescriptor property
+                                 in
+                                 TypeDescriptor.GetProperties(item.GetType()))
+                        {
+                            itemExpando.Add(property.Name, property.GetValue(item));
+                        }
+                        joinData.Add(itemExpando as ExpandoObject);
+                    }
+
+                    InvoiceParams = new InvoiceDetailParams();
+                    InvoiceParams.Address = u.Address + ", Q." + u.District;
+                    InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(_Orders.Total.ToString().Replace(".00", "")));
+                    InvoiceParams.CellPhone = u.Phone;
+                    InvoiceParams.Contact = "_";
+                    InvoiceParams.Discount = "_";
+                    InvoiceParams.Name = u.DisplayName;
+                    InvoiceParams.Total = _Orders.TotalWithoutTax.ToString("n0");
+                    InvoiceParams.TotalVAT = _Orders.Total.ToString("n0");
+                    InvoiceParams.VAT = _Orders.Tax.ToString();
+                    InvoiceParams.InvoiceNum = _Orders.OrderCode;
+                    InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+
+                    ViewData["InvoiceRptParams"] = InvoiceParams;
+                    model.InvoiceDetail = joinData;
+                    return View(model);
+                }
+            }
+            
         }
         #region function
         List<OrdersDetail> GetDetail()

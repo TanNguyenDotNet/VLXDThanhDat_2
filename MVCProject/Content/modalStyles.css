@@ -309,5 +309,105 @@ body {
 	.login-wrapper .login h2{
 	font-size:1rem;
 	}
+ /********* printing ***************************************************************************************/
+.div-wrapper {
+  width: 960px;
+  margin:0 auto;
+}
+.first-table tr.order-name {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.first-table tr.npp-name {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.first-table tr th {
+  padding: 40px 50px;
+}
+.wrapper-print {
+  font-family: "Times New Roman", Georgia, Serif;
+  height: 100%;
+  margin: 10px 10px;
+}
+.wrapper-print div h2 {
+  font-size:25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.wrapper-print div h3 {
+  font-size:20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.wrapper-print div.hoadon {
+  text-align: center;
+}
+.wrapper-print div.hoadon .hoadon-info {
+  font-weight: bold;
+  /*padding-left: 10px;*/
+}
+.wrapper-print div.hoadon p {
+  display:inline-block;
+}
+.wrapper-print div.hoadon p:last-child {
+  margin-left: 250px;
+}
+.wrapper-print .nhaphanphoi {
+  margin-top: 40px;
+  font-size:13px;
+  margin-bottom: 40px;
+}
+.wrapper-print .left-info {
+  float:left;
+}
+.wrapper-print .right-info {
+  float:right;
+}
+.wrapper-print .left-info .detail-info,
+.wrapper-print .left .detail-info{
+  font-weight: bold;
+}
+table.hoadon thead,
+table.hoadon tbody,
+table.hoadon tr td,
+table.hoadon tr th {
+  border:1px solid #B8B8B8;
+  font-size:10px;
+}
+table.table-rice thead,
+table.table-rice tbody,
+table.table-rice tr td,
+table.table-rice tr th {
+  border: 1px solid #B8B8B8;
+  font-size:12px;
+}
+.user-pri {
+  text-align: center;
+}
+.user-pri ul{
+  list-style: none;
+  display: inline;
+  text-align: center;
+}
+.user-pri ul li{ 
+  display: inline-block;
+  font-weight: bold;
+  font-size:14px;
+  text-transform: uppercase;
+  padding:14px 40px;
+}
+.user-pri ul li:first-child{ 
+  padding:0px;
+}
+.hoadon-button > p,
+.hoadon-button > p > span{
+  font-size:14px;
+}
 	
 }

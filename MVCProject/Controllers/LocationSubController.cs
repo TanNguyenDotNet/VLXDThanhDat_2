@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using MVCProject.Common;
 using System.ComponentModel;
 using MVCProject.Models;
+using System.Net;
+using System.Data.Entity;
 
 namespace MVCProject.Controllers
 {
@@ -20,7 +22,7 @@ namespace MVCProject.Controllers
             {
                 var query = (from a in _model.LocationSubs.ToList()
                              join b in _model.Locations.ToList() on a.IDLocation equals b.ID
-                             select new { name = a.Name, description = a.Description, locationprice=a.LocationPrice, locationName = b.LocationName }).ToList();
+                             select new {id=a.ID, name = a.Name, description = a.Description, locationprice=a.LocationPrice, locationName = b.LocationName }).ToList();
                 List<ExpandoObject> joinData = new List<ExpandoObject>();
 
                 foreach (var item in query)
@@ -73,6 +75,38 @@ namespace MVCProject.Controllers
             }
 
             return View(_LocationSub);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include="ID,IDLocation,LocationPrice,Name,Description,IsDel")]LocationSub _LocationSub)
+        {
+            using (var model =Params.ModelaspnetEntities)
+            {
+                if (ModelState.IsValid)
+                {
+                    model.Entry(_LocationSub).State = EntityState.Modified;
+                    model.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(_LocationSub);
+            }
+        }
+        public ActionResult Edit(int? id)
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LocationSub locationSub = model.LocationSubs.Find(id);
+                if (locationSub == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.LocationList = Common.Commons.GetLocationList(Params.ModelaspnetEntities);
+                return View(locationSub);
+            }
         }
     }
 }

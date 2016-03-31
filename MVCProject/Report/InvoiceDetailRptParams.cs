@@ -9,11 +9,11 @@ namespace MVCProject.Report
     public class InvoiceDetailRptParams
     {
         public List<ReportParameter> rptParams;
-        public string InvoiceNum { set { rptParams.Add(new ReportParameter("InvoiceNum", value)); } }
+        public string InvoiceNum { set { rptParams.Add(new ReportParameter("InvoiceNum", value)); }  }
         public string InvoiceDate { set { rptParams.Add(new ReportParameter("InvoiceDate", value)); } }
         public string Name { set { rptParams.Add(new ReportParameter("Name", value)); } }
         public string Address { set { rptParams.Add(new ReportParameter("Address", value)); } }
-        public string CellPhone { set { rptParams.Add(new ReportParameter("CellPhone", value)); } }
+        public string CellPhone { set { rptParams.Add(new ReportParameter("CellPhone", value)); }  }
         public string Contact { set { rptParams.Add(new ReportParameter("Contact", value)); } }
         public string Total { set { rptParams.Add(new ReportParameter("Total", value)); } }
         public string Discount { set { rptParams.Add(new ReportParameter("Discount", value)); } }

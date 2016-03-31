@@ -29,7 +29,7 @@
                     {
                         <tr>
                             <th>
-                                @item.name
+                                @Html.ActionLink((string)item.name, "Edit", new { id = item.id })
                             </th>
                             <th>
                                 @item.locationprice %

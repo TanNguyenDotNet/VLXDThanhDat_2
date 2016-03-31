@@ -10,6 +10,7 @@ namespace MVCProject.Common
     {
         private static List<Location> _listLocation = null;
         private static aspnetEntities _aspnetEntities;
+        private static retailEntities _retailEntities;
         public static List<Location> listLocation
         {
             get
@@ -27,6 +28,14 @@ namespace MVCProject.Common
             {
                 _aspnetEntities = new aspnetEntities();
                 return _aspnetEntities;
+            }
+        }
+        public static retailEntities ModelRetail
+        {
+            get
+            {
+                _retailEntities = new retailEntities();
+                return _retailEntities;
             }
         }
     }

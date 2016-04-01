@@ -64,7 +64,6 @@
                     var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
                     @Html.Raw(p.ProductName);
                             }
-                            @item.IDProduct
                         </th>
                         <td align="right">
                             @item.Price.ToString("#,###")

@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderDetailController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PaymentDetailController.cs" />
     <Compile Include="Controllers\ProductCodeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -521,6 +522,7 @@
     <Content Include="Views\OrderDetail\AddOrderDetail.cshtml" />
     <Content Include="Views\ReportView\InvoiceDetail.cshtml" />
     <Content Include="Views\LocationSub\Edit.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

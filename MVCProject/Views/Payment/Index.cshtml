@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Công nợ";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+}
+<form action="~/Payment/Home" method="get" id="productViewForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4" style="float:left">
+
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên đại lý
+                        </th>
+                        <th>
+                            Khu vực
+                        </th>
+                        <th>
+                            Tổng nợ
+                        </th>
+                        <th>
+                            Đã thanh toán
+                        </th>
+                        <th>
+                            Tổng tiền còn lại
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                   
+                                </th>
+                                <td align="center">
+                               
+                                </td>
+                                <td align="center">
+                                   
+                                </td>
+                                <td align="right">
+                                    
+                                </td>
+                                <td align="center">
+                            
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <script>
+           
+            function filterFromSubmit() {
+                productViewForm.submit();
+            }
+
+            </script>
+            <nav style="text-align:right">
+
+            </nav>
+        </div>
+    </section>
+</form>

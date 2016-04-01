@@ -140,7 +140,7 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "19"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            ViewBag.TypeList = Common.Commons.GetFullName(db.AppNetUserTypes.ToList());
+            ViewBag.TypeList = Common.Commons.GetFullName(db.AppNetUserTypes.ToList());/*Test lại chỗ Key*/
             ViewBag.LocationList = Common.Commons.GetCityName(db.Locations.ToList());
             return View(GetUserList());
         }
@@ -149,8 +149,8 @@ namespace MVCProject.Controllers
         {
             string un = User.Identity.GetUserName();
             var list = (from u in db.AspNetUsers
-                       where u.UserName != un && !u.UserName.Contains("admin")
-                       select u).ToList();
+                        where u.UserName != un && u.UserName != "admin"
+                        select u).ToList();
             return list;
         }
 

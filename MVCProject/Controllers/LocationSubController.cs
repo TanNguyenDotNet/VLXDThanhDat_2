@@ -23,21 +23,7 @@ namespace MVCProject.Controllers
                 var query = (from a in _model.LocationSubs.ToList()
                              join b in _model.Locations.ToList() on a.IDLocation equals b.ID
                              select new {id=a.ID, name = a.Name, description = a.Description, locationprice=a.LocationPrice, locationName = b.LocationName }).ToList();
-                List<ExpandoObject> joinData = new List<ExpandoObject>();
-
-                foreach (var item in query)
-                {
-                    IDictionary<string, object> itemExpando = new ExpandoObject();
-                    foreach (PropertyDescriptor property
-                             in
-                             TypeDescriptor.GetProperties(item.GetType()))
-                    {
-                        itemExpando.Add(property.Name, property.GetValue(item));
-                    }
-                    joinData.Add(itemExpando as ExpandoObject);
-                }
-
-                model.LocationSub = joinData;
+                model.LocationSub = UtilEntities.modelDynamic(query);
                 return View(model);
             }
             

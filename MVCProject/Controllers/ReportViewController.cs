@@ -61,20 +61,7 @@ namespace MVCProject.Controllers
                                      _ProductName=b.ProductName,
                                      _Unit=b.Unit
                                     }).ToList();
-                    List<ExpandoObject> joinData = new List<ExpandoObject>();
-
-                    foreach (var item in query)
-                    {
-                        IDictionary<string, object> itemExpando = new ExpandoObject();
-                        foreach (PropertyDescriptor property
-                                 in
-                                 TypeDescriptor.GetProperties(item.GetType()))
-                        {
-                            itemExpando.Add(property.Name, property.GetValue(item));
-                        }
-                        joinData.Add(itemExpando as ExpandoObject);
-                    }
-
+                   
                     InvoiceParams = new InvoiceDetailParams();
                     InvoiceParams.Address = u.Address + ", Q." + u.District;
                     InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(_Orders.Total.ToString().Replace(".00", "")));
@@ -89,7 +76,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
-                    model.InvoiceDetail = joinData;
+                    model.InvoiceDetail = UtilEntities.modelDynamic(query);
                     return View(model);
                 }
             }

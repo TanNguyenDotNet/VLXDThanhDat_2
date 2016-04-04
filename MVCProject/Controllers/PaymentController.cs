@@ -30,8 +30,10 @@ namespace MVCProject.Controllers
                     lstUser.Add(listUser[i].Id);
                 }
             }
+            listUserType = listUserType.Where(a => lstType.Contains(a.Username)).ToList();
+            listUser = listUser.Where(a => lstUser.Contains(a.Id)).ToList();
             
-            return View();
+            return View(listUser);
         }
     }
 }

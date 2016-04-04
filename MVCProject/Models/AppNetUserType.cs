@@ -27,5 +27,6 @@ namespace MVCProject.Models
         public string State { get; set; }
         public string TaxID { get; set; }
         public string DisplayName { get; set; }
+        public Nullable<int> LocationSubID { get; set; }
     }
 }

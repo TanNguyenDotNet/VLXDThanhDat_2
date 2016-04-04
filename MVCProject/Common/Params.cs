@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MVCProject.Common
 {
     public class Params
     {
         private static List<Location> _listLocation = null;
+        private static IEnumerable<SelectListItem> _listItemLocationSub = null;
         private static aspnetEntities _aspnetEntities;
         private static retailEntities _retailEntities;
         public static List<Location> listLocation
@@ -20,6 +22,21 @@ namespace MVCProject.Common
                     _listLocation = ModelaspnetEntities.Locations.ToList();
                 }
                 return _listLocation;
+            }
+        }
+        public static IEnumerable<SelectListItem> listItemLocationSub
+        {
+            get 
+            {
+                if(_listItemLocationSub==null)
+                {
+                    _listItemLocationSub = ModelaspnetEntities.LocationSubs.OrderBy(d => d.Name).AsEnumerable().Select(d => new SelectListItem
+                    {
+                        Value = d.ID.ToString(),
+                        Text = d.Name
+                    });
+                }
+                return _listItemLocationSub;
             }
         }
         public static aspnetEntities ModelaspnetEntities
@@ -38,5 +55,6 @@ namespace MVCProject.Common
                 return _retailEntities;
             }
         }
+        
     }
 }

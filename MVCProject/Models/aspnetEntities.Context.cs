@@ -45,5 +45,6 @@ namespace MVCProject.Models
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<LocationSub> LocationSubs { get; set; }
+        public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
     }
 }

@@ -275,6 +275,9 @@
     <Compile Include="Models\OrdersDetail.cs">
       <DependentUpon>retailEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaymentDetail.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Product.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>

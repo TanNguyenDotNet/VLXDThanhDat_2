@@ -34,13 +34,14 @@ namespace MVCProject.Controllers
                 Response.Redirect("~/Account/Index/?Err=0");
                 return null;
             }
-
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
             ViewData["UserName"] = id;
             return View(u);
         }
 
         [HttpPost]
-        public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,District,State,TaxID,DisplayName")] 
+        public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID,District,State,TaxID,DisplayName")] 
             AppNetUserType appnetusertype)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
@@ -113,6 +114,7 @@ namespace MVCProject.Controllers
             ViewBag.RoleList = db.AspNetRoles.OrderBy(o=>o.GroupName).ToList();
             ViewBag.UserRoles = GetRoles(enu);
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
 
             Models.RegisterViewModel model = new RegisterViewModel();
             model.LocationID = u.LocationID.ToString();
@@ -217,6 +219,7 @@ namespace MVCProject.Controllers
                 return RedirectToAction("AccessDenied", "Account");
 
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
             return View();
         }
 
@@ -252,7 +255,7 @@ namespace MVCProject.Controllers
                         Phone="",
                         DateCreate = DateTime.Now.ToString("yyyyMMdd"),
                         Expire = DateTime.Now.AddDays(365).ToString("yyyyMMdd"),
-                        LocationID = lid,
+                        LocationID = lid,LocationSubID=int.Parse(model.LocationSubID),
                         State = "0",
                         TaxID = "0",
                         DisplayName = model.FullName,

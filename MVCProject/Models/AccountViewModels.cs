@@ -58,6 +58,10 @@ namespace MVCProject.Models
         [Required]
         [Display(Name = "Tỉnh/Thành phố")]
         public string LocationID { get; set; }
+        
+        [Required]
+        [Display(Name = "Khu vực")]
+        public string LocationSubID { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Độ dài ít nhất {0} phải có  {2} ký tự.", MinimumLength = 6)]

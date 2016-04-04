@@ -74,6 +74,22 @@
                     @Html.ValidationMessageFor(model => model.Phone)
                 </div>
             </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="LocationID">Tỉnh/Thành phố</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,//sửa chọn theo vùng locationSub
+                        "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationID)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="LocationSubID">Khu vực:</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.LocationSubID, (IEnumerable<SelectListItem>)ViewBag.LocationSubList,
+                        "Khu vực", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationSubID)
+                </div>
+            </div>
             <div style="text-align:center" class="col-md-12">
                 <input type="submit" value="Lưu Lại" class="btn btn-info" />
                 <a href="~/Account/Index" class="btn btn-info">Về danh sách</a>

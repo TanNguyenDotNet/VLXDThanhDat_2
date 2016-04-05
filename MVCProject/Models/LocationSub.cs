@@ -12,14 +12,13 @@ namespace MVCProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PaymentDetail
+    public partial class LocationSub
     {
-        public System.Guid ID { get; set; }
-        public Nullable<int> IDLocationSub { get; set; }
-        public Nullable<decimal> Pay { get; set; }
-        public string PayDate { get; set; }
-        public Nullable<decimal> PayBefore { get; set; }
-        public Nullable<decimal> PayAfter { get; set; }
+        public int ID { get; set; }
+        public int IDLocation { get; set; }
+        public string Name { get; set; }
+        public string LocationPrice { get; set; }
         public string Description { get; set; }
+        public Nullable<byte> IsDel { get; set; }
     }
 }

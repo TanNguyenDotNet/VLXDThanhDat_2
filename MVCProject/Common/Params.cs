@@ -10,6 +10,7 @@ namespace MVCProject.Common
     public class Params
     {
         private static List<Location> _listLocation = null;
+        private static List<LocationSub> _listLocationSub = null;
         private static IEnumerable<SelectListItem> _listItemLocationSub = null;
         private static aspnetEntities _aspnetEntities;
         private static retailEntities _retailEntities;
@@ -22,6 +23,17 @@ namespace MVCProject.Common
                     _listLocation = ModelaspnetEntities.Locations.ToList();
                 }
                 return _listLocation;
+            }
+        }
+        public static List<LocationSub> listLocationSub
+        {
+            get
+            {
+                if (_listLocationSub == null)
+                {
+                    _listLocationSub = ModelaspnetEntities.LocationSubs.ToList();
+                }
+                return _listLocationSub;
             }
         }
         public static IEnumerable<SelectListItem> listItemLocationSub

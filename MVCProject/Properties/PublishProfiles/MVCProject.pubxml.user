@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9g+1NlJ/TkKsstVbYPFU/QAAAAACAAAAAAAQZgAAAAEAACAAAADtw4nJAOljkOt9HPt0zJV5PUFBj8VPEpbV9sPSCw5Y4AAAAAAOgAAAAAIAACAAAACl2/f/4jdHC63ZbXBzYxEmhDV+vr74m0KzmO7RU8MlZSAAAAC8IgR9qqF67P3hNbXGiPT2QUoNqx2Q0p9ZRemwdvoEOkAAAAAbn76er9+boUWQ0xOxUEUcj4mEKFqs5uO+ZiitD3oVw4O3eSFVlTdMX9b6XtD6kZxnqMdQsubVV5/M8ZJHfdA0</EncryptedPassword>
-    <_PublishTargetUrl>ftp://ftp.smarterasp.net/servicesthanhdat</_PublishTargetUrl>
+    <_PublishTargetUrl>F:\C#\BuildWeb\VLXDThanhDat</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/dbo_090116.sql">

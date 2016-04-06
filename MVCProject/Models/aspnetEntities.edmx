@@ -117,6 +117,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IDAccount" Type="nvarchar" MaxLength="36" />
           <Property Name="IDLocationSub" Type="int" />
           <Property Name="Pay" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PayDate" Type="nvarchar" MaxLength="20" />
@@ -664,6 +665,7 @@
           <Property Name="PayBefore" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PayAfter" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IDAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LocationSub">
           <Key>
@@ -930,6 +932,7 @@
           <EntitySetMapping Name="PaymentDetails">
             <EntityTypeMapping TypeName="Models.PaymentDetail">
               <MappingFragment StoreEntitySet="PaymentDetail">
+                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PayAfter" ColumnName="PayAfter" />
                 <ScalarProperty Name="PayBefore" ColumnName="PayBefore" />

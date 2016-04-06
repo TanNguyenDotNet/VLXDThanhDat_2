@@ -4,6 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "20"; }
+
+    Dictionary<string, decimal> dicSumOfOrders = (Dictionary<string, decimal>)ViewData["SumOfOrders"];
+    Dictionary<string, decimal?> dicSumOfPay = (Dictionary<string, decimal?>)ViewData["SumOfPaymentDetail"];
+    List<MVCProject.Models.LocationSub> listLocationSub = (List<MVCProject.Models.LocationSub>)ViewData["LocationSub"];
+    List<MVCProject.Models.AppNetUserType> listUserType = (List<MVCProject.Models.AppNetUserType>)ViewData["UsersType"];
+
+    string nameUser = "";
+    decimal totalpay = 0;
 }
 <form action="~/Payment/Home" method="get" id="productViewForm">
     <section class="content-header">
@@ -64,18 +72,39 @@
                     {
                         foreach (var item in Model)
                         {
+                            nameUser = MVCProject.Common.Security.EncryptString("User:" + @item.UserName + "~FrontendUser",
+                            false, MVCProject.Common.EncryptType.TripleDES);
                             <tr>
                                 <th scope="row" style="text-align:left">
-                                   @item.UserName
+                                   @listUserType.Where(a => a.Username == nameUser).FirstOrDefault().DisplayName
                                 </th>
                                 <td align="center">
-                               
-                                </td>
-                                <td align="center">
-                                   
+                                   @listLocationSub.Where(a => a.ID == listUserType.Where(b=>b.Username==nameUser).FirstOrDefault().LocationSubID).FirstOrDefault().Name
                                 </td>
                                 <td align="right">
-                                    
+                                    @if (dicSumOfOrders.Keys.Contains(item.Id) == false)
+                                    {
+                                        totalpay = 0;
+                                    }
+                                    else
+                                    { totalpay = (decimal)dicSumOfOrders[item.Id]; }
+                                    @totalpay.ToString("n0")
+                                </td>
+                                <td align="right">
+                                    @if(dicSumOfPay!=null)
+                                    {
+                                        if (dicSumOfPay.Keys.Contains(item.Id) == false)
+                                        {
+                                            totalpay = 0;
+                                        }
+                                        else
+                                        { totalpay = (decimal)dicSumOfOrders[item.Id]; }
+                                        
+                                    }else
+                                    {
+                                        totalpay = 0;
+                                    }
+                                    @totalpay.ToString("n0")
                                 </td>
                                 <td align="center">
                             

@@ -21,5 +21,6 @@ namespace MVCProject.Models
         public Nullable<decimal> PayBefore { get; set; }
         public Nullable<decimal> PayAfter { get; set; }
         public string Description { get; set; }
+        public string IDAccount { get; set; }
     }
 }

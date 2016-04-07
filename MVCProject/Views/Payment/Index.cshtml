@@ -11,7 +11,7 @@
     List<MVCProject.Models.AppNetUserType> listUserType = (List<MVCProject.Models.AppNetUserType>)ViewData["UsersType"];
 
     string nameUser = "";
-    decimal totalpay = 0;
+    decimal totalpay = 0, totalOrder = 0, total = 0;
 }
 <form action="~/Payment/Home" method="get" id="productViewForm">
     <section class="content-header">
@@ -56,13 +56,13 @@
                         <th>
                             Khu vực
                         </th>
-                        <th>
+                        <th align="right">
                             Tổng nợ
                         </th>
-                        <th>
+                        <th align="right">
                             Đã thanh toán
                         </th>
-                        <th>
+                        <th align="right">
                             Tổng tiền còn lại
                         </th>
                     </tr>
@@ -76,7 +76,7 @@
                             false, MVCProject.Common.EncryptType.TripleDES);
                             <tr>
                                 <th scope="row" style="text-align:left">
-                                   @listUserType.Where(a => a.Username == nameUser).FirstOrDefault().DisplayName
+                                    <a href="~/PaymentDetail/?idaccount=@item.Id">@listUserType.Where(a => a.Username == nameUser).FirstOrDefault().DisplayName</a>
                                 </th>
                                 <td align="center">
                                    @listLocationSub.Where(a => a.ID == listUserType.Where(b=>b.Username==nameUser).FirstOrDefault().LocationSubID).FirstOrDefault().Name
@@ -84,30 +84,30 @@
                                 <td align="right">
                                     @if (dicSumOfOrders.Keys.Contains(item.Id) == false)
                                     {
-                                        totalpay = 0;
+                                        totalOrder = 0;
                                     }
                                     else
-                                    { totalpay = (decimal)dicSumOfOrders[item.Id]; }
-                                    @totalpay.ToString("n0")
+                                    { totalOrder = (decimal)dicSumOfOrders[item.Id]; }
+                                    @totalOrder.ToString("n0")
                                 </td>
                                 <td align="right">
                                     @if(dicSumOfPay!=null)
                                     {
                                         if (dicSumOfPay.Keys.Contains(item.Id) == false)
                                         {
-                                            totalpay = 0;
+                                            totalpay = 0; total = totalOrder - totalpay;
                                         }
                                         else
-                                        { totalpay = (decimal)dicSumOfOrders[item.Id]; }
+                                        { totalpay = (decimal)dicSumOfOrders[item.Id]; total = totalOrder - totalpay; }
                                         
                                     }else
                                     {
-                                        totalpay = 0;
+                                        totalpay = 0; total = totalOrder - totalpay;
                                     }
                                     @totalpay.ToString("n0")
                                 </td>
-                                <td align="center">
-                            
+                                <td align="right">
+                                    @total
                                 </td>
                             </tr>
                         }

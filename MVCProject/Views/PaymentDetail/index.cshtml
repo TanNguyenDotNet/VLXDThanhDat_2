@@ -1,0 +1,94 @@
+﻿@model IEnumerable<MVCProject.Models.PaymentDetail>
+@{
+    ViewBag.Title = "Danh sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+}
+<form action="~/PaymentDetail" method="get" id="paymentdetailViewForm">
+    <section class="content-header">
+        <h2>
+            Sản phẩm
+        </h2>
+        <div class="arrange-button">
+            <a href="~/Product/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+            <i class="fa fa-angle-double-right arrange-icon"></i>
+            <a href="../ProductCode/Create/?code=SP" class="btn btn-info" id="modaltrigger" rel="leanModal">Cấu hình mã sản phẩm</a>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm sản phẩm..." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
+                        <input class="form-control" type="text" name="DateFrom" id="DateFilter" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
+                        <input class="form-control" type="text" name="DateTo" id="DateFilter" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 20; s <= 100; s += 20)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Ngày thanh toán</th>
+                        <th>Số tiền thanh toán</th>
+                        <th>Người nhập</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @(DateTime.ParseExact(item.PayDate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"))
+                            </th>
+                            <td>
+                                @item.Pay.Value.ToString("n0");
+                            </td>
+                            <td align="center">
+                               @item.IDAccountInput
+                            </td>
+                            <td style="text-align:left">
+                                @item.Description
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script>
+    $('#DateFilter').datetimepicker({
+        value: '@DateTime.Now.ToString("yyyyMMdd")', step: 1
+    });
+    </script>
+</form>
+

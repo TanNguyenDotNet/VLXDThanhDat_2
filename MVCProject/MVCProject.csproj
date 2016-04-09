@@ -528,6 +528,7 @@
     <Content Include="Views\LocationSub\Edit.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\PaymentDetail\index.cshtml" />
+    <Content Include="Views\PaymentDetail\Payment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

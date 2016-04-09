@@ -9,7 +9,7 @@ using System.ComponentModel;
 using MVCProject.Models;
 using System.Net;
 using System.Data.Entity;
-
+using Microsoft.AspNet.Identity;
 namespace MVCProject.Controllers
 {
     public class LocationSubController : Controller
@@ -45,8 +45,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,IDLocation,LocationPrice,Name,Description,IsDel")] LocationSub _LocationSub)
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
                 //return RedirectToAction("AccessDenied", "Account");
 

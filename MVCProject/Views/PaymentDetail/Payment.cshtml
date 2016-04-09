@@ -1,0 +1,45 @@
+﻿@model MVCProject.Models.PaymentDetail
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form action="~/PaymentDetail/Payment/" method="post" enctype="multipart/form-data">
+    <section class="content-header">
+        <h2>Thêm mới</h2>
+        <h4>Giá sản phẩm</h4>
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <div class='arrage-popup'>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductID">Ngày thanh toán</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.PayDate, new { @id = "PayDate", @name = "PayDate", @class = "form-control" })
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Price">Tiền thanh toán</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Pay, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Pay)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Price">Ghi chú</label>
+                <div class="col-md-6">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/PaymentDetail/index?idaccount=@Request.QueryString["PayID"]" class="btn btn-info">Về danh sách</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+    <script>
+        $("#PayDate").datetimepicker({
+            value: '@DateTime.Now.ToString("yyyyMMddHHmm")',step : 1
+        });
+    </script>
+</form>

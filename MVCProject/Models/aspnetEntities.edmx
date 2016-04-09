@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -122,6 +122,7 @@
           <Property Name="IDLocationSub" Type="int" />
           <Property Name="Pay" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PayDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="PayDateSystem" Type="nvarchar" MaxLength="20" />
           <Property Name="PayBefore" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PayAfter" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
@@ -260,7 +261,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__0BB1B5A5">
+        <Association Name="FK__AspNetUse__RoleI__5CD6CB2B">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -274,7 +275,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___09C96D33">
+        <Association Name="FK__AspNetUse__User___5AEE82B9">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -288,7 +289,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__0ABD916C">
+        <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -302,7 +303,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__0CA5D9DE">
+        <Association Name="FK__AspNetUse__UserI__5DCAEF64">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -339,19 +340,19 @@
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__0BB1B5A5" Association="Self.FK__AspNetUse__RoleI__0BB1B5A5">
+          <AssociationSet Name="FK__AspNetUse__RoleI__5CD6CB2B" Association="Self.FK__AspNetUse__RoleI__5CD6CB2B">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___09C96D33" Association="Self.FK__AspNetUse__User___09C96D33">
+          <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Self.FK__AspNetUse__User___5AEE82B9">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__0ABD916C" Association="Self.FK__AspNetUse__UserI__0ABD916C">
+          <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Self.FK__AspNetUse__UserI__5BE2A6F2">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__0CA5D9DE" Association="Self.FK__AspNetUse__UserI__0CA5D9DE">
+          <AssociationSet Name="FK__AspNetUse__UserI__5DCAEF64" Association="Self.FK__AspNetUse__UserI__5DCAEF64">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -584,8 +585,8 @@
           <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
           <EntitySet Name="Taxes" EntityType="Models.Tax" />
           <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
-          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
           <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
+          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -655,20 +656,6 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
         </EntityType>
-        <EntityType Name="PaymentDetail">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Guid" Nullable="false" />
-          <Property Name="IDLocationSub" Type="Int32" />
-          <Property Name="Pay" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PayDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="PayBefore" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PayAfter" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="IDAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
-          <Property Name="IDAccountInput" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="LocationSub">
           <Key>
             <PropertyRef Name="ID" />
@@ -679,6 +666,21 @@
           <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsDel" Type="Byte" />
+        </EntityType>
+        <EntityType Name="PaymentDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="IDAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="IDAccountInput" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="IDLocationSub" Type="Int32" />
+          <Property Name="Pay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PayDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PayDateSystem" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PayBefore" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PayAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -931,21 +933,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PaymentDetails">
-            <EntityTypeMapping TypeName="Models.PaymentDetail">
-              <MappingFragment StoreEntitySet="PaymentDetail">
-                <ScalarProperty Name="IDAccountInput" ColumnName="IDAccountInput" />
-                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="PayAfter" ColumnName="PayAfter" />
-                <ScalarProperty Name="PayBefore" ColumnName="PayBefore" />
-                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
-                <ScalarProperty Name="Pay" ColumnName="Pay" />
-                <ScalarProperty Name="IDLocationSub" ColumnName="IDLocationSub" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LocationSubs">
             <EntityTypeMapping TypeName="Models.LocationSub">
               <MappingFragment StoreEntitySet="LocationSub">
@@ -954,6 +941,22 @@
                 <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentDetails">
+            <EntityTypeMapping TypeName="Models.PaymentDetail">
+              <MappingFragment StoreEntitySet="PaymentDetail">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PayAfter" ColumnName="PayAfter" />
+                <ScalarProperty Name="PayBefore" ColumnName="PayBefore" />
+                <ScalarProperty Name="PayDateSystem" ColumnName="PayDateSystem" />
+                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
+                <ScalarProperty Name="Pay" ColumnName="Pay" />
+                <ScalarProperty Name="IDLocationSub" ColumnName="IDLocationSub" />
+                <ScalarProperty Name="IDAccountInput" ColumnName="IDAccountInput" />
+                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

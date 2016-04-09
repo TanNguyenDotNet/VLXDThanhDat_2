@@ -68,10 +68,7 @@ namespace MVCProject.Controllers
                                         idaccount = g.Key.IDAccount,
                                         totalpay = g.Sum(x => x.Pay)
                                     };
-            if (listPaymentDetail.Count() == 0)
-                return null;
-            else
-                return listPaymentDetail.ToDictionary(a => a.idaccount, a => a.totalpay);
+            return listPaymentDetail.ToDictionary(a => a.idaccount, a => a.totalpay);
         }
         #endregion
     }

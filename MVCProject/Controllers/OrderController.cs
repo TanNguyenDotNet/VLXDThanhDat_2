@@ -68,7 +68,7 @@ namespace MVCProject.Controllers
                 return null;
             var o = db.Orders.Single(c => c.OrderCode == orderCode);
             o.DeliveryMan = deliveryMan;
-            o.DateShip = DateTime.Parse(dateShip).ToString("yyyyMMdd");
+            o.DateShip = DateTime.Parse(dateShip, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmm");
             o.DateProcessed = DateTime.Now.ToString("yyyyMMddHHmm");
             o.State = "2";
             db.SaveChanges();

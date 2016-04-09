@@ -15,13 +15,14 @@ namespace MVCProject.Models
     public partial class PaymentDetail
     {
         public System.Guid ID { get; set; }
+        public string IDAccount { get; set; }
+        public string IDAccountInput { get; set; }
         public Nullable<int> IDLocationSub { get; set; }
         public Nullable<decimal> Pay { get; set; }
         public string PayDate { get; set; }
+        public string PayDateSystem { get; set; }
         public Nullable<decimal> PayBefore { get; set; }
         public Nullable<decimal> PayAfter { get; set; }
         public string Description { get; set; }
-        public string IDAccount { get; set; }
-        public string IDAccountInput { get; set; }
     }
 }

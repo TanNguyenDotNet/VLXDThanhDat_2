@@ -18,6 +18,9 @@ namespace MVCProject.Controllers
         {
             string idaccount = Request.QueryString["idaccount"].ToString();
             var listPaymentDetail = modelAspnet.PaymentDetails.Where(a => a.IDAccount == idaccount).ToList();
+            var lststring = modelAspnet.AspNetUsers.ToList();
+            ViewData["Total"] = listPaymentDetail.Sum(a => a.Pay);
+            ViewData["ListUsers"] = lststring.Where(a => listPaymentDetail.Select(p=>p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
             ViewBag.IDAccount = modelAspnet.AspNetUsers.Where(a => a.Id == idaccount).FirstOrDefault().UserName;
 
             return View(listPaymentDetail);
@@ -37,7 +40,6 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
-              
                 Payment.ID = Guid.NewGuid();
                 Payment.IDAccount = TempData["idaccount"].ToString();
                 Payment.PayDate = DateTime.Parse(Payment.PayDate, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmm");

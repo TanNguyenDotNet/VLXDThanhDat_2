@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<MVCProject.Models.AspNetUser> listUser = (List<MVCProject.Models.AspNetUser>)ViewData["ListUsers"];
+    
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "20"; }
 }
@@ -20,7 +22,7 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <div class="input-group">
-                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm sản phẩm..." value="@Request.QueryString["filter"]">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tên người nhập" value="@Request.QueryString["filter"]">
                         <span class="input-group-btn">
                             <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -72,7 +74,7 @@
                                 @item.Pay.Value.ToString("n0")
                             </td>
                             <td align="center">
-                               @item.IDAccountInput
+                               @listUser.Where(a => a.Id == item.IDAccountInput).FirstOrDefault().UserName
                             </td>
                             <td style="text-align:left">
                                 @item.Description
@@ -81,6 +83,9 @@
                     }
                 </tbody>
             </table>
+            <div class="arrange-button">
+                <p>Tổng Cộng: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
+            </div>
         </div>
     </section>
     <script>

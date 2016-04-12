@@ -36,25 +36,10 @@
                 {
                     <tr>
                         <th scope="row" style="text-align:left">
-                            @if (nList != null && nList.Count > 0 && nList.Keys.Contains(long.Parse(item.ProductID.ToString())))
-                            {
-                                name = nList[long.Parse(item.ProductID.ToString())];
-                            }
-                            else
-                            {
-                                name = "";
-                            }
-                            @if (roles.Contains("8"))
-                            {
-                                @Html.ActionLink(name, "Edit", new { id = item.ID })
-                            }
-                            else
-                            {
-                                @name
-                            }
+                            @item.ProductID
                         </th>
                         <td align="right">
-                            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
+                            @item.Price.ToString("n0")
                         </td>
                         <td>
                             @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")

@@ -20,27 +20,31 @@ namespace MVCProject.Controllers
                 return null;
             if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, subid);
             int _subid=int.Parse(subid);
             decimal priceSub = decimal.Parse((modelAspnet.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;
             list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
             var listProductPriceSub = modelAspnet.ProductPrices.Where(a => a.LocationID == _subid).ToList();
             if (listProductPriceSub.Count != 0)
             {
-                list = from l in list.ToList()
-                       join p in listProductPriceSub on l.ID equals p.ProductID into pp
-                       from ps in pp
-                       where ps.ProductID == null
-                       select l;
+                var listpp = (from p in modelAspnet.Products.ToList()
+                             join pp in listProductPriceSub on p.ID equals pp.ProductID
+                             select p).ToList();
+
+                foreach (var item in listpp)
+                {
+                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                }
+
+                list.ToList().AddRange(listpp.ToList());
             }
-            int count = list.Count();
             initList();
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid,string subid)
         {
-            long lcid = 0;
+            long lcid = 0; int _subid = int.Parse(subid);
             try
             {
                 cid = cid == null || cid == "" ? "0" : cid;
@@ -48,7 +52,12 @@ namespace MVCProject.Controllers
             }
             catch { lcid = 0; cid = "0"; }
 
-            IEnumerable<Models.Product> list = null;
+            IEnumerable<Models.Product> list = from p in modelAspnet.Products
+                                               join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
+                                               from pp in pp_join.DefaultIfEmpty()
+                                               where
+                                                 pp.ID == null && pp.LocationID != _subid
+                                               select p;//Lay danh sach khong bao gom gia chiet khau cua vung
             if (lcid > 0 && filter != null && filter != "")
                 list = modelAspnet.Products.Where(c => c.CatID == lcid
                     && c.ProductName.Contains(filter) && c.Show == true);

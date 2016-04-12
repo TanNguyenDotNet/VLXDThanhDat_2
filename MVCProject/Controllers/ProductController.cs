@@ -26,9 +26,28 @@ namespace MVCProject.Controllers
                 return RedirectToAction("Login", "Account");
 
             ViewBag.UserType = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
+
+            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+            var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
+
             InitItem(false);
-            SetLocationDetail();
-            IEnumerable<Models.Product> list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            IEnumerable<Models.Product> list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, Users.LocationSubID);
+            decimal priceSub = decimal.Parse((db.LocationSubs.Where(a => a.ID == Users.LocationSubID).FirstOrDefault().LocationPrice)) / 100;
+            list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
+            var listProductPriceSub = db.ProductPrices.Where(a => a.LocationID == Users.LocationSubID).ToList();
+            if (listProductPriceSub.Count != 0)
+            {
+                var listpp = (from p in db.Products.ToList()
+                              join pp in listProductPriceSub on p.ID equals pp.ProductID
+                              select p).ToList();
+
+                foreach (var item in listpp)
+                {
+                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                }
+
+                list.ToList().AddRange(listpp.ToList());
+            }
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
@@ -41,7 +60,7 @@ namespace MVCProject.Controllers
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, null);
             return View(list.ToPagedList(page == null || 
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
@@ -269,7 +288,7 @@ namespace MVCProject.Controllers
             }
         }
 
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid,int? subid)
         {
             long lcid = 0;
             try
@@ -278,8 +297,14 @@ namespace MVCProject.Controllers
                 lcid = long.Parse(cid);
             }
             catch { lcid = 0; cid = "0"; }
-
-            IEnumerable<Models.Product> list = null;
+            IEnumerable<Models.Product> list=null;
+            if (subid != null)
+                list = from p in db.Products
+                       join pp in db.ProductPrices on p.ID equals pp.ProductID into pp_join
+                       from pp in pp_join.DefaultIfEmpty()
+                       where
+                         pp.ID == null && pp.LocationID != subid
+                       select p;
             if (lcid > 0 && filter != null && filter != "")
                 list = db.Products.Where(c => c.CatID == lcid
                     && c.ProductName.Contains(filter) && c.Show == true);

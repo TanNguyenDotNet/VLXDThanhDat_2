@@ -12,9 +12,6 @@
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
 
-    Dictionary<long, decimal> pList = (Dictionary<long, decimal>)ViewData["PriceList"];
-    Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
-
     string name = "";
     double price = 0;
 }
@@ -136,13 +133,7 @@
                                     }*@
                                 </th>-->
                                 <th scope="row" style="text-align:left">
-                                    @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
-                                        name = nList[item.ID];
-                                    }
-                                    else { 
-                                        name = item.ProductName; 
-                                    }
-                                    @name
+                                    @item.ProductName
                                 </th>
                                 <td align="center">
                                     @Html.DisplayFor(modelItem => item.ItemCode)
@@ -151,18 +142,7 @@
                                     @Html.DisplayFor(modelItem => item.Unit)
                                 </td>
                                 <td align="right">
-                                    @if (pList != null && pList.Count > 0 && pList.Keys.Contains(item.ID))
-                                    {
-                                        price = double.Parse(pList[item.ID].ToString());
-                                    }
-                                    else
-                                    {
-                                        if(item.Price != null)
-                                        {price = Double.Parse(item.Price.ToString());}
-                                        else
-                                        {price = 0;}
-                                    }
-                                    @price.ToString("#,###")
+                                    @item.Price.Value.ToString("n0")
                                 </td>
                                 <td align="center">
                                     @Html.DisplayFor(modelItem => item.Warranty)

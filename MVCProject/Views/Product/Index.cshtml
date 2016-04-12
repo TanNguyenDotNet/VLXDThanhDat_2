@@ -129,14 +129,6 @@
                                         @Html.DisplayFor(modelItem => item.IsDel)
                                     </td>
                                     <td>
-                                        @if (roles.Contains("17"))
-                                        {
-                                            <a class="circle-bt" href="~/ProductName/Create/@item.ID"><img src="~/Images/imgs/name-tag.png" height="12" width="12" alt="product name"></a>
-                                        }
-                                        @if (roles.Contains("7"))
-                                        {
-                                            <a class="circle-bt" href="~/ProductPrice/Create/@item.ID"><img src="~/Images/imgs/dollar-price-tag.png" height="12" width="12" alt="product price"></a>
-                                        }
                                         @if (roles.Contains("5"))
                                         {
                                             <a class="circle-bt" href="~/Promotion/Create/@item.ID"><img src="~/Images/imgs/promotions.png" height="12" width="12" alt="product name"></a>

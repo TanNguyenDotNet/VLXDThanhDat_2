@@ -440,7 +440,23 @@ namespace MVCProject.Controllers
 
             return listOd;
         }
+        private List<Models.Product> ListPrice(int? subid, string[] parts,string subprice)
+        {
+            var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
+            decimal priceSub = subprice == null ? 0 : decimal.Parse(subprice) / 100;
+            li.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
 
+            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == subid).ToList();
+            if (listProductPriceSub.Count != 0)
+            {
+                foreach (var item in li)
+                {
+                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                }
+            }
+
+            return li;
+        }
         private IEnumerable<Models.OrdersDetail> GenCartDetails()
         {
             if (Session["Cart"] == null || Session["Cart"].ToString() == "")
@@ -454,8 +470,8 @@ namespace MVCProject.Controllers
 
             string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
             var u = _db.AppNetUserTypes.Find(enu);
-
-            var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
+            var subprice = _db.LocationSubs.Where(a => a.ID == u.LocationSubID).FirstOrDefault();
+            var li = ListPrice(u.LocationSubID, parts, subprice.LocationPrice);
 
             int index = 0;
             foreach (var i in li)
@@ -473,22 +489,7 @@ namespace MVCProject.Controllers
                     }
                 }
 
-                ProductPrice price = null;
-
-                try
-                {
-                    // Lấy giá theo vùng
-                    if(u.LocationID > 0)
-                        price = _db.ProductPrices.OrderBy(c => c.ID).First(c => c.ProductID == i.ID && c.LocationID == u.LocationID);
-                    if(price == null || price.Price == 0)
-                        price = _db.ProductPrices.OrderBy(c=>c.ID).First(c => c.ProductID == i.ID);
-                }
-                catch { cd[index, 1] = "0"; }
-
-                if (price == null || price.Price == 0)
-                    cd[index, 1] = i.Price.ToString(); // Không có giá theo vùng, lấy giá mặc định
-                else
-                    cd[index, 1] = price.Price.ToString();
+                cd[index, 1] = i.Price.ToString();
                 
                 cd[index, 0] = i.ID.ToString();
                 string quan = Request.QueryString["quan_" + i.ID];

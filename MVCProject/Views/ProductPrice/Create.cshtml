@@ -35,10 +35,10 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="LocationID">Tỉnh/thành phố</label>
+                <label class="text-label col-md-2" for="LocationID">Khu vực</label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
-                 "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationSubList,
+                 "Chọn khu vực", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.LocationID)
                 </div>
             </div>

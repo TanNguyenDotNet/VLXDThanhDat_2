@@ -48,7 +48,7 @@ namespace MVCProject.Controllers
         }
 
         // GET: /ProductPrice/Create
-        public ActionResult Create(long? id)
+        public ActionResult Create(long? id,string subid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -57,9 +57,10 @@ namespace MVCProject.Controllers
 
             var pp = new Models.ProductPrice();
             if (id != null) pp.ProductID = (long)id;
+            pp.LocationID = int.Parse(subid);
 
-            ViewBag.ProductList = Common.Commons.GetProductList(db);
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.ProductList = Common.Commons.GetProductList(db).Where(a=>a.Value==id.Value.ToString());
+            ViewBag.LocationSubList = Common.Params.listItemLocationSub.Where(a => a.Value == subid); 
 
             return View(pp);
         }
@@ -78,11 +79,15 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
+                var pp = db.ProductPrices.Where(a => a.LocationID == productprice.LocationID & a.ProductID == productprice.ProductID).FirstOrDefault();
+                if (pp != null)
+                    db.ProductPrices.Remove(pp);
+                db.SaveChanges();
                 productprice.Created = DateTime.Now;
                 productprice.UserID = User.Identity.GetUserId();
                 db.ProductPrices.Add(productprice);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "ProductPriceLocationSub");
             }
 
             return View(productprice);

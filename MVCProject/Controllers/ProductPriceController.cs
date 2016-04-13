@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using System.Dynamic;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -16,15 +18,30 @@ namespace MVCProject.Controllers
         private aspnetEntities db = new aspnetEntities();
 
         // GET: /ProductPrice/
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter, string order,string subid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
-
-            GetProductName();
-            return View(db.ProductPrices.ToList());
+            List<Models.ProductPriceViewModel> list = null;
+            list = (from l in db.ProductPrices.ToList()
+                    join p in db.Products.ToList() on l.ProductID equals p.ID
+                    join ls in db.LocationSubs.ToList() on l.LocationID equals ls.ID
+                    select new ProductPriceViewModel()
+                                                                                    {
+                                                                                        id = l.ProductID.ToString(),
+                                                                                        name = p.ProductName,
+                                                                                        price = l.Price,
+                                                                                        desc = l.Description,
+                                                                                        date = l.Created,
+                                                                                        locationsub = ls.Name
+                                                                                    }).ToList();
+            ViewBag.Order = order == null ? "" : order;
+            ViewBag.Filter = filter == null ? "" : filter;
+            ViewData["SubList"] = Common.Params.listLocationSub;
+            return View(list.ToList().ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
 
         // GET: /ProductPrice/Details/5
@@ -57,7 +74,8 @@ namespace MVCProject.Controllers
 
             var pp = new Models.ProductPrice();
             if (id != null) pp.ProductID = (long)id;
-            pp.LocationID = int.Parse(subid);
+            if (subid != null)
+                pp.LocationID = int.Parse(subid);
 
             ViewBag.ProductList = Common.Commons.GetProductList(db).Where(a=>a.Value==id.Value.ToString());
             ViewBag.LocationSubList = Common.Params.listItemLocationSub.Where(a => a.Value == subid); 
@@ -179,7 +197,6 @@ namespace MVCProject.Controllers
             }
             base.Dispose(disposing);
         }
-
         private void GetProductName()
         {
             var nameList = (from pr in db.ProductPrices

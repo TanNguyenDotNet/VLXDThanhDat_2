@@ -88,4 +88,13 @@ namespace MVCProject.Models
         [Range(0,99,ErrorMessage="Nhập số")]
         public string LocationPrice { get; set; }
     }
+    public class ProductPriceViewModel
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public decimal price { get; set; }
+        public string desc { get; set; }
+        public DateTime? date { get; set; }
+        public string locationsub { set; get; }
+    }
 }

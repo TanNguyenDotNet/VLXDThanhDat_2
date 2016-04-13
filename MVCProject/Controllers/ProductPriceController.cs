@@ -25,8 +25,9 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
             List<Models.ProductPriceViewModel> list = null;
+            filter = filter == null ? "" : filter;
             list = (from l in db.ProductPrices.ToList()
-                    join p in db.Products.ToList() on l.ProductID equals p.ID
+                    join p in db.Products.Where(a=>a.ProductName.Contains(filter)).ToList() on l.ProductID equals p.ID
                     join ls in db.LocationSubs.ToList() on l.LocationID equals ls.ID
                     select new ProductPriceViewModel()
                                                                                     {
@@ -35,8 +36,15 @@ namespace MVCProject.Controllers
                                                                                         price = l.Price,
                                                                                         desc = l.Description,
                                                                                         date = l.Created,
-                                                                                        locationsub = ls.Name
+                                                                                        locationsub = ls.Name,
+                                                                                        idlocationsub=ls.ID
                                                                                     }).ToList();
+            
+            //Tìm giải pháp search tiếng việt không dấu
+            //if (filter != null)
+            //    list = list.Where(a => a.name.Contains(char.Parse(filter))).ToList();
+            if (subid != null & subid != "0")
+                list = list.Where(a => a.idlocationsub.ToString() == subid).ToList();
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             ViewData["SubList"] = Common.Params.listLocationSub;

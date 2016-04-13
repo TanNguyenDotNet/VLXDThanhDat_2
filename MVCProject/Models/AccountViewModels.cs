@@ -96,5 +96,6 @@ namespace MVCProject.Models
         public string desc { get; set; }
         public DateTime? date { get; set; }
         public string locationsub { set; get; }
+        public int idlocationsub { set; get; }
     }
 }

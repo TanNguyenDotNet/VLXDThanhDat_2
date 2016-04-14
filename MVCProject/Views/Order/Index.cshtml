@@ -1,61 +1,112 @@
-﻿@model IEnumerable<MVCProject.Models.Order>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Order>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<string> roles = (List<string>)ViewData["AccessList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string state = Request.QueryString["state"];
+    if (state == null || state == "") { state = "3"; }
 }
-
-<section class="content-header">
-    <h2>
-        Danh sách đơn hàng
-    </h2>
-    <div class="arrange-button">
-        @if (roles.Contains("1"))
-        {
-            <a href="~/ProductCode/Create/?code=OC" class="btn btn-info" id="modaltrigger" rel="leanModal">Cấu hình mã hóa đơn</a>
-        }
-    </div>
-</section>
-<section class="content">
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr style="background-color: #3c8dbc; color:#fff">
-                    <th>
-                        In đơn hàng</th>
-                    <th>
-                        Mã đơn hàng
-                    </th>
-                    <th>
-                        Ngày tạo
-                    </th>
-                    <th>
-                        Tổng tiền trước thuế
-                    </th>
-                    <th>
-                        Thuế suất
-                    </th>
-                    <th>
-                        Tổng thanh toán
-                    </th>
-                    <th>
-                        Giảm giá
-                    </th>
-                    <th>
-                        Ngày xử lý
-                    </th>
-                    <th>
-                        Ngày giao
-                    </th>
-                    <th>
-                        Tình trạng
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Count() > 0)
-                {
+<form action="~/Order/index" method="get" id="orderViewForm">
+    <section class="content-header">
+        <h2>
+            Danh sách đơn hàng
+        </h2>
+        <div class="arrange-button">
+            @if (roles.Contains("1"))
+            {
+                <a href="~/ProductCode/Create/?code=OC" class="btn btn-info" id="modaltrigger" rel="leanModal">Cấu hình mã hóa đơn</a>
+            }
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Mã hóa đơn..." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="orderViewForm.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
+                        <input class="form-control" type="text" name="DateFrom" id="DateFrom" value="@Request.QueryString["DateFrom"]" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
+                        <input class="form-control" type="text" name="DateTo" id="DateTo" value="@Request.QueryString["DateTo"]" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Tình trạng</span>
+                        <select name="state" id="state" class="form-control">
+                            <option value="3" @if (state == "3") { @Html.Raw(" selected='selected'")        }>Tất cả</option>
+                            <option value="0" @if (state == "0") { @Html.Raw(" selected='selected'")      }>Chưa xử lý</option>
+                            <option value="1" @if (state == "1") { @Html.Raw(" selected='selected'")        }>Đã xem</option>
+                            <option value="2" @if (state == "2") { @Html.Raw(" selected='selected'")        }>Đã xử lý</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="orderViewForm.submit();">
+                            @for (int s = 20; s <= 200; s += 100)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            In đơn hàng
+                        </th>
+                        <th>
+                            Mã đơn hàng
+                        </th>
+                        <th>
+                            Ngày tạo
+                        </th>
+                        <th>
+                            Tổng tiền trước thuế
+                        </th>
+                        <th>
+                            Thuế suất
+                        </th>
+                        <th>
+                            Tổng thanh toán
+                        </th>
+                        <th>
+                            Giảm giá
+                        </th>
+                        <th>
+                            Ngày xử lý
+                        </th>
+                        <th>
+                            Ngày giao
+                        </th>
+                        <th>
+                            Tình trạng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
                         foreach (var item in Model)
                         {
                             <tr>
@@ -63,13 +114,14 @@
                                     <a href="../ReportView/InvoiceDetail/?code=@item.OrderCode">In</a>
                                 </th>
                                 <td>
-                                @if (roles.Contains("15")) { 
-                                                   <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a> 
-                                }
-                                else
-                                {
-                                    @item.OrderCode
-                                }
+                                    @if (roles.Contains("15"))
+                                    {
+                                        <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a>
+                                    }
+                                    else
+                                    {
+                                        @item.OrderCode
+                                    }
                                 </td>
                                 <td align="center">
                                     @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
@@ -88,11 +140,11 @@
                                 </td>
                                 <td align="center">
                                     @{
-                                        string sdate = "";
-                                        if (item.DateProcessed != null && item.DateProcessed != "")
-                                        {
-                                            sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
-                                        }
+                                    string sdate = "";
+                                    if (item.DateProcessed != null && item.DateProcessed != "")
+                                    {
+                                        sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                                    }
                                     }
                                     @sdate
                                 </td>
@@ -105,15 +157,34 @@
                                 </td>
                                 <td>
                                     @{
-                            string state = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
+                                state = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
                                 item.State == "2" ? "Đã xử lý" : item.State == "2" ? "Đã chuyển hàng" : "";
                                     }
                                     @state
                                 </td>
-                        </tr>
+                            </tr>
+                        }
                     }
-            }
-            </tbody>
-        </table>
-    </div>
-</section>
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                   {
+                       page,
+                       order = ViewBag.Order,
+                       filter = ViewBag.Filter,
+                       size = size
+                   }))
+            </nav>
+        </div>
+    </section>
+    <script>
+    $('#DateFrom').datetimepicker({
+        value: '@DateTime.Now.ToString("yyyyMMddHHmm")', step: 1
+    });
+    $('#DateTo').datetimepicker({
+        value: '@DateTime.Now.ToString("yyyyMMddHHmm")', step: 1
+    });
+    </script>
+
+</form>

@@ -87,7 +87,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     @foreach (var item in Model.InvoiceDetail)
                     {
                         <tr>
-                            <th scope="row">@stt</th>
+                            <th scope="row">@{stt++;} @stt</th>
                             <td style="text-align:left">@item._ProductCode</td>
                             <td style="text-align:left">@item._ProductName</td>
                             <td>@item._Unit</td>

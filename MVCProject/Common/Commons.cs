@@ -110,7 +110,7 @@ namespace MVCProject.Common
             useCatCode = ((bool) pc.CatID) ? 1 : 0;
             string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
-                string.Format("{0:000000}", pc.ScrollNumber);
+                string.Format("{0:00000}", pc.ScrollNumber);
             return code;
         }
 

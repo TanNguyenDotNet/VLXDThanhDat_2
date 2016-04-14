@@ -24,14 +24,14 @@ namespace MVCProject.Controllers
             var listPaymentDetail = from l in modelAspnet.PaymentDetails where l.IDAccount == idaccount select l;
             if (dateFrom != null)
             {
-                dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmm");
-                listPaymentDetail = modelAspnet.PaymentDetails.Where(a => DateTime.Parse(a.PayDate) >= DateTime.Parse(dateFrom));
+                dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
+                dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
+                listPaymentDetail = listPaymentDetail.Where(a => String.Compare(a.PayDate, dateFrom) >= 0 &&
+                                                                String.Compare(a.PayDate, dateTo) <= 0);
             }
-            if (dateTo != null)
-                dateTo = UtilDatetime.FromTime(dateTo).ToString("yyyyMMddHHmm");
-            
+        
             var lststring = modelAspnet.AspNetUsers.ToList();
-            ViewData["Total"] = listPaymentDetail.Sum(a => a.Pay);
+            ViewData["Total"] = listPaymentDetail.ToList().Sum(a => a.Pay);
             ViewData["ListUsers"] = lststring.Where(a => listPaymentDetail.Select(p=>p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
             ViewBag.IDAccount = modelAspnet.AspNetUsers.Where(a => a.Id == idaccount).FirstOrDefault().UserName;
 

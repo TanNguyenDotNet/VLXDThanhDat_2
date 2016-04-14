@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
+using MVCProject.Common;
 
 namespace MVCProject.Controllers
 {
@@ -14,7 +16,7 @@ namespace MVCProject.Controllers
         private aspnetEntities _db = new aspnetEntities();
         //
         // GET: /Order/
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter, string order, string state,string datefrom,string dateto)
         {
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -24,7 +26,23 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "20"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            return View(db.Orders.ToList()); 
+            var list = from l in db.Orders select l;
+            if (!string.IsNullOrEmpty(datefrom))
+            {
+                datefrom=UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
+                dateto = UtilDatetime.FromTime(dateto).ToString("yyyyMMddHHmmss");
+                list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
+                                           String.Compare(a.DateCreate, dateto) <= 0);
+            }
+            if (!string.IsNullOrEmpty(filter))
+                list = list.Where(a => a.OrderCode.Contains(filter));
+            if (!string.IsNullOrEmpty(state) && state != "3")
+                list = list.Where(a => a.State == state);
+            
+            list = list.OrderBy(a => a.DateCreate);
+            
+            return View(list.ToList().ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size)); 
         }
 
         public ActionResult Cancel()

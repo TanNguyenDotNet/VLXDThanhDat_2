@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<MVCProject.Models.PaymentDetail>
 @using PagedList.Mvc;
+
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,7 +15,7 @@
 <form action="~/PaymentDetail/index" method="get" id="paymentdetailViewForm">
     <section class="content-header">
         <h2>
-            Chi tiết thanh toán của @ViewBag.IDAccount
+            Chi tiết thanh toán của @ViewBag.UserName
         </h2>
         <div class="arrange-button">
             <a href="~/PaymentDetail/Payment?PayID=@Request.QueryString["idaccount"]" class="btn btn-info" id="modaltrigger" rel="leanModal">Nhập thanh toán</a>

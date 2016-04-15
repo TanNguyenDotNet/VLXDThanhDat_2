@@ -15,13 +15,14 @@ namespace MVCProject.Controllers
         private retailEntities modelRetail = Params.ModelRetail;
         private aspnetEntities modelAspnet = Params.ModelaspnetEntities;
         // GET: PaymentDetail
+        [HttpGet]
         public ActionResult index(int? page, int? size, string filter, string order, string dateFrom, string dateTo, string _idaccount)
         {
-            string idaccount=_idaccount;
+            string idaccount = _idaccount;
             if (string.IsNullOrEmpty(_idaccount))
-                idaccount = Request.QueryString["idaccount"].ToString();
-            
-            var listPaymentDetail = from l in modelAspnet.PaymentDetails where l.IDAccount == idaccount select l;
+                _idaccount = Request.QueryString["idaccount"].ToString();
+
+            var listPaymentDetail = from l in modelAspnet.PaymentDetails where l.IDAccount == _idaccount select l;
             if (dateFrom != null)
             {
                 dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
@@ -33,7 +34,7 @@ namespace MVCProject.Controllers
             var lststring = modelAspnet.AspNetUsers.ToList();
             ViewData["Total"] = listPaymentDetail.ToList().Sum(a => a.Pay);
             ViewData["ListUsers"] = lststring.Where(a => listPaymentDetail.Select(p=>p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
-            ViewBag.IDAccount = modelAspnet.AspNetUsers.Where(a => a.Id == idaccount).FirstOrDefault().UserName;
+            ViewBag.UserName = modelAspnet.AspNetUsers.Where(a => a.Id == _idaccount).FirstOrDefault().UserName;
 
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;

@@ -18,5 +18,6 @@ namespace MVCProject.Report
         public string VAT { set; get; }
         public string TotalVAT { set; get; }
         public string AmountInWord { set; get; }
+        public decimal? Payment { get; set; }
     }
 }

@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <div class="input-group">
-                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Mã hóa đơn..." value="@Request.QueryString["filter"]">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Mã hóa đơn..." value="@Request.QueryString["filter"]"/>
                         <span class="input-group-btn">
                             <button type="submit" onclick="orderViewForm.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -35,19 +35,19 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
-                        <input class="form-control" type="text" name="DateFrom" id="DateFrom" value="@Request.QueryString["DateFrom"]" />
+                        <input class="form-control" type="text" name="DateFrom" id="DateFrom"/>
                     </div>
                 </div>
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
-                        <input class="form-control" type="text" name="DateTo" id="DateTo" value="@Request.QueryString["DateTo"]" />
+                        <input class="form-control" type="text" name="DateTo" id="DateTo"/>
                     </div>
                 </div>
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Tình trạng</span>
-                        <select name="state" id="state" class="form-control">
+                        <select name="state" id="state" class="form-control"  onchange="orderViewForm.submit()">
                             <option value="3" @if (state == "3") { @Html.Raw(" selected='selected'")        }>Tất cả</option>
                             <option value="0" @if (state == "0") { @Html.Raw(" selected='selected'")      }>Chưa xử lý</option>
                             <option value="1" @if (state == "1") { @Html.Raw(" selected='selected'")        }>Đã xem</option>
@@ -171,7 +171,6 @@
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                    {
                        page,
-                       order = ViewBag.Order,
                        filter = ViewBag.Filter,
                        size = size
                    }))
@@ -180,10 +179,10 @@
     </section>
     <script>
     $('#DateFrom').datetimepicker({
-        value: '@DateTime.Now.ToString("yyyyMMddHHmm")', step: 1
+        value: '@Request.QueryString["DateFrom"]', step: 1
     });
     $('#DateTo').datetimepicker({
-        value: '@DateTime.Now.ToString("yyyyMMddHHmm")', step: 1
+        value: '@Request.QueryString["DateTo"]', step: 1
     });
     </script>
 

@@ -446,12 +446,15 @@ namespace MVCProject.Controllers
             decimal priceSub = subprice == null ? 0 : decimal.Parse(subprice) / 100;
             li.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
 
-            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == subid).ToList();
+            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == subid).ToList();// lay danh sach co' trong gio hang
+            listProductPriceSub = listProductPriceSub.Where(a => li.Select(b => b.ID).Contains(a.ProductID)).ToList();
             if (listProductPriceSub.Count != 0)
             {
                 foreach (var item in li)
                 {
-                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                    var _price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault();
+                    if (_price != null)
+                        item.Price = _price.Price;
                 }
             }
 

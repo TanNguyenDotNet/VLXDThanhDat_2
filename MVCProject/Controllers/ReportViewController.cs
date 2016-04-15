@@ -74,6 +74,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.VAT = _Orders.Tax.ToString();
                     InvoiceParams.InvoiceNum = _Orders.OrderCode;
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                    InvoiceParams.Payment = TotalPay(us.Id);
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
                     model.InvoiceDetail = UtilEntities.modelDynamic(query);
@@ -121,6 +122,15 @@ namespace MVCProject.Controllers
             InvoiceRptParams.InvoiceDate = DateTime.ParseExact(o.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
 
             return list;
+        }
+        private decimal? TotalPay(string id)
+        {
+            var listPaymentDetail = from l in _db.PaymentDetails where l.IDAccount == id select l;
+            var listOrder = from o in db.Orders
+                            where o.IDAccount == id
+                            select o;
+            decimal? total = listOrder.Sum(a => a.Total) - listPaymentDetail.Sum(a => a.Pay);
+            return total;
         }
         #endregion
     }

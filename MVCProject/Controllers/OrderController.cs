@@ -16,7 +16,7 @@ namespace MVCProject.Controllers
         private aspnetEntities _db = new aspnetEntities();
         //
         // GET: /Order/
-        public ActionResult Index(int? page, int? size, string filter, string order, string state,string datefrom,string dateto)
+        public ActionResult Index(int? page, int? size, string filter, string state,string datefrom,string dateto)
         {
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -26,20 +26,7 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "20"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            var list = from l in db.Orders select l;
-            if (!string.IsNullOrEmpty(datefrom))
-            {
-                datefrom=UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
-                dateto = UtilDatetime.FromTime(dateto).ToString("yyyyMMddHHmmss");
-                list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
-                                           String.Compare(a.DateCreate, dateto) <= 0);
-            }
-            if (!string.IsNullOrEmpty(filter))
-                list = list.Where(a => a.OrderCode.Contains(filter));
-            if (!string.IsNullOrEmpty(state) && state != "3")
-                list = list.Where(a => a.State == state);
-            
-            list = list.OrderBy(a => a.DateCreate);
+            var list = GetList(filter, state, datefrom, dateto);
             
             return View(list.ToList().ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size)); 
@@ -79,7 +66,7 @@ namespace MVCProject.Controllers
             Session.Clear();
             return View();
         }
-
+        
         public ActionResult Complete(string orderCode, string deliveryMan, string dateShip)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
@@ -92,6 +79,33 @@ namespace MVCProject.Controllers
             db.SaveChanges();
             Response.Redirect("~/Order/Index");
             return null;
+        }
+        private IEnumerable<Models.Order> GetList(string filter, string state, string datefrom, string dateto)
+        {
+            var list = from l in db.Orders select l;
+            if (!string.IsNullOrEmpty(datefrom) & !string.IsNullOrEmpty(dateto))
+            {
+                datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
+                dateto = UtilDatetime.FromTime(dateto).ToString("yyyyMMddHHmmss");
+                list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
+                                           String.Compare(a.DateCreate, dateto) <= 0);
+            }
+            else if (!string.IsNullOrEmpty(datefrom))
+            {
+                datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
+                list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
+            }
+            else if (!string.IsNullOrEmpty(datefrom))
+            {
+                dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
+                list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);
+            }
+            if (!string.IsNullOrEmpty(filter))
+                list = list.Where(a => a.OrderCode.Contains(filter));
+            if (!string.IsNullOrEmpty(state) && state != "3")
+                list = list.Where(a => a.State == state);
+
+            return list = list.OrderBy(a => a.DateCreate);
         }
     }
 }

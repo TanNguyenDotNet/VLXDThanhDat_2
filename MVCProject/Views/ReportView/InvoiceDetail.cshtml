@@ -79,7 +79,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <th>SL</th>
                             <th>Đơn Giá</th>
                             <th>VAT</th>
-                            <th>Chiết Khấu</th>
+                            <th>Chiết khấu</th>
                             <th>Thành Tiền</th>
                         </tr>
                     </thead>
@@ -109,12 +109,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <td colspan=2 width="200px" style="text-align:right">@invoiceparams.Total</td>
                     </tr>
                     <tr>
-                        <td colspan=2 width="200px">Chiết Khấu</td>
-                        <td colspan=2 width="200px" style="text-align:right">_</td>
-                    </tr>
-                    <tr>
                         <td colspan=2 width="200px">Thuế VAT</td>
                         <td colspan=2 width="200px" style="text-align:right">@invoiceparams.VAT</td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 width="200px">Công nợ</td>
+                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.Payment.Value.ToString("n0")</td>
                     </tr>
                     <tr>
                         <td colspan=2 width="200px">Tổng Cộng</td>

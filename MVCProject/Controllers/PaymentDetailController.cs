@@ -38,7 +38,7 @@ namespace MVCProject.Controllers
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             return View(listPaymentDetail.ToList().ToPagedList(page == null ||
-                page == 0 ? 1 : (int)page, size == null || size == 0 ? 1 : (int)size));
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
         public ActionResult Home(int? page, int? size, string filter, string order, string dateFrom, string dateTo, string idaccount)
         {

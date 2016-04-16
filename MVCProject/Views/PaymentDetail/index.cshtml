@@ -27,8 +27,13 @@
                     <div class="input-group">
                         <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm tên người nhập" value="@Request.QueryString["filter"]">
                         <span class="input-group-btn">
-                            <button type="submit" onchange="paymentdetailViewForm.submit()" name="idaccount" value="@idaccount" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            <button type="submit" onchange="paymentdetailViewForm.submit()"  id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2" style="display:none">
+                    <div class="input-group">
+                        <input type="text" name="idaccount" id="idaccount" class="form-control" value="@Request.QueryString["idaccount"]">
                     </div>
                 </div>
                 <div class="form-group col-sm-4">
@@ -47,7 +52,7 @@
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
                         <select class="form-control" name="size" id="size" onchange="paymentdetailViewForm.submit();">
-                            @for (int s = 1; s <= 100; s += 1)
+                            @for (int s = 20; s <= 100; s += 20)
                             {
                                 <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")}>@s</option>
                             }

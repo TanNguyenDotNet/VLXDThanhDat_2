@@ -530,6 +530,7 @@
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\PaymentDetail\index.cshtml" />
     <Content Include="Views\PaymentDetail\Payment.cshtml" />
+    <Content Include="Views\PaymentDetail\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

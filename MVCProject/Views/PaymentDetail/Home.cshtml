@@ -3,21 +3,16 @@
 
 @{
     ViewBag.Title = "Danh sách";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    List<MVCProject.Models.AspNetUser> listUser = (List<MVCProject.Models.AspNetUser>)ViewData["ListUsers"];
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
 
     string size = Request.QueryString["size"];
-    if (size == null || size == "") { size = "1"; }
-    string idaccount = ViewData["idaccount"].ToString();
+    if (size == null || size == "") { size = "20"; }
 }
-<form action="~/PaymentDetail/index?=@idaccount" method="get" id="paymentdetailViewForm">
+<form action="~/PaymentDetail/Home" method="get" id="paymentdetailViewForm">
     <section class="content-header">
         <h2>
             Chi tiết thanh toán của @ViewBag.UserName
         </h2>
-        <div class="arrange-button">
-            <a href="~/PaymentDetail/Payment?PayID=@idaccount" class="btn btn-info" id="modaltrigger" rel="leanModal">Nhập thanh toán</a>
-        </div>
     </section>
 
     <section class="content">
@@ -25,9 +20,8 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <div class="input-group">
-                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm tên người nhập" value="@Request.QueryString["filter"]">
                         <span class="input-group-btn">
-                            <button type="submit" onchange="paymentdetailViewForm.submit()" name="idaccount" value="@idaccount" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            <button type="submit" onclick="paymentdetailViewForm.submit()" name="idaccount" value="@Request.QueryString["idaccount"]" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
                     </div>
                 </div>
@@ -47,9 +41,9 @@
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
                         <select class="form-control" name="size" id="size" onchange="paymentdetailViewForm.submit();">
-                            @for (int s = 1; s <= 100; s += 1)
+                            @for (int s = 20; s <= 100; s += 20)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")}>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
                             }
                         </select>
                     </div>
@@ -62,7 +56,6 @@
                     <tr style="background-color: #3c8dbc; color:#fff">
                         <th>Ngày thanh toán</th>
                         <th>Số tiền thanh toán</th>
-                        <th>Người nhập</th>
                         <th>Ghi chú</th>
                     </tr>
                 </thead>
@@ -76,9 +69,6 @@
                             <td>
                                 @item.Pay.Value.ToString("n0")
                             </td>
-                            <td align="center">
-                                @listUser.Where(a => a.Id == item.IDAccountInput).FirstOrDefault().UserName
-                            </td>
                             <td style="text-align:left">
                                 @item.Description
                             </td>
@@ -89,19 +79,17 @@
             <div class="arrange-button">
                 <p>Tổng Cộng: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
             </div>
-            <nav style="text-align:right">
-                @Html.PagedListPager(Model, page => Url.Action("index" , new
+        </div>
+    </section>
+    <nav style="text-align:right">
+        @Html.PagedListPager(Model, page => Url.Action("Home", new
                            {
                                page,
                                size = size,
                                filter = ViewBag.Filter,
-                               order = ViewBag.Order,
-                               idaccount=idaccount
+                               order = ViewBag.Order
                            }))
-            </nav>
-        </div>
-    </section>
-    
+    </nav>
     <script>
         $('#DateFrom').datetimepicker({
             value: '@Request.QueryString["DateFrom"]', step: 1
@@ -112,4 +100,3 @@
     </script>
 
 </form>
-

@@ -29,7 +29,7 @@ namespace MVCProject.Controllers
             var list = GetList(filter, state, datefrom, dateto);
             
             return View(list.ToList().ToPagedList(page == null ||
-                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size)); 
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 5 : (int)size)); 
         }
 
         public ActionResult Cancel()

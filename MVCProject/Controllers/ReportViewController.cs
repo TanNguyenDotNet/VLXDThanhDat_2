@@ -130,7 +130,7 @@ namespace MVCProject.Controllers
                             where o.IDAccount == id
                             select o;
             decimal? total = listOrder.Sum(a => a.Total) - listPaymentDetail.Sum(a => a.Pay);
-            return total;
+            return total == null ? 0 : total;
         }
         #endregion
     }

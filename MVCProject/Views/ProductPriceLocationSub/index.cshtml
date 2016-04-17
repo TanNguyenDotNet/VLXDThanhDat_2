@@ -5,14 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
     List<MVCProject.Models.LocationSub> listLocatSub = (List<MVCProject.Models.LocationSub>)ViewData["SubList"];
-    
+
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "20"; }
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
     string subid = Request.QueryString["SubID"];
     if (subid == null || subid == "") { subid = "1"; }
-
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
@@ -38,12 +37,12 @@
                         <span class="input-group-addon" id="basic-addon1">Khu vực</span>
                         <select class="form-control" name="subid" id="subid" onchange="productViewForm.submit()">
                             <option value="0">Chọn khu vực</option>
-                            @foreach (var i in listLocatSub)
-                            {
-                                <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")             }>
-                                    @i.Name
-                                </option>
-                            }
+                                @foreach (var i in listLocatSub)
+                                {
+                                    <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")             }>
+                                        @i.Name
+                                    </option>
+                                }
                         </select>
 
                     </div>
@@ -88,31 +87,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <th scope="row" style="text-align:left">
-                                @item.ProductName
-                            </th>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ItemCode)
-                            </td>
-                            <td align="center">
-                                @Html.DisplayFor(modelItem => item.CatID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Unit)
-                            </td>
-                            <td style="text-align:right">
-                                @double.Parse(item.Price.ToString()).ToString("#,###")
-                            </td>
-                            <td>
-                                @if (roles.Contains("7"))
-                                {
-                                    <a class="circle-bt" href="~/ProductPrice/Create/@item.ID?subid=@subid"><img src="~/Images/imgs/dollar-price-tag.png" height="12" width="12" alt="product price"></a>
-                                }
-                            </td>
-                        </tr>
+                    @if(Model != null & Model.Count>0)
+                    { 
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                    @item.ProductName
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemCode)
+                                </td>
+                                <td align="center">
+                                    @Html.DisplayFor(modelItem => item.CatID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Unit)
+                                </td>
+                                <td style="text-align:right">
+                                    @double.Parse(item.Price.ToString()).ToString("#,###")
+                                </td>
+                                <td>
+                                    @if (roles.Contains("7"))
+                                    {
+                                        <a class="circle-bt" href="~/ProductPrice/Create/@item.ID?subid=@subid"><img src="~/Images/imgs/dollar-price-tag.png" height="12" width="12" alt="product price"></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>

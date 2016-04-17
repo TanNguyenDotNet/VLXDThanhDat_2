@@ -20,6 +20,8 @@ namespace MVCProject.Controllers
                 return null;
             if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
+            if (modelAspnet.LocationSubs.Count() < 1)
+                return View();
             var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, subid);
             int _subid=int.Parse(subid);
             decimal priceSub = decimal.Parse((modelAspnet.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;

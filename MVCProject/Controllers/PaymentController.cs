@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -14,10 +15,16 @@ namespace MVCProject.Controllers
         private retailEntities modelRetail = Params.ModelRetail;
         private aspnetEntities modelAspnet = Params.ModelaspnetEntities;
         // GET: Payment
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter)
         {
             string userEnctypt = "";
-            var listUser = modelAspnet.AspNetUsers.ToList();
+            var _listUser = from l in modelAspnet.AspNetUsers select l;
+            if (!string.IsNullOrEmpty(filter))
+            { _listUser = _listUser.Where(a => a.UserName.Contains(filter));}
+            if (_listUser.Count()<1)
+                return View(_listUser.ToList().ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
+             var listUser = _listUser.ToList();
             var listUserType = modelAspnet.AppNetUserTypes.ToList();
             List<string> lstType = new List<string>();
             List<string> lstUser = new List<string>();
@@ -37,7 +44,8 @@ namespace MVCProject.Controllers
             ViewData["SumOfPaymentDetail"] = SumOfPaymentDetail(lstUser);
             ViewData["LocationSub"] = Params.listLocationSub.Where(a => listUserType.Select(p => p.LocationSubID).ToList().Contains(a.ID)).ToList();
             ViewData["UsersType"] = listUserType;
-            return View(listUser);
+            return View(listUser.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
         #region function
         private Dictionary<string, decimal> SumOfOrders(List<string> lstUser)

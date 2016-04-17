@@ -20,16 +20,22 @@ namespace MVCProject.Controllers
         {
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
-
             ViewBag.UserType = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
-
             if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "20"))
                 return RedirectToAction("AccessDenied", "Account");
+            try
+            {
+                var list = GetList(filter, state, datefrom, dateto);
 
-            var list = GetList(filter, state, datefrom, dateto);
-            
-            return View(list.ToList().ToPagedList(page == null ||
-                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size)); 
+                return View(list.ToList().ToPagedList(page == null ||
+                    page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
+            }
+            catch (Exception ex)
+            {
+                return View(ex);    
+            }
+
+             
         }
 
         public ActionResult Cancel()

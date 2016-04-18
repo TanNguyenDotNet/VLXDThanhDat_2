@@ -1,4 +1,4 @@
-﻿@model MVCProject.Models.Product
+﻿@model MVCProject.Models.ProductViewModel
 
 @{
     ViewBag.Title = "Chỉnh sửa";
@@ -24,7 +24,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ItemCode">Mã sản phẩm:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control", @readonly = "true" })
                     @Html.ValidationMessageFor(model => model.ItemCode)
                 </div>
             </div>

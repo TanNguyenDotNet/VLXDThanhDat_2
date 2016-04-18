@@ -4,13 +4,13 @@
     ViewBag.Title = "Thêm chi tiết đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    Dictionary<long, string> priceList = (Dictionary<long, string>)ViewBag.PriceList;
+    Dictionary<long, decimal> priceList = (Dictionary<long, decimal>)ViewBag.PriceList;
 }
 <section class="content-header">
     <h2>@ViewBag.Title</h2>
     <h4>Thông tin sản phẩm</h4>
     </section>
-    @using (Html.BeginForm("Edit", "OrderDetail", FormMethod.Post, new { Id = "odForm", Name = "odForm" }))
+    @using (Html.BeginForm("AddOrderDetail", "OrderDetail", FormMethod.Post, new { Id = "odForm", Name = "odForm" }))
     {
         @Html.AntiForgeryToken()
 <section class="content">
@@ -53,7 +53,7 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true" })
+                @Html.TextBoxFor(model => model.Total, new { @class = "form-control total-price", @readonly = "true" })
                 @Html.ValidationMessageFor(model => model.Total)
             </div>
         </div>
@@ -92,7 +92,9 @@
                 return true;
             }
             function thanhtien() {
-                var dg = parseFloat(f.Price.value);
+                var dg = parseFloat(f.Price.value.replace(/,/gi, ""));
+                var temp = parseFloat($('.total-price').maskMoney());
+                
                 var sl = parseFloat(f.Amount.value);
                 var thue = parseFloat(f.Tax.value);
                 var tt = parseFloat(f.Total.value);
@@ -101,6 +103,7 @@
                     tt = (sl * dg) + ((thue / 100) * (sl * dg));
                     f.Total.value = tt;
                 }
+                console.log("orginal", f.Total.value);
             }
         </script>
     }

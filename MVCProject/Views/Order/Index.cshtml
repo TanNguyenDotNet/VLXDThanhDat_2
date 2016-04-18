@@ -111,7 +111,7 @@
                         {
                             <tr>
                                 <th>
-                                    <a href="../ReportView/InvoiceDetail/?code=@item.OrderCode">In</a>
+                                    <a href="" onclick="openWindow('../ReportView/InvoiceDetail/?code=@item.OrderCode')">In</a>
                                 </th>
                                 <td>
                                     @if (roles.Contains("15"))
@@ -151,7 +151,7 @@
                                 <td align="center">
                                     @if (item.DateShip != null && item.DateShip != "")
                                     {
-                                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
                                     }
                                     @sdate
                                 </td>
@@ -184,6 +184,12 @@
     $('#DateTo').datetimepicker({
         value: '@Request.QueryString["DateTo"]', step: 1
     });
+
+    function openWindow(value){
+        //console.log(value);
+        //var url = value;
+        window.open(value, 'newWindow','width=960, height=auto');
+    }
     </script>
 
 </form>

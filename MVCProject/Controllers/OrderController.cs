@@ -34,8 +34,6 @@ namespace MVCProject.Controllers
             {
                 return View(ex);    
             }
-
-             
         }
 
         public ActionResult Cancel()

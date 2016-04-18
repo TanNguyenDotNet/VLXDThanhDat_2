@@ -185,15 +185,15 @@ namespace MVCProject.Common
             catch { return null; }
         }
 
-        public static Dictionary<long, string> GetPriceList(Models.aspnetEntities db)
+        public static Dictionary<long, decimal> GetPriceList(Models.aspnetEntities db)
         {
             try
             {
-                Dictionary<long, string> list = new Dictionary<long, string>();
+                Dictionary<long, decimal> list = new Dictionary<long, decimal>();
                 var pl = db.Products.ToList();
                 foreach (Models.Product p in pl)
                     if (p.Price != null)
-                        list.Add(p.ID, double.Parse(p.Price.ToString()).ToString("#,###"));
+                        list.Add(p.ID, (decimal)p.Price);
                 return list;
             }
             catch { return null; }

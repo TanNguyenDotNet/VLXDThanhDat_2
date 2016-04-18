@@ -106,7 +106,7 @@ namespace MVCProject.Controllers
 
             ViewBag.ProductList = Common.Commons.GetProductList(_db);
             ViewBag.PriceList = Common.Commons.GetPriceList(_db);
-            return View(new OrdersDetail { OrderCode = code });
+            return View(new OrdersDetail { OrderCode = code, Tax="0" });
         }
 
         [HttpPost]
@@ -166,6 +166,9 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(od).State = EntityState.Modified;
+                Order _order = RefeshOrder(db.Orders.Where(a => a.OrderCode == od.OrderCode).FirstOrDefault());
+                if (_order != null)
+                    db.Entry(_order).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("AdmView", new { code = od.OrderCode });
             }
@@ -505,6 +508,23 @@ namespace MVCProject.Controllers
             }
             
             return SetDetailForm(li, cd, u);
+        }
+        private Order RefeshOrder(Order o)
+        {
+            if (o == null)
+                return o;
+            var od = db.OrdersDetails.Where(a => a.OrderCode == o.OrderCode);
+            if (od.Count()<1)
+                return o;
+            o.TotalWithoutTax = 0;
+            o.Total = 0;
+            foreach (var item in od)
+            {
+                o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * item.Price);
+                o.Total += item.Total;
+                o.Discount += (decimal)item.Discount;
+            }
+            return o;
         }
         #endregion
     }

@@ -16,6 +16,7 @@ namespace MVCProject.Models
     {
         public long ID { get; set; }
         public long IDProduct { get; set; }
+        [System.ComponentModel.DataAnnotations.DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N}")]
         public decimal Price { get; set; }
         public string Amount { get; set; }
         public bool ReturnGood { get; set; }

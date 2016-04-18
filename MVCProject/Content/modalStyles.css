@@ -302,16 +302,18 @@ body {
 	    left: -5px;
     }
 }
-@media (max-width:768px){
-	.login-wrapper h1 {
-	font-size:1.5rem;
-	}
-	.login-wrapper .login h2{
-	font-size:1rem;
-	}
+@media (max-width:768px) {
+    .login-wrapper h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-wrapper .login h2 {
+        font-size: 1rem;
+    }
+}
  /********* printing ***************************************************************************************/
 .div-wrapper {
-  width: 960px;
+  /*width: 960px;*/
   margin:0 auto;
 }
 .first-table tr.order-name {
@@ -378,7 +380,17 @@ table.hoadon tbody,
 table.hoadon tr td,
 table.hoadon tr th {
   border:1px solid #B8B8B8;
-  font-size:10px;
+  padding:3px;
+}
+table.hoadon thead,
+table.hoadon tbody,
+table.hoadon tr th {
+    font-size: 13px;
+}
+table.hoadon thead,
+table.hoadon tbody,
+table.hoadon tr td {
+    font-size: 12px;
 }
 table.table-rice thead,
 table.table-rice tbody,
@@ -408,6 +420,4 @@ table.table-rice tr th {
 .hoadon-button > p,
 .hoadon-button > p > span{
   font-size:14px;
-}
-	
 }

@@ -25,7 +25,9 @@ namespace MVCProject
 
             bundles.Add(new ScriptBundle("~/bundles/frontend").Include(
                       "~/Scripts/app.js",
-                      "~/Scripts/main.js"));
+                      "~/Scripts/main.js",
+                      "~/Scripts/notify.min.js",
+                      "~/Scripts/jquery.maskMoney.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",

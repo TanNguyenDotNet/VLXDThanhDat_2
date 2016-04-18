@@ -9,7 +9,38 @@ namespace MVCProject.Models
         [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
     }
-
+    public class ProductViewModel
+    {
+        public long ID { get; set; }
+        public string ItemCode { get; set; }
+        public string Barcode { get; set; }
+        [Required(ErrorMessage = "Chọn danh mục")]
+        public long CatID { get; set; }
+        public string SKU { get; set; }
+        public Nullable<int> SupplierID { get; set; }
+        public string ImageLink { get; set; }
+        public string Adwords { get; set; }
+        public bool Show { get; set; }
+        public Nullable<System.DateTime> DateCreate { get; set; }
+        public string Color { get; set; }
+        public string Dimension { get; set; }
+        public string Unit { get; set; }
+        public string Warranty { get; set; }
+        public bool IsDel { get; set; }
+        public Nullable<byte> IsState { get; set; }
+        public string UserID { get; set; }
+        [Required(ErrorMessage = "Nhập tên sản phẩm")]
+        public string ProductName { get; set; }
+        [Required(ErrorMessage = "Chọn thuế suất")]
+        public Nullable<byte> TaxID { get; set; }
+        [Required(ErrorMessage = "Nhập giá")]
+        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Nhập số")]
+        public Nullable<decimal> Price
+        {
+            get;
+            set;
+        }
+    }
     public class ManageUserViewModel
     {
         [Required]
@@ -46,8 +77,9 @@ namespace MVCProject.Models
 
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage="Nhập tên đăng nhập")]
         [Display(Name = "Tên đăng nhập")]
+        [StringLength(100, ErrorMessage = "Tên đăng nhập từ 6 kí tự", MinimumLength = 6)]
         public string UserName { get; set; }
         [Display(Name = "Tên cá nhân/đại lý")]
         public string FullName { get; set; }

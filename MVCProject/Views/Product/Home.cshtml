@@ -147,7 +147,7 @@
                                 </td>
                                 @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User) {
                                 <td align="center">
-                                    <a href="#" onclick="AddToCart('@item.ItemCode');">
+                                    <a href="#" class="elem-demo-@item.ItemCode" onclick="AddToCart('@item.ItemCode');">
                                         <img class='add-button-disable' src='../Images/imgs/add.png'  height="16" width="16" alt='@item.ProductName' />
                                     </a>
                                 </td>
@@ -170,12 +170,14 @@
                 if (val.indexOf(code) == -1) {
                     if (val != '') val += ',';
                     val += code;
+                    console.log('asd');
                     document.getElementById("Cart").value = val;
-                    alert("Thêm đơn hàng thành công!");
+                    // alert("Thêm đơn hàng thành công!");
+                    $(".elem-demo-"+code).notify("Đã thêm giỏ hàng", "success");
                     productViewForm.submit();
                 }
                 else
-                    alert("Sản phẩm đã được chọn!");
+                    $(".elem-demo-"+code).notify("Sản phẩm đã được chọn", "warn");
             }
                     </script>
 

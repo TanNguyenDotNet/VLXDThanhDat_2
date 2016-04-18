@@ -93,9 +93,9 @@ namespace MVCProject.Controllers
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            var p = new Models.Product();
+            var p = new Models.ProductViewModel();
             int useCatCode = 0;
-            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP");
+            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true;
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
@@ -110,15 +110,16 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
                 return RedirectToAction("AccessDenied", "Account");
-
+            Product product = new Product();
             if (ModelState.IsValid)
             {
+                product = SetObj(_product);
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -128,7 +129,7 @@ namespace MVCProject.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(product);
+            return View(_product);
         }
 
         // GET: /Product/Edit/5
@@ -148,16 +149,16 @@ namespace MVCProject.Controllers
             {
                 return HttpNotFound();
             }
-
+            ProductViewModel _productView= new ProductViewModel();
+            _productView = SetObjViewModel(product);
             int useCatCode = 0;
-            Common.Commons.GenItemCode(db, out useCatCode, "SP");
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
-            return View(product);
+            return View(_productView);
         }
 
         // POST: /Product/Edit/5
@@ -165,15 +166,16 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "2"))
                 return RedirectToAction("AccessDenied", "Account");
-
+            Product product = new Product();
             if (ModelState.IsValid)
             {
+                product = SetObj(_product);
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -181,7 +183,7 @@ namespace MVCProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(_product);
         }
 
         // GET: /Product/Delete/5
@@ -310,7 +312,7 @@ namespace MVCProject.Controllers
                     && c.ProductName.Contains(filter) && c.Show == true);
             else if (lcid > 0)
                 list = db.Products.Where(c => c.CatID == lcid);
-            else if (filter != null && filter != "")
+            if (filter != null && filter != "")
                 list = db.Products.Where(c => c.ProductName.Contains(filter) && c.Show == true);
             else
                 list = db.Products.Where(c => c.Show == true);
@@ -403,6 +405,56 @@ namespace MVCProject.Controllers
                     nList.Add(item.ProductID, item.Name);
             }
             ViewData["NameList"] = nList;
+        }
+        private Product SetObj(ProductViewModel _product)
+        {
+            Product p = new Product();
+            p.ID = _product.ID;
+            p.Adwords = _product.Adwords;
+            p.Barcode = _product.Barcode;
+            p.CatID = _product.CatID;
+            p.Color = _product.Color;
+            p.DateCreate = _product.DateCreate;
+            p.Dimension = _product.Dimension;
+            p.ImageLink = _product.ImageLink;
+            p.IsDel = _product.IsDel;
+            p.IsState = _product.IsState;
+            p.ItemCode = _product.ItemCode;
+            p.Price = _product.Price;
+            p.ProductName = _product.ProductName;
+            p.Show = _product.Show;
+            p.SKU = _product.SKU;
+            p.SupplierID = _product.SupplierID;
+            p.TaxID = _product.TaxID;
+            p.Unit = _product.Unit;
+            p.UserID = _product.UserID;
+            p.Warranty = _product.Warranty;
+            return p;
+        }
+        private ProductViewModel SetObjViewModel(Product _product)
+        {
+            ProductViewModel p = new ProductViewModel();
+            p.ID = _product.ID;
+            p.Adwords = _product.Adwords;
+            p.Barcode = _product.Barcode;
+            p.CatID = _product.CatID;
+            p.Color = _product.Color;
+            p.DateCreate = _product.DateCreate;
+            p.Dimension = _product.Dimension;
+            p.ImageLink = _product.ImageLink;
+            p.IsDel = _product.IsDel;
+            p.IsState = _product.IsState;
+            p.ItemCode = _product.ItemCode;
+            p.Price = _product.Price;
+            p.ProductName = _product.ProductName;
+            p.Show = _product.Show;
+            p.SKU = _product.SKU;
+            p.SupplierID = _product.SupplierID;
+            p.TaxID = _product.TaxID;
+            p.Unit = _product.Unit;
+            p.UserID = _product.UserID;
+            p.Warranty = _product.Warranty;
+            return p;
         }
         #endregion
     }

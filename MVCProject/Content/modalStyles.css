@@ -205,7 +205,7 @@ body {
   padding-right:1px;
 }
 .table-striped td a img{
-  margin-bottom:5px;
+  /*margin-bottom:5px;*/
 }
 
 /*Page login=======================*/
@@ -387,6 +387,9 @@ table.hoadon tbody,
 table.hoadon tr th {
     font-size: 13px;
 }
+table.hoadon tr th {
+    text-align: center;
+}
 table.hoadon thead,
 table.hoadon tbody,
 table.hoadon tr td {
@@ -420,4 +423,13 @@ table.table-rice tr th {
 .hoadon-button > p,
 .hoadon-button > p > span{
   font-size:14px;
+}
+.wide-clickable > tfoot > tr > td,
+.wide-clickable > tbody > tr > td {
+    padding: 4px !important;
+}
+.wide-clickable > tbody > tr > td > a {
+    display:inline-block;
+    width: 25px;
+    height: 25px;
 }

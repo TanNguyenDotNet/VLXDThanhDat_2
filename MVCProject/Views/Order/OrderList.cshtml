@@ -83,7 +83,7 @@
                             <td align="center">
                                 @if (item.DateShip != null && item.DateShip != "")
                                 {
-                                    sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                                    sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
                                 }
                                 @sdate
                             </td>

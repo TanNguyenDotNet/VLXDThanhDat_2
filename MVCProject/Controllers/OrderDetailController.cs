@@ -103,8 +103,8 @@ namespace MVCProject.Controllers
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
                 return RedirectToAction("AccessDenied", "Account");
-
-            ViewBag.ProductList = Common.Commons.GetProductList(_db);
+            var listProduct = db.OrdersDetails.Where(a => a.OrderCode == code).Select(b => b.IDProduct).ToList();
+            ViewBag.ProductList = Common.Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);
             ViewBag.PriceList = Common.Commons.GetPriceList(_db);
             ViewBag.OrderCode = code;
             return View(new OrdersDetail { OrderCode = code, Tax="0" });
@@ -122,11 +122,15 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
-                od.DateOfOrder = DateTime.Now;//them productcode
+                od.DateOfOrder = DateTime.Now;
+                od.ProductCode = _db.Products.Where(a => a.ID == od.IDProduct).Select(b => b.ItemCode).FirstOrDefault();
                 od.RequestByUser = false;
                 db.OrdersDetails.Add(od);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                Order _order = RefeshOrder(db.Orders.Where(a => a.OrderCode == od.OrderCode).FirstOrDefault());
+                db.Entry(_order).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("AdmView", new { code = _order.OrderCode });
             }
 
             return View(od);
@@ -233,7 +237,6 @@ namespace MVCProject.Controllers
                     lp.Add(p);
                 }
             }
-
             ViewData["Total"] = total.ToString("#,###");
             ViewData["ProductList"] = lp;
             return list;
@@ -523,7 +526,6 @@ namespace MVCProject.Controllers
             {
                 o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * item.Price);
                 o.Total += item.Total;
-                o.Discount += (decimal)item.Discount;
             }
             return o;
         }

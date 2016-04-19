@@ -99,7 +99,7 @@ namespace MVCProject.Controllers
                 datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
                 list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
             }
-            else if (!string.IsNullOrEmpty(datefrom))
+            else if (!string.IsNullOrEmpty(dateto))
             {
                 dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
                 list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);

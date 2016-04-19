@@ -33,7 +33,8 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Giá</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true" })
+                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" >
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden", @onchange = "setPrice(this.value);" })
                 @Html.ValidationMessageFor(model => model.Price)
             </div>
         </div>
@@ -41,7 +42,7 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Số lượng</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();" })
+                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();", @maxlength = "6" })
                 @Html.ValidationMessageFor(model => model.Amount)
             </div>
         </div>
@@ -57,7 +58,8 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true" })
+                <input class="form-control" id="TotalModel" name="TotalModel" type="text" readonly="true">
+                @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true", @type = "hidden" })
                 @Html.ValidationMessageFor(model => model.Total)
             </div>
         </div>
@@ -85,6 +87,9 @@
                     return false;
                 }
                 return true;
+            }
+            function setPrice(val) {
+                f.PriceModel.value = accounting.formatMoney(f.Price.value, "", 0);
             }
             function thanhtien() {
                 var f = document.odForm;

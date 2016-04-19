@@ -90,10 +90,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <td style="text-align:left">@item._ProductCode</td>
                             <td style="text-align:left">@item._ProductName</td>
                             <td>@item._Unit</td>
-                            <td>@item._Amount</td>
-                            <td width="100px">@item._Price.ToString("n0")</td>
-                            <td width="100px">@item._Tax</td>
-                            <td width="100px">@item._Total.ToString("n0")</td>
+                            <td style="text-align:right">@item._Amount</td>
+                            <td style="text-align:right" width="100px">@item._Price.ToString("n0")</td>
+                            <td style="text-align:center" width="100px">@item._Tax</td>
+                            <td style="text-align:right" width="100px">@item._Total.ToString("n0")</td>
                         </tr>
                     }
                     </tbody>

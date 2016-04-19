@@ -34,7 +34,7 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Giá</label>
             <div class="col-md-6">
-                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" maxlength="6">
+                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true">
                 @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
                 @Html.ValidationMessageFor(model => model.Price)
             </div>
@@ -42,7 +42,7 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Số lượng</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();" })
+                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();", @maxlength = "6" })
                 @Html.ValidationMessageFor(model => model.Amount)
             </div>
         </div>

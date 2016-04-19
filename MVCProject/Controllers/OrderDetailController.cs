@@ -106,6 +106,7 @@ namespace MVCProject.Controllers
 
             ViewBag.ProductList = Common.Commons.GetProductList(_db);
             ViewBag.PriceList = Common.Commons.GetPriceList(_db);
+            ViewBag.OrderCode = code;
             return View(new OrdersDetail { OrderCode = code, Tax="0" });
         }
 
@@ -121,7 +122,7 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
-                od.DateOfOrder = DateTime.Now;
+                od.DateOfOrder = DateTime.Now;//them productcode
                 od.RequestByUser = false;
                 db.OrdersDetails.Add(od);
                 db.SaveChanges();

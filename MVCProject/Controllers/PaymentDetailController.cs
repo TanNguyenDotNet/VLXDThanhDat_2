@@ -46,6 +46,7 @@ namespace MVCProject.Controllers
 
             var listPaymentDetail = GetList(dateFrom, dateTo, idaccount, null);
             ViewData["Total"] = listPaymentDetail.ToList().Sum(a => a.Pay);
+            ViewData["TotalDebt"] = modelRetail.Orders.Where(a => a.IDAccount == idaccount).Sum(b => b.Total) - (decimal?)ViewData["Total"];
             ViewBag.UserName = modelAspnet.AspNetUsers.Where(a => a.Id == idaccount).FirstOrDefault().UserName;
 
             ViewBag.Order = order == null ? "" : order;

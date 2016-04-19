@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     Dictionary<long, decimal> priceList = (Dictionary<long, decimal>)ViewBag.PriceList;
+    
 }
 <section class="content-header">
     <h2>@ViewBag.Title</h2>
@@ -13,12 +14,13 @@
     @using (Html.BeginForm("AddOrderDetail", "OrderDetail", FormMethod.Post, new { Id = "odForm", Name = "odForm" }))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(Model=>Model.OrderCode)
 <section class="content">
     <div class="arrage-popup">
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Mã hóa đơn</label>
             <div class="col-md-6">
-                @Model.OrderCode
+                @ViewBag.OrderCode
             </div>
         </div>
         <div class="arrange-div form-group col-md-12">
@@ -32,7 +34,8 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Giá</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true" })
+                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" maxlength="6">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
                 @Html.ValidationMessageFor(model => model.Price)
             </div>
         </div>
@@ -53,7 +56,8 @@
         <div class="arrange-div form-group col-md-12">
             <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Total, new { @class = "form-control total-price", @readonly = "true" })
+                <input class="form-control" id="TotalModel" name="TotalModel" type="text" readonly="true">
+                @Html.TextBoxFor(model => model.Total, new { @class = "form-control total-price", @readonly = "true", @type = "hidden" })
                 @Html.ValidationMessageFor(model => model.Total)
             </div>
         </div>
@@ -66,7 +70,7 @@
         </div>
         <div style="text-align:center" class="col-md-12">
             <input type="submit" value="Lưu Lại" class="btn btn-info" />
-            <a href="~/OrderDetail/AdmView?code=@Model.OrderCode" class="btn btn-info">Về đơn hàng</a>
+            <a href="~/OrderDetail/AdmView?code=@ViewBag.OrderCode" class="btn btn-info">Về đơn hàng</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -81,6 +85,7 @@
 
             function setPrice(val) {
                 f.Price.value = arr[val];
+                f.PriceModel.value = accounting.formatMoney(arr[val], "", 0);
             }
 
             function check(control) {
@@ -91,19 +96,18 @@
                 }
                 return true;
             }
+           
             function thanhtien() {
-                var dg = parseFloat(f.Price.value.replace(/,/gi, ""));
-                var temp = parseFloat($('.total-price').maskMoney());
-                
+                var dg = parseFloat(f.Price.value);
                 var sl = parseFloat(f.Amount.value);
                 var thue = parseFloat(f.Tax.value);
                 var tt = parseFloat(f.Total.value);
-
+                
                 if (parseInt(sl) > 0) {
                     tt = (sl * dg) + ((thue / 100) * (sl * dg));
                     f.Total.value = tt;
+                    f.TotalModel.value = accounting.formatMoney(tt, "", 0);
                 }
-                console.log("orginal", f.Total.value);
             }
         </script>
     }

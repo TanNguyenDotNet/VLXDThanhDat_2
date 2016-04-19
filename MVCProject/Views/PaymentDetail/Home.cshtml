@@ -77,7 +77,10 @@
                 </tbody>
             </table>
             <div class="arrange-button">
-                <p>Tổng Cộng: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
+                <p>_____Tổng thanh toán: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
+            </div>
+            <div class="arrange-button">
+                <p>Tổng nợ phải trả: <span>@double.Parse(ViewData["TotalDebt"].ToString()).ToString("#,###")</span></p>
             </div>
         </div>
     </section>

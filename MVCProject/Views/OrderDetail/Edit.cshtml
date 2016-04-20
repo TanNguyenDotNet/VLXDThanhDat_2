@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Sửa chi tiết đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string _price = Model.Price.ToString("n0");
+    string _Total = Model.Total.ToString("n0");
 }
 <section class="content-header">
     <h2>@ViewBag.Title</h2>
@@ -30,6 +32,7 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Giá</label>
                 <div class="col-md-6">
@@ -37,6 +40,14 @@
                     @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
+=======
+        <div class="arrange-div form-group col-md-12">
+            <label class="text-label col-md-2" for="UserName">Giá</label>
+            <div class="col-md-6">
+                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" value="@_price" >
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden"})
+                @Html.ValidationMessageFor(model => model.Price)
+>>>>>>> d8315e6d9e94dda6b6764021bdee1227c536fde2
             </div>
 
             <div class="arrange-div form-group col-md-12">
@@ -55,6 +66,7 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
                 <div class="col-md-6">
@@ -62,6 +74,14 @@
                     @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Total)
                 </div>
+=======
+        <div class="arrange-div form-group col-md-12">
+            <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
+            <div class="col-md-6">
+                <input class="form-control" id="TotalModel" name="TotalModel" type="text" readonly="true" value="@_Total">
+                @Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "true", @type = "hidden" })
+                @Html.ValidationMessageFor(model => model.Total)
+>>>>>>> d8315e6d9e94dda6b6764021bdee1227c536fde2
             </div>
 
             <div class="arrange-div form-group col-md-12">
@@ -86,6 +106,7 @@
                 control.focus();
                 return false;
             }
+<<<<<<< HEAD
             return true;
         }
         function setPrice(val) {
@@ -103,6 +124,21 @@
                 tt = (sl * dg) + ((thue / 100) * (sl * dg));
                 f.Total.value = tt;
                 f.TotalModel.value = accounting.formatMoney(tt, "", 0);
+=======
+            function thanhtien() {
+                var f = document.odForm;
+                
+                var dg = parseFloat(f.Price.value);
+                var sl = parseFloat(f.Amount.value);
+                var thue = parseFloat(f.Tax.value);
+                var tt = parseFloat(f.Total.value);
+                
+                if (parseInt(sl) > 0) {
+                    tt = (sl * dg) + ((thue / 100) * (sl * dg));
+                    f.Total.value = tt;
+                    f.TotalModel.value = accounting.formatMoney(tt, "", 0);
+                }
+>>>>>>> d8315e6d9e94dda6b6764021bdee1227c536fde2
             }
         }
     </script>

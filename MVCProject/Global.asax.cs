@@ -17,8 +17,8 @@ namespace MVCProject
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            aspnetEntities db = new aspnetEntities();
-            Application["listProduct"] = db.Products.ToList();
+            //aspnetEntities db = new aspnetEntities();
+            //Application["listProduct"] = db.Products.ToList();
         }
     }
 }

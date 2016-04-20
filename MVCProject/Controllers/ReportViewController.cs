@@ -104,8 +104,8 @@ namespace MVCProject.Controllers
                 dr["Price"] = item.Price;
                 dr["Tax"] = item.Tax;
                 dr["Total"] = item.Total;
-                dr["ProductName"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().ProductName;
-                dr["Unit"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().Unit;
+                //dr["ProductName"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().ProductName;
+                //dr["Unit"] = ((List<Product>)HttpContext.Application["listProduct"]).Where(a => a.ItemCode == item.ProductCode).FirstOrDefault().Unit;
                 dsDetail.OrdersDetail.Rows.Add(dr);
             }
             InvoiceRptParams = new InvoiceDetailRptParams();

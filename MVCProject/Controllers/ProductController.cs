@@ -31,8 +31,7 @@ namespace MVCProject.Controllers
             var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
             int subid = (int)Users.LocationSubID;
             InitItem(false);
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, subid);
-
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, true);
             decimal priceSub = decimal.Parse((db.LocationSubs.Where(a => a.ID == subid).FirstOrDefault().LocationPrice)) / 100;
             list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
             var listProductPriceSub = db.ProductPrices.Where(a => a.LocationID == subid).ToList();
@@ -61,7 +60,7 @@ namespace MVCProject.Controllers
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, null);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
@@ -96,7 +95,7 @@ namespace MVCProject.Controllers
 
             var p = new Models.ProductViewModel();
             int useCatCode = 0;
-            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true;
+            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true; p.IsDel = false;
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
@@ -291,27 +290,17 @@ namespace MVCProject.Controllers
             }
         }
 
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid, int? subid)
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid, bool show = false)
         {
-            long lcid = 0;
-            try
-            {
-                cid = cid == null || cid == "" ? "0" : cid;
-                lcid = long.Parse(cid);
-            }
-            catch { lcid = 0; cid = "0"; }
-            IEnumerable<Models.Product> list = from p in db.Products
-                                               select p;
-            if (lcid > 0 && filter != null && filter != "")
-                list = list.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(filter) && c.Show == true);
-            else if (lcid > 0)
-                list = list.Where(c => c.CatID == lcid);
-            if (filter != null && filter != "")
-                list = list.Where(c => c.ProductName.Contains(filter) && c.Show == true);
-            else
-                list = list.Where(c => c.Show == true);
-
+            var list = from p in db.Products
+                       select p;
+            if (!string.IsNullOrEmpty(filter))
+                list = list.Where(a => a.ProductName.Contains(filter));
+            if (cid != "0")
+            { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
+            if (show)
+                list.Where(a => a.Show == show);
+            list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
             ViewBag.Order = order == null ? "" : order;
@@ -339,7 +328,7 @@ namespace MVCProject.Controllers
             ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
         }
 
-        IEnumerable<Models.Product> OrderList(IEnumerable<Models.Product> list, string order)
+        IQueryable<Models.Product> OrderList(IQueryable<Models.Product> list, string order)
         {
             if (list == null || list.Count() == 0)
                 return list;

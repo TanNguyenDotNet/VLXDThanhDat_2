@@ -14,7 +14,7 @@ namespace MVCProject.Controllers
     {
         private aspnetEntities modelAspnet = Params.ModelaspnetEntities;
         // GET: ProductPriceLocationSub
-        public ActionResult index(int? page, int? size, string filter, string order, string catid,string subid="1")
+        public ActionResult index(int? page, int? size, string filter, string order, string catid, string subid = "1")
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -22,16 +22,16 @@ namespace MVCProject.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             if (modelAspnet.LocationSubs.Count() < 1)
                 return View();
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, subid);
-            int _subid=int.Parse(subid);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            int _subid = int.Parse(subid);
             decimal priceSub = decimal.Parse((modelAspnet.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;
             list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
             var listProductPriceSub = modelAspnet.ProductPrices.Where(a => a.LocationID == _subid).ToList();
             if (listProductPriceSub.Count != 0)
             {
                 var listpp = (from p in modelAspnet.Products.ToList()
-                             join pp in listProductPriceSub on p.ID equals pp.ProductID
-                             select p).ToList();
+                              join pp in listProductPriceSub on p.ID equals pp.ProductID
+                              select p).ToList();
 
                 foreach (var item in listpp)
                 {
@@ -44,49 +44,29 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid,string subid)
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
         {
-            long lcid = 0; int _subid = int.Parse(subid);
-            try
-            {
-                cid = cid == null || cid == "" ? "0" : cid;
-                lcid = long.Parse(cid);
-            }
-            catch { lcid = 0; cid = "0"; }
+            var list = from p in modelAspnet.Products
 
-            IEnumerable<Models.Product> list = from p in modelAspnet.Products
-<<<<<<< HEAD
-                                               //join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
-                                               //from pp in pp_join.DefaultIfEmpty()
-                                               //where
-                                               //  pp.ID == null && pp.LocationID != _subid //Left join
-=======
-                                               join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
-                                               from pp in pp_join.DefaultIfEmpty()
-                                               where
-                                                 pp.ID == null & pp.LocationID != _subid
->>>>>>> d8315e6d9e94dda6b6764021bdee1227c536fde2
-                                               select p;//Lay danh sach khong bao gom gia chiet khau cua vung
-            if (lcid > 0 && filter != null && filter != "")
-                list = list.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(filter) && c.Show == true);
-            else if (lcid > 0)
-                list = list.Where(c => c.CatID == lcid);
-            else if (filter != null && filter != "")
-                list = list.Where(c => c.ProductName.Contains(filter) && c.Show == true);
-            else
-                list = list.Where(c => c.Show == true);
-
+                       //join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
+                       //from pp in pp_join.DefaultIfEmpty()
+                       //where
+                       //  pp.ID == null && pp.LocationID != _subid //Left join
+                       select p;//Lay danh sach khong bao gom gia chiet khau cua vung
+            if (!string.IsNullOrEmpty(filter))
+                list = list.Where(a => a.ProductName.Contains(filter));
+            if (cid != "0")
+            { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
+            list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             return list.ToList();
         }
-        IEnumerable<Models.Product> OrderList(IEnumerable<Models.Product> list, string order)
+        IQueryable<Models.Product> OrderList(IQueryable<Models.Product> list, string order)
         {
-            if (list == null || list.Count() == 0)
-                return list;
+
 
             switch (order)
             {
@@ -108,7 +88,7 @@ namespace MVCProject.Controllers
         }
         void initList()
         {
-            ViewData["CatList"]=modelAspnet.Catalogs.ToList();
+            ViewData["CatList"] = modelAspnet.Catalogs.ToList();
             ViewData["SubList"] = modelAspnet.LocationSubs.ToList();
         }
     }

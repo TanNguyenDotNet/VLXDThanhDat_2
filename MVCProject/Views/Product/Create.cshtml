@@ -4,7 +4,7 @@
     ViewBag.Title = "Thêm mới";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form action="/Product/Create" method="post" enctype="multipart/form-data">
+<form action="/Product/Create" method="post" enctype="multipart/form-data" id="odForm" , name="odForm">
     <section class="content-header">
         <h2>@ViewBag.Title</h2>
     </section>
@@ -36,14 +36,14 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="SKU">SKU</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.SKU, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.SKU, new { @class = "form-control",  })
                     @Html.ValidationMessageFor(model => model.SKU)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Giá</label>
                 <div class="col-md-6">
-                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" , onchange="setPrice(this.value);">
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="SetPrice();" />
                     @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
@@ -88,14 +88,14 @@
                 <label class="text-label col-md-2" for="Unit">ĐVT</label>
                 <div class="col-md-6">
                     <select name="Unit" id="Unit" class="form-control">
-                        <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")                  }>Cái</option>
-                        <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")                  }>Chiếc</option>
-                        <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")                  }>Cây</option>
-                        <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")                   }>Ống</option>
-                        <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")                    }>Thùng</option>
-                        <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")                     }>Hộp</option>
-                        <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")                      }>Kg</option>
-                        <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")                       }>Gam</option>
+                        <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")                     }>Cái</option>
+                        <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")                     }>Chiếc</option>
+                        <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")                     }>Cây</option>
+                        <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")                      }>Ống</option>
+                        <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")                       }>Thùng</option>
+                        <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")                        }>Hộp</option>
+                        <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")                         }>Kg</option>
+                        <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")                          }>Gam</option>
                     </select>
                     @Html.ValidationMessageFor(model => model.Unit)
                 </div>
@@ -149,12 +149,11 @@
             <div class="clearfix"></div>
         </div>
     </section>
-</form>
-<script>
-    var useCatCode = '@ViewData["UseCatCode"].ToString()';
-    var arrCatCode = new Array();
-    var f = document.odForm;
-    @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
+    <script>
+        var useCatCode = '@ViewData["UseCatCode"].ToString()';
+        var arrCatCode = new Array();
+
+        @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
             int count = 0;
             foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
             {
@@ -162,31 +161,32 @@
                  count++;
             }
         }
-    function SetPrice(val) {
-        f.Price.value = val;
-        f.ModelPrice.value = accounting.formatMoney(val, "", 0);
-    }
-    function SetCode(catid) {
-        if (useCatCode == '0')
-            return;
-
-        var icode = document.getElementById("ItemCode").value;
-        var strs = icode.split('.');
-        var code = "";
-        for (var i = 0; i < arrCatCode.length; i++) {
-            var parts = arrCatCode[i].split(',');
-            if (parts[0] == (catid + '')) {
-                code = parts[1];
-                break;
-            }
+        function SetPrice() {
+            var f = document.odForm;
+            f.Price.value = f.PriceModel.value;
         }
-        if (strs.length == 3 && code != '')
-            document.getElementById("ItemCode").value = code + '.' + icode;
-        else if (strs.length == 4 && code != '')
-            document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
-    }
-</script>
+        function SetCode(catid) {
+            if (useCatCode == '0')
+                return;
 
+            var icode = document.getElementById("ItemCode").value;
+            var strs = icode.split('.');
+            var code = "";
+            for (var i = 0; i < arrCatCode.length; i++) {
+                var parts = arrCatCode[i].split(',');
+                if (parts[0] == (catid + '')) {
+                    code = parts[1];
+                    break;
+                }
+            }
+            if (strs.length == 3 && code != '')
+                document.getElementById("ItemCode").value = code + '.' + icode;
+            else if (strs.length == 4 && code != '')
+                document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
+        }
+    </script>
+
+</form>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

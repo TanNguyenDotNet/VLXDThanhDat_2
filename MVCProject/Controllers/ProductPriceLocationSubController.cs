@@ -58,20 +58,20 @@ namespace MVCProject.Controllers
                                                join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
                                                from pp in pp_join.DefaultIfEmpty()
                                                where
-                                                 pp.ID == null && pp.LocationID != _subid
+                                                 pp.ID == null & pp.LocationID != _subid
                                                select p;//Lay danh sach khong bao gom gia chiet khau cua vung
             if (lcid > 0 && filter != null && filter != "")
-                list = modelAspnet.Products.Where(c => c.CatID == lcid
+                list = list.Where(c => c.CatID == lcid
                     && c.ProductName.Contains(filter) && c.Show == true);
             else if (lcid > 0)
-                list = modelAspnet.Products.Where(c => c.CatID == lcid);
+                list = list.Where(c => c.CatID == lcid);
             else if (filter != null && filter != "")
-                list = modelAspnet.Products.Where(c => c.ProductName.Contains(filter) && c.Show == true);
+                list = list.Where(c => c.ProductName.Contains(filter) && c.Show == true);
             else
-                list = modelAspnet.Products.Where(c => c.Show == true);
+                list = list.Where(c => c.Show == true);
 
             list = OrderList(list, order);
-            
+
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             return list.ToList();

@@ -5,111 +5,116 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     Dictionary<long, decimal> priceList = (Dictionary<long, decimal>)ViewBag.PriceList;
-    
+
 }
 <section class="content-header">
     <h2>@ViewBag.Title</h2>
     <h4>Thông tin sản phẩm</h4>
-    </section>
-    @using (Html.BeginForm("AddOrderDetail", "OrderDetail", FormMethod.Post, new { Id = "odForm", Name = "odForm" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(Model=>Model.OrderCode)
-<section class="content">
-    <div class="arrage-popup">
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Mã hóa đơn</label>
-            <div class="col-md-6">
-                @ViewBag.OrderCode
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
-            <div class="col-md-6">
-                @Html.DropDownListFor(model => model.IDProduct, (IEnumerable<SelectListItem>)ViewBag.ProductList,
-                     "Chọn sản phẩm", new { @class = "form-control", @onchange = "setPrice(this.value);" })
-                @Html.ValidationMessageFor(model => model.IDProduct)
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Giá</label>
-            <div class="col-md-6">
-                <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true">
-                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
-                @Html.ValidationMessageFor(model => model.Price)
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Số lượng</label>
-            <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();", @maxlength = "6" })
-                @Html.ValidationMessageFor(model => model.Amount)
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Thuế</label>
-            <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Tax, new { @class = "form-control", @onchange = "if(check(this))thanhtien();" })
-                @Html.ValidationMessageFor(model => model.Tax)
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
-            <div class="col-md-6">
-                <input class="form-control" id="TotalModel" name="TotalModel" type="text" readonly="true">
-                @Html.TextBoxFor(model => model.Total, new { @class = "form-control total-price", @readonly = "true", @type = "hidden" })
-                @Html.ValidationMessageFor(model => model.Total)
-            </div>
-        </div>
-        <div class="arrange-div form-group col-md-12">
-            <label class="text-label col-md-2" for="UserName">Giảm giá</label>
-            <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Discount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Discount)
-            </div>
-        </div>
-        <div style="text-align:center" class="col-md-12">
-            <input type="submit" value="Lưu Lại" class="btn btn-info" />
-            <a href="~/OrderDetail/AdmView?code=@ViewBag.OrderCode" class="btn btn-info">Về đơn hàng</a>
-        </div>
-        <div class="clearfix"></div>
-    </div>
 </section>
-        <script>
-            var arr = [];
-            var f = document.odForm;
+@using (Html.BeginForm("AddOrderDetail", "OrderDetail", FormMethod.Post, new { Id = "odForm", Name = "odForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(Model => Model.OrderCode)
+    <section class="content">
+        <div class="arrage-popup">
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Mã hóa đơn</label>
+                <div class="col-md-6">
+                    @ViewBag.OrderCode
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.IDProduct, (IEnumerable<SelectListItem>)ViewBag.ProductList,
+                     "Chọn sản phẩm", new { @class = "form-control", @onchange = "setPrice(this.value);" })
+                    @Html.ValidationMessageFor(model => model.IDProduct)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Giá</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.Price)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Số lượng</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();", @maxlength = "6" })
+                    @Html.ValidationMessageFor(model => model.Amount)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Thuế</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Tax, new { @class = "form-control", @onchange = "if(check(this))thanhtien();" })
+                    @Html.ValidationMessageFor(model => model.Tax)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Tổng cộng</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="TotalModel" name="TotalModel" type="text" readonly="true">
+                    @Html.TextBoxFor(model => model.Total, new { @class = "form-control total-price", @readonly = "true", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.Total)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Giảm giá</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Discount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Discount)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/OrderDetail/AdmView?code=@ViewBag.OrderCode" class="btn btn-info">Về đơn hàng</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+    <script>
+        var arr = [];
+        var f = document.odForm;
 
-            @foreach(long l in priceList.Keys){
+        @foreach (long l in priceList.Keys){
                 @Html.Raw(string.Format("arr[{0}] = '{1}';", l, priceList[l]));
             }
 
-            function setPrice(val) {
-                f.Price.value = arr[val];
-                f.PriceModel.value = accounting.formatMoney(arr[val], "", 0);
-            }
+        function setPrice(val) {
+            f.Price.value = arr[val];
+            f.PriceModel.value = accounting.formatMoney(arr[val], "", 0);
+            this.thanhtien();
+            //f.Amount.value = 0;
+            //f.Tax.value = 0;
+            //f.Total.value = 0;
+            //f.TotalModel.value = 0;
+        }
 
-            function check(control) {
-                if (isNaN(control.value)) {
-                    alert('Số nhập không hợp lệ!');
-                    control.focus();
-                    return false;
-                }
-                return true;
+        function check(control) {
+            if (isNaN(control.value)) {
+                alert('Số nhập không hợp lệ!');
+                control.focus();
+                return false;
             }
-           
-            function thanhtien() {
-                var dg = parseFloat(f.Price.value);
-                var sl = parseFloat(f.Amount.value);
-                var thue = parseFloat(f.Tax.value);
-                var tt = parseFloat(f.Total.value);
-                
-                if (parseInt(sl) > 0) {
-                    tt = (sl * dg) + ((thue / 100) * (sl * dg));
-                    f.Total.value = tt;
-                    f.TotalModel.value = accounting.formatMoney(tt, "", 0);
-                }
-            }
-        </script>
-    }
+            return true;
+        }
 
-    
+        function thanhtien() {
+            var dg = parseFloat(f.Price.value);
+            var sl = parseFloat(f.Amount.value);
+            var thue = parseFloat(f.Tax.value);
+            var tt = parseFloat(f.Total.value);
+
+            if (parseInt(sl) > 0) {
+                tt = (sl * dg) + ((thue / 100) * (sl * dg));
+                f.Total.value = tt;
+                f.TotalModel.value = accounting.formatMoney(tt, "", 0);
+            }
+        }
+    </script>
+}
+
+

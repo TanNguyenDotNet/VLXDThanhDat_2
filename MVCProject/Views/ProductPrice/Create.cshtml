@@ -23,7 +23,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Giá</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" ,@maxlenght="8"})
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
             </div>

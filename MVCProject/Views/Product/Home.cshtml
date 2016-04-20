@@ -170,9 +170,7 @@
                 if (val.indexOf(code) == -1) {
                     if (val != '') val += ',';
                     val += code;
-                    console.log('asd');
                     document.getElementById("Cart").value = val;
-                    // alert("Thêm đơn hàng thành công!");
                     $(".elem-demo-"+code).notify("Đã thêm giỏ hàng", "success");
                     productViewForm.submit();
                 }

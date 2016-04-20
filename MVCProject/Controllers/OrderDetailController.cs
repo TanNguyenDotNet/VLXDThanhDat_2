@@ -97,17 +97,17 @@ namespace MVCProject.Controllers
             return null;
         }
 
-        public ActionResult AddOrderDetail(string code)
+        public ActionResult AddOrderDetail(string code, string subid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
                 return RedirectToAction("AccessDenied", "Account");
             var listProduct = db.OrdersDetails.Where(a => a.OrderCode == code).Select(b => b.IDProduct).ToList();
-            ViewBag.ProductList = Common.Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);
-            ViewBag.PriceList = Common.Commons.GetPriceList(_db);
+            ViewBag.ProductList = Common.Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);//Han che ket noi xuong database
+            ViewBag.PriceList = GetListProductPrices(subid).ToDictionary(a => a.ID, b => (decimal)b.Price);
             ViewBag.OrderCode = code;
-            return View(new OrdersDetail { OrderCode = code, Tax="0" });
+            return View(new OrdersDetail { OrderCode = code, Tax = "0" });
         }
 
         [HttpPost]
@@ -153,14 +153,14 @@ namespace MVCProject.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Price = od.Price.ToString("n0");
             return View(od);
         }
 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," + 
+        public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
             "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
@@ -210,7 +210,7 @@ namespace MVCProject.Controllers
             string code = Request.QueryString["code"];
             if (code == null) return null;
             var o = db.Orders.Single(c => c.OrderCode == code);
-            if(o.State=="0" && viewBy == 1)
+            if (o.State == "0" && viewBy == 1)
             {
                 o.State = "1";
                 db.SaveChanges();
@@ -219,7 +219,7 @@ namespace MVCProject.Controllers
             string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
             var u = _db.AppNetUserTypes.Find(enu);
             var l = _db.Locations.Find(u.LocationID);
-            
+
             ViewData["Location"] = l;
             ViewData["AccountInfo"] = u;
             ViewData["OrderCode"] = code;
@@ -279,7 +279,7 @@ namespace MVCProject.Controllers
             if (li.Count > 0)
             {
                 decimal dicount = 0, tax = decimal.Parse(li[0].Tax), taxid = 0, total = 0, totalouttax = 0;
-                
+
                 foreach (Models.OrdersDetail od in li)
                 {
                     if (!od.RequestByUser)
@@ -331,7 +331,8 @@ namespace MVCProject.Controllers
                     db.SaveChanges();
                     Response.Redirect("~/Order/Success/?code=" + code);
                 }
-                catch { 
+                catch
+                {
                     db.OrdersDetails.RemoveRange(li);
                 }
             }
@@ -372,7 +373,7 @@ namespace MVCProject.Controllers
                 int iquan = 0;
                 Int32.TryParse(quan, out iquan);
                 if (name != null && name != "" && iquan > 0)
-                {      
+                {
                     list.Add(string.Format("{0}|{1}|{2}", name, quan, desc));
                 }
             }
@@ -383,34 +384,35 @@ namespace MVCProject.Controllers
 
         private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd, AppNetUserType u)
         {
-            if(cd.Length == 0) 
+            if (cd.Length == 0)
                 Response.Redirect("~/Account/Login");
 
             double Total = 0;
             List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
 
-            for(int i = 0; i < cd.GetLength(0); i++)
+            for (int i = 0; i < cd.GetLength(0); i++)
             {
                 Models.OrdersDetail od = new OrdersDetail();
                 od.IDProduct = long.Parse(cd[i, 0]);
                 od.Price = decimal.Parse(cd[i, 1]);
                 od.Amount = cd[i, 2];
-                od.Tax = (cd[i,3] != null && cd[i,3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
+                od.Tax = (cd[i, 3] != null && cd[i, 3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
                 od.RequestByUser = false;
 
                 decimal discount = 0;
-                var p = (from prom in _db.Promotions 
-                        join promtype in _db.PromotionTypes
-                        on prom.PromotionTypeID equals promtype.ID
-                        where prom.ProductID == od.IDProduct && prom.Active == true
-                            && prom.StartDate >= DateTime.Now && prom.EndDate <= DateTime.Now
-                            && (prom.LocationID == 0 || prom.LocationID == u.LocationID)
-                            && !promtype.AddType.Contains("P")
-                        select new {
-                            prom.PromotionValue,
-                            promtype.AddType,
-                            promtype.ExRate
-                        });
+                var p = (from prom in _db.Promotions
+                         join promtype in _db.PromotionTypes
+                         on prom.PromotionTypeID equals promtype.ID
+                         where prom.ProductID == od.IDProduct && prom.Active == true
+                             && prom.StartDate >= DateTime.Now && prom.EndDate <= DateTime.Now
+                             && (prom.LocationID == 0 || prom.LocationID == u.LocationID)
+                             && !promtype.AddType.Contains("P")
+                         select new
+                         {
+                             prom.PromotionValue,
+                             promtype.AddType,
+                             promtype.ExRate
+                         });
 
                 if (p != null && p.Count() > 0)
                 {
@@ -427,10 +429,10 @@ namespace MVCProject.Controllers
 
                 od.Discount = (discount * decimal.Parse(od.Amount));
                 double thue = (double)od.Price * (double)(double.Parse(od.Tax) / 100);
-                od.Total = (decimal) (double.Parse(od.Amount) * ((double)od.Price + thue));
+                od.Total = (decimal)(double.Parse(od.Amount) * ((double)od.Price + thue));
                 od.Total = od.Total - (discount * decimal.Parse(od.Amount));
 
-                Total += (double) od.Total;
+                Total += (double)od.Total;
                 listOd.Add(od);
             }
 
@@ -447,7 +449,7 @@ namespace MVCProject.Controllers
 
             return listOd;
         }
-        private List<Models.Product> ListPrice(int? subid, string[] parts,string subprice)
+        private List<Models.Product> ListPrice(int? subid, string[] parts, string subprice)
         {
             var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
             decimal priceSub = subprice == null ? 0 : decimal.Parse(subprice) / 100;
@@ -475,7 +477,7 @@ namespace MVCProject.Controllers
             string[,] cd = new string[parts.Length, 4];
 
             string[,] cdSession = null;
-            if(Session["CartDetails"] != null)
+            if (Session["CartDetails"] != null)
                 cdSession = (string[,])Session["CartDetails"];
 
             string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
@@ -500,17 +502,17 @@ namespace MVCProject.Controllers
                 }
 
                 cd[index, 1] = i.Price.ToString();
-                
+
                 cd[index, 0] = i.ID.ToString();
                 string quan = Request.QueryString["quan_" + i.ID];
                 cd[index, 2] = Request.QueryString["quan_" + i.ID] != null &&
                     Request.QueryString["quan_" + i.ID] != "" ? Request.QueryString["quan_" + i.ID] : quanSession;
                 var t = _db.Taxes.Where(c => c.ID == i.TaxID).FirstOrDefault();//Ko co row
-                if(t != null )//&& t.TaxRate > 0) Thue 0%
-                cd[index, 3] = t.TaxRate.ToString();
+                if (t != null)//&& t.TaxRate > 0) Thue 0%
+                    cd[index, 3] = t.TaxRate.ToString();
                 index++;
             }
-            
+
             return SetDetailForm(li, cd, u);
         }
         private Order RefeshOrder(Order o)
@@ -518,7 +520,7 @@ namespace MVCProject.Controllers
             if (o == null)
                 return o;
             var od = db.OrdersDetails.Where(a => a.OrderCode == o.OrderCode);
-            if (od.Count()<1)
+            if (od.Count() < 1)
                 return o;
             o.TotalWithoutTax = 0;
             o.Total = 0;
@@ -528,6 +530,28 @@ namespace MVCProject.Controllers
                 o.Total += item.Total;
             }
             return o;
+        }
+        private List<Product> GetListProductPrices(string subid)
+        {
+            var list = from l in _db.Products select l;
+            int _subid = int.Parse(subid);
+            decimal priceSub = decimal.Parse((_db.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;
+            list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
+            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == _subid).ToList();
+            if (listProductPriceSub.Count != 0)
+            {
+                var listpp = (from p in _db.Products.ToList()
+                              join pp in listProductPriceSub on p.ID equals pp.ProductID
+                              select p).ToList();
+
+                foreach (var item in listpp)
+                {
+                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                }
+
+                list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
+            }
+            return list.ToList();
         }
         #endregion
     }

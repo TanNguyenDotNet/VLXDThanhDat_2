@@ -38,7 +38,7 @@ namespace MVCProject.Controllers
                     item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
                 }
 
-                list.ToList().AddRange(listpp.ToList());
+                list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
             }
             initList();
             return View(list.ToPagedList(page == null ||
@@ -55,10 +55,10 @@ namespace MVCProject.Controllers
             catch { lcid = 0; cid = "0"; }
 
             IEnumerable<Models.Product> list = from p in modelAspnet.Products
-                                               join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
-                                               from pp in pp_join.DefaultIfEmpty()
-                                               where
-                                                 pp.ID == null && pp.LocationID != _subid
+                                               //join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
+                                               //from pp in pp_join.DefaultIfEmpty()
+                                               //where
+                                               //  pp.ID == null && pp.LocationID != _subid //Left join
                                                select p;//Lay danh sach khong bao gom gia chiet khau cua vung
             if (lcid > 0 && filter != null && filter != "")
                 list = modelAspnet.Products.Where(c => c.CatID == lcid

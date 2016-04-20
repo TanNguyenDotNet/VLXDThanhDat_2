@@ -10,9 +10,8 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-   
-    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
 
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
     @Scripts.Render("~/bundles/frontend")
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -74,20 +73,16 @@
                         <li class="active"><a href="~/Product/Index"><i class="fa fa-product-hunt"></i> <span>Sản phẩm</span></a></li>
                         <li class="active"><a href="~/ProductPriceLocationSub/index"><i class="fa fa-product-hunt"></i> <span>Giá sản phẩm theo khu vực</span></a></li>
                         <li>
-                            <a href="~/Catalog/Index"><i class="fa fa-tasks"></i> <span>Danh mục</span><i class="fa fa-angle-left pull-right"></i></a>
+                            <a href="#"><i class="fa fa-tasks"></i> <span>Danh mục</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                                <li><a href="#">Link in level 2</a></li>
-                                <li><a href="#">Link in level 2</a></li>
+                                <li><a href="~/Catalog/Index">Danh mục sản phẩm</a></li>
+                                <li><a href="~/Location/Index">Tỉnh/Thành phố</a></li>
+                                <li><a href="~/LocationSub/Index">Vùng</a></li>
                             </ul>
-                        </li>
-                        <li>
-                            <a href="~/Promotion/Index"><i class="fa fa-pagelines"></i> <span>Khuyến mãi</span></a>
                         </li>
                         <li><a href="~/Payment/Index"><i class="fa fa-shopping-bag"></i> <span>Công nợ</span></a></li>
                         <li><a href="~/Order/Index"><i class="fa fa-shopping-bag"></i> <span>Đơn hàng</span></a></li>
                         <li><a href="~/Account/Index"><i class="fa fa-user"></i> <span>Tài khoản</span></a></li>
-                        <li><a href="~/Location/Index"><i class="fa fa-user"></i> <span>Tỉnh/Thành phố</span></a></li>
-                        <li><a href="~/LocationSub/Index"><i class="fa fa-user"></i> <span>Danh mục vùng</span></a></li>
                     </ul><!-- /.sidebar-menu -->
                 }
                 else

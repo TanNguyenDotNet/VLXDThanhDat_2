@@ -31,7 +31,7 @@
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDProduct" Type="bigint" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Amount" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Amount" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="ReturnGood" Type="bit" Nullable="false" />
           <Property Name="DateOfOrder" Type="datetime" />
           <Property Name="Tax" Type="varchar" MaxLength="10" />
@@ -50,20 +50,24 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RetailDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="retailEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Orders" EntityType="RetailDBModel.Order" />
+          <EntitySet Name="OrdersDetails" EntityType="RetailDBModel.OrdersDetail" />
+        </EntityContainer>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="IDAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DateCreate" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DateShip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TotalWithoutTax" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="TotalWithoutTax" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Total" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="DeliveryMan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="DateProcessed" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -75,22 +79,18 @@
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDProduct" Type="Int64" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Amount" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="Amount" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ReturnGood" Type="Boolean" Nullable="false" />
           <Property Name="DateOfOrder" Type="DateTime" Precision="3" />
           <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Total" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RequestByUser" Type="Boolean" Nullable="false" />
           <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Discount" Type="Decimal" Precision="14" Scale="2" />
         </EntityType>
-        <EntityContainer Name="retailEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Orders" EntityType="Self.Order" />
-          <EntitySet Name="OrdersDetails" EntityType="Self.OrdersDetail" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -100,39 +100,39 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="RetailDBModel.Order">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="DateShip" ColumnName="DateShip" />
-                <ScalarProperty Name="TotalWithoutTax" ColumnName="TotalWithoutTax" />
-                <ScalarProperty Name="Tax" ColumnName="Tax" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="DeliveryMan" ColumnName="DeliveryMan" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="DateProcessed" ColumnName="DateProcessed" />
-                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
-                <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
+                <ScalarProperty Name="DateProcessed" ColumnName="DateProcessed" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DeliveryMan" ColumnName="DeliveryMan" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="TotalWithoutTax" ColumnName="TotalWithoutTax" />
+                <ScalarProperty Name="DateShip" ColumnName="DateShip" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrdersDetails">
             <EntityTypeMapping TypeName="RetailDBModel.OrdersDetail">
               <MappingFragment StoreEntitySet="OrdersDetail">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="ReturnGood" ColumnName="ReturnGood" />
-                <ScalarProperty Name="DateOfOrder" ColumnName="DateOfOrder" />
-                <ScalarProperty Name="Tax" ColumnName="Tax" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="RequestByUser" ColumnName="RequestByUser" />
-                <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+                <ScalarProperty Name="RequestByUser" ColumnName="RequestByUser" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="DateOfOrder" ColumnName="DateOfOrder" />
+                <ScalarProperty Name="ReturnGood" ColumnName="ReturnGood" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

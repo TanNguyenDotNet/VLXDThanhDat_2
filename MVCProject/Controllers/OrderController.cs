@@ -32,7 +32,8 @@ namespace MVCProject.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);    
+                Common.UtilException.ErrorLog(HttpContext.Server.MapPath("~/App_Data/"), ex);
+                return View(ex);
             }
         }
 

@@ -20,5 +20,6 @@ namespace MVCProject.Models
         public string LocationPrice { get; set; }
         public string Description { get; set; }
         public Nullable<byte> IsDel { get; set; }
+        public Nullable<bool> Show { get; set; }
     }
 }

@@ -37,12 +37,12 @@
                         <span class="input-group-addon" id="basic-addon1">Khu vực</span>
                         <select class="form-control" name="subid" id="subid" onchange="productViewForm.submit()">
                             <option value="0">Chọn khu vực</option>
-                                @foreach (var i in listLocatSub)
-                                {
-                                    <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")             }>
-                                        @i.Name
-                                    </option>
-                                }
+                            @foreach (var i in listLocatSub)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")              }>
+                                    @i.Name
+                                </option>
+                            }
                         </select>
 
                     </div>
@@ -54,7 +54,7 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")           }>
+                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")            }>
                                     @i.Title
                                 </option>
                             }
@@ -67,7 +67,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'") }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")  }>@s</option>
                             }
                         </select>
                     </div>
@@ -87,8 +87,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(Model != null & Model.Count>0)
-                    { 
+                    @if (Model != null & Model.Count > 0)
+                    {
                         foreach (var item in Model)
                         {
                             <tr>

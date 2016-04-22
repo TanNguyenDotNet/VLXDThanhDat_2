@@ -22,11 +22,15 @@ namespace MVCProject.Models
         public string UserType { get; set; }
         public string DateCreate { get; set; }
         public string Expire { get; set; }
-        public Nullable<int> LocationID { get; set; }
+        public int LocationID { get; set; }
         public Nullable<int> LocationSubID { get; set; }
         public string District { get; set; }
         public string State { get; set; }
         public string TaxID { get; set; }
         public string DisplayName { get; set; }
+        public string UserOfName { get; set; }
+        public string UserOfType { get; set; }
+        public Nullable<bool> IsDel { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     }
 }

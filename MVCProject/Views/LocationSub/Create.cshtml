@@ -41,6 +41,13 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Show">Hiển thị</label>
+                <div class="col-md-6">
+                    @Html.CheckBoxFor(model => model.Show.Value)
+                    @Html.ValidationMessageFor(model => model.Show)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Description">Mô tả:</label>
                 <div class="col-md-6">
                     @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })

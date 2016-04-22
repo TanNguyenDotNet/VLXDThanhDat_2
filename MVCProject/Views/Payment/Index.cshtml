@@ -13,7 +13,7 @@
 
     string nameUser = "";
     decimal totalpay = 0, totalOrder = 0, total = 0;
-    
+
 }
 <form action="~/Payment/Index" method="get" id="productViewForm">
     <section class="content-header">
@@ -41,7 +41,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
                             }
                         </select>
                     </div>
@@ -70,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model!=null)
+                    @if (Model != null)
                     {
                         foreach (var item in Model)
                         {
@@ -81,7 +81,7 @@
                                     <a href="~/PaymentDetail/index?idaccount=@item.Id">@listUserType.Where(a => a.Username == nameUser).FirstOrDefault().DisplayName</a>
                                 </th>
                                 <td align="center">
-                                   @listLocationSub.Where(a => a.ID == listUserType.Where(b=>b.Username==nameUser).FirstOrDefault().LocationSubID).FirstOrDefault().Name
+                                    @listLocationSub.Where(a => a.ID == listUserType.Where(b => b.Username == nameUser).FirstOrDefault().LocationSubID).FirstOrDefault().Name
                                 </td>
                                 <td align="right">
                                     @if (dicSumOfOrders.Keys.Contains(item.Id) == false)
@@ -93,7 +93,7 @@
                                     @totalOrder.ToString("n0")
                                 </td>
                                 <td align="right">
-                                    @if(dicSumOfPay!=null)
+                                    @if (dicSumOfPay != null)
                                     {
                                         if (dicSumOfPay.Keys.Contains(item.Id) == false)
                                         {
@@ -101,8 +101,9 @@
                                         }
                                         else
                                         { totalpay = (decimal)dicSumOfPay[item.Id]; total = totalOrder - totalpay; }
-                                        
-                                    }else
+
+                                    }
+                                    else
                                     {
                                         totalpay = 0; total = totalOrder - totalpay;
                                     }
@@ -117,10 +118,10 @@
                 </tbody>
             </table>
             <script>
-           
-            function filterFromSubmit() {
-                productViewForm.submit();
-            }
+
+                function filterFromSubmit() {
+                    productViewForm.submit();
+                }
 
             </script>
             <nav style="text-align:right">

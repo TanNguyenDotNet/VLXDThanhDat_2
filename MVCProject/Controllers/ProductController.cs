@@ -156,6 +156,7 @@ namespace MVCProject.Controllers
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
+            ViewBag.Price = _productView.Price.Value.ToString("n0");
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
             return View(_productView);

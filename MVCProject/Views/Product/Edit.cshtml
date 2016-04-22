@@ -45,7 +45,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Giá</label>
                 <div class="col-md-6">
-                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="SetPrice();" />
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="SetPrice();" value="@ViewBag.Price" maxlength="8" />
                     @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>

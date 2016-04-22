@@ -61,13 +61,6 @@
                     @Html.ValidationMessageFor(model => model.Total)
                 </div>
             </div>
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="UserName">Giảm giá</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Discount, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Discount)
-                </div>
-            </div>
             <div style="text-align:center" class="col-md-12">
                 <input type="submit" value="Lưu Lại" class="btn btn-info" />
                 <a href="~/OrderDetail/AdmView?code=@ViewBag.OrderCode" class="btn btn-info">Về đơn hàng</a>
@@ -108,11 +101,10 @@
             var thue = parseFloat(f.Tax.value);
             var tt = parseFloat(f.Total.value);
 
-            if (parseInt(sl) > 0) {
-                tt = (sl * dg) + ((thue / 100) * (sl * dg));
-                f.Total.value = tt;
-                f.TotalModel.value = accounting.formatMoney(tt, "", 0);
-            }
+            tt = (sl * dg) + ((thue / 100) * (sl * dg));
+            f.Total.value = tt;
+            f.TotalModel.value = accounting.formatMoney(tt, "", 0);
+
         }
     </script>
 }

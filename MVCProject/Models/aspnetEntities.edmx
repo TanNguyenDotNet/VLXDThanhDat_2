@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -20,19 +20,23 @@
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Fax" Type="varchar" MaxLength="20" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="Phone" Type="varchar" MaxLength="20" />
-          <Property Name="UserType" Type="varchar" MaxLength="255" />
-          <Property Name="DateCreate" Type="varchar" MaxLength="10" />
-          <Property Name="Expire" Type="varchar" MaxLength="12" />
-          <Property Name="LocationID" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserType" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="LocationSubID" Type="int" />
           <Property Name="District" Type="nvarchar" MaxLength="255" />
-          <Property Name="State" Type="varchar" MaxLength="2" />
+          <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="TaxID" Type="varchar" MaxLength="15" />
-          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserOfName" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserOfType" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDel" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -92,6 +96,15 @@
           <Property Name="Code" Type="varchar" MaxLength="5" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="CatalogUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Show" Type="bit" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Location">
           <Key>
             <PropertyRef Name="ID" />
@@ -111,6 +124,35 @@
           <Property Name="LocationPrice" Type="nvarchar" MaxLength="3" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="IsDel" Type="tinyint" />
+          <Property Name="Show" Type="bit" />
+        </EntityType>
+        <EntityType Name="LogSystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="nvarchar" MaxLength="20" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="F1" Type="nvarchar" MaxLength="50" />
+          <Property Name="F2" Type="nvarchar" MaxLength="50" />
+          <Property Name="F3" Type="nvarchar" MaxLength="50" />
+          <Property Name="F4" Type="nvarchar" MaxLength="50" />
+          <Property Name="F5" Type="nvarchar" MaxLength="50" />
+          <Property Name="F6" Type="nvarchar" MaxLength="50" />
+          <Property Name="F7" Type="nvarchar" MaxLength="50" />
+          <Property Name="F8" Type="nvarchar" MaxLength="50" />
+          <Property Name="F9" Type="nvarchar" MaxLength="50" />
+          <Property Name="F10" Type="nvarchar" MaxLength="50" />
+          <Property Name="F11" Type="nvarchar" MaxLength="50" />
+          <Property Name="F12" Type="nvarchar" MaxLength="50" />
+          <Property Name="F13" Type="nvarchar" MaxLength="50" />
+          <Property Name="F14" Type="nvarchar" MaxLength="50" />
+          <Property Name="F15" Type="nvarchar" MaxLength="50" />
+          <Property Name="F16" Type="nvarchar" MaxLength="50" />
+          <Property Name="F17" Type="nvarchar" MaxLength="50" />
+          <Property Name="F18" Type="nvarchar" MaxLength="50" />
+          <Property Name="F19" Type="nvarchar" MaxLength="50" />
+          <Property Name="F20" Type="ntext" />
         </EntityType>
         <EntityType Name="PaymentDetail">
           <Key>
@@ -123,8 +165,8 @@
           <Property Name="Pay" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PayDate" Type="nvarchar" MaxLength="20" />
           <Property Name="PayDateSystem" Type="nvarchar" MaxLength="20" />
-          <Property Name="PayBefore" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="PayAfter" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DebtBefore" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DebtAfter" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Product">
@@ -261,7 +303,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__0BB1B5A5">
+        <Association Name="FK__AspNetUse__RoleI__5CD6CB2B">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -275,7 +317,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___09C96D33">
+        <Association Name="FK__AspNetUse__User___5AEE82B9">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -289,7 +331,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__0ABD916C">
+        <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -303,7 +345,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__0CA5D9DE">
+        <Association Name="FK__AspNetUse__UserI__5DCAEF64">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -326,8 +368,10 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatalogUnit" EntityType="Self.CatalogUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationSub" EntityType="Self.LocationSub" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogSystem" EntityType="Self.LogSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentDetail" EntityType="Self.PaymentDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCode" EntityType="Self.ProductCode" Schema="dbo" store:Type="Tables" />
@@ -340,19 +384,19 @@
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__0BB1B5A5" Association="Self.FK__AspNetUse__RoleI__0BB1B5A5">
+          <AssociationSet Name="FK__AspNetUse__RoleI__5CD6CB2B" Association="Self.FK__AspNetUse__RoleI__5CD6CB2B">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___09C96D33" Association="Self.FK__AspNetUse__User___09C96D33">
+          <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Self.FK__AspNetUse__User___5AEE82B9">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__0ABD916C" Association="Self.FK__AspNetUse__UserI__0ABD916C">
+          <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Self.FK__AspNetUse__UserI__5BE2A6F2">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__0CA5D9DE" Association="Self.FK__AspNetUse__UserI__0CA5D9DE">
+          <AssociationSet Name="FK__AspNetUse__UserI__5DCAEF64" Association="Self.FK__AspNetUse__UserI__5DCAEF64">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -584,9 +628,11 @@
           <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
           <EntitySet Name="Taxes" EntityType="Models.Tax" />
           <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
-          <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
-          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
           <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
+          <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
+          <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
+          <EntitySet Name="LogSystems" EntityType="Models.LogSystem" />
+          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -637,6 +683,38 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
         </EntityType>
+        <EntityType Name="AppNetUserType">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Expire" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="LocationSubID" Type="Int32" />
+          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserOfName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserOfType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDel" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="CatalogUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Show" Type="Boolean" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="LocationSub">
           <Key>
             <PropertyRef Name="ID" />
@@ -647,6 +725,35 @@
           <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsDel" Type="Byte" />
+          <Property Name="Show" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="LogSystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F6" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F7" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F8" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F9" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F10" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F11" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F12" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F13" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F14" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F15" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F16" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F17" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F18" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F19" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F20" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PaymentDetail">
           <Key>
@@ -659,28 +766,9 @@
           <Property Name="Pay" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PayDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PayDateSystem" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="PayBefore" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PayAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DebtBefore" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DebtAfter" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="AppNetUserType">
-          <Key>
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UserType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Expire" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="LocationSubID" Type="Int32" />
-          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -913,37 +1001,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LocationSubs">
-            <EntityTypeMapping TypeName="Models.LocationSub">
-              <MappingFragment StoreEntitySet="LocationSub">
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PaymentDetails">
-            <EntityTypeMapping TypeName="Models.PaymentDetail">
-              <MappingFragment StoreEntitySet="PaymentDetail">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="PayAfter" ColumnName="PayAfter" />
-                <ScalarProperty Name="PayBefore" ColumnName="PayBefore" />
-                <ScalarProperty Name="PayDateSystem" ColumnName="PayDateSystem" />
-                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
-                <ScalarProperty Name="Pay" ColumnName="Pay" />
-                <ScalarProperty Name="IDLocationSub" ColumnName="IDLocationSub" />
-                <ScalarProperty Name="IDAccountInput" ColumnName="IDAccountInput" />
-                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AppNetUserTypes">
             <EntityTypeMapping TypeName="Models.AppNetUserType">
               <MappingFragment StoreEntitySet="AppNetUserType">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="UserOfType" ColumnName="UserOfType" />
+                <ScalarProperty Name="UserOfName" ColumnName="UserOfName" />
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="TaxID" ColumnName="TaxID" />
                 <ScalarProperty Name="State" ColumnName="State" />
@@ -958,6 +1022,74 @@
                 <ScalarProperty Name="Fax" ColumnName="Fax" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogUnits">
+            <EntityTypeMapping TypeName="Models.CatalogUnit">
+              <MappingFragment StoreEntitySet="CatalogUnit">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocationSubs">
+            <EntityTypeMapping TypeName="Models.LocationSub">
+              <MappingFragment StoreEntitySet="LocationSub">
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogSystems">
+            <EntityTypeMapping TypeName="Models.LogSystem">
+              <MappingFragment StoreEntitySet="LogSystem">
+                <ScalarProperty Name="F20" ColumnName="F20" />
+                <ScalarProperty Name="F19" ColumnName="F19" />
+                <ScalarProperty Name="F18" ColumnName="F18" />
+                <ScalarProperty Name="F17" ColumnName="F17" />
+                <ScalarProperty Name="F16" ColumnName="F16" />
+                <ScalarProperty Name="F15" ColumnName="F15" />
+                <ScalarProperty Name="F14" ColumnName="F14" />
+                <ScalarProperty Name="F13" ColumnName="F13" />
+                <ScalarProperty Name="F12" ColumnName="F12" />
+                <ScalarProperty Name="F11" ColumnName="F11" />
+                <ScalarProperty Name="F10" ColumnName="F10" />
+                <ScalarProperty Name="F9" ColumnName="F9" />
+                <ScalarProperty Name="F8" ColumnName="F8" />
+                <ScalarProperty Name="F7" ColumnName="F7" />
+                <ScalarProperty Name="F6" ColumnName="F6" />
+                <ScalarProperty Name="F5" ColumnName="F5" />
+                <ScalarProperty Name="F4" ColumnName="F4" />
+                <ScalarProperty Name="F3" ColumnName="F3" />
+                <ScalarProperty Name="F2" ColumnName="F2" />
+                <ScalarProperty Name="F1" ColumnName="F1" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentDetails">
+            <EntityTypeMapping TypeName="Models.PaymentDetail">
+              <MappingFragment StoreEntitySet="PaymentDetail">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DebtAfter" ColumnName="DebtAfter" />
+                <ScalarProperty Name="DebtBefore" ColumnName="DebtBefore" />
+                <ScalarProperty Name="PayDateSystem" ColumnName="PayDateSystem" />
+                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
+                <ScalarProperty Name="Pay" ColumnName="Pay" />
+                <ScalarProperty Name="IDLocationSub" ColumnName="IDLocationSub" />
+                <ScalarProperty Name="IDAccountInput" ColumnName="IDAccountInput" />
+                <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

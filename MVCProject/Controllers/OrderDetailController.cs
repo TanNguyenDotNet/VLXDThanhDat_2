@@ -154,6 +154,7 @@ namespace MVCProject.Controllers
                 return HttpNotFound();
             }
             ViewBag.Price = od.Price.ToString("n0");
+            ViewBag.Total = od.Total.ToString("n0");
             return View(od);
         }
 

@@ -43,7 +43,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Show">Hiển thị</label>
                 <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.Show.Value)
+                    @Html.EditorFor(model => model.Show)
                     @Html.ValidationMessageFor(model => model.Show)
                 </div>
             </div>

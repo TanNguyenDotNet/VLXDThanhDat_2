@@ -43,10 +43,10 @@ namespace MVCProject.Models
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
         public virtual DbSet<CatalogUnit> CatalogUnits { get; set; }
-        public virtual DbSet<LocationSub> LocationSubs { get; set; }
         public virtual DbSet<LogSystem> LogSystems { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
+        public virtual DbSet<LocationSub> LocationSubs { get; set; }
+        public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
     }
 }

@@ -105,6 +105,7 @@ namespace MVCProject.Models
         [Display(Name = "Nhập lại mật khẩu")]
         [Compare("Password", ErrorMessage = "Mật khẩu và nhập lại không giống nhau.")]
         public string ConfirmPassword { get; set; }
+        
     }
     public class LocationSubViewModel
     {

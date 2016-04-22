@@ -41,8 +41,8 @@ namespace MVCProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID,District,State,TaxID,DisplayName")] 
-            AppNetUserType appnetusertype)
+        public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID," +
+            "District,State,TaxID,DisplayName,UserOfName,UserOfType,IsDel,IsActive")] AppNetUserType appnetusertype)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -65,7 +65,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            
+
             if (Password != null && Password != "")
             {
                 UserManager.AddPasswordAsync(UserName, Password);
@@ -76,8 +76,8 @@ namespace MVCProject.Controllers
                 foreach (var item in uroles)
                     db.UserRoles.Remove(item);
             db.SaveChanges();
-            
-            foreach(string s in Roles)
+
+            foreach (string s in Roles)
             {
                 UserRole u = new UserRole();
                 u.RoleId = s;
@@ -108,10 +108,10 @@ namespace MVCProject.Controllers
                 Response.Redirect("~/Account/Index/?Err=0");
                 return null;
             }
-            
+
             ViewData["UserName"] = id;
             ViewData["EncrytUser"] = enu;
-            ViewBag.RoleList = db.AspNetRoles.OrderBy(o=>o.GroupName).ToList();
+            ViewBag.RoleList = db.AspNetRoles.OrderBy(o => o.GroupName).ToList();
             ViewBag.UserRoles = GetRoles(enu);
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewBag.LocationSubList = Common.Params.listItemLocationSub;
@@ -192,15 +192,19 @@ namespace MVCProject.Controllers
                     await SignInAsync(user, model.RememberMe);
                     string en = Security.EncryptString("User:" + model.UserName + "~BackendUser", false, EncryptType.TripleDES);
                     var db = new Models.aspnetEntities();
-                    var l = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
+                    var l = db.AppNetUserTypes.Where(d => d.UserOfName == user.UserName).FirstOrDefault();
                     returnUrl = "~/Product/Index";
-                    if (l == null || (l.ToList()).Count == 0)
-                        returnUrl = "~/Product/Home";
-                    return RedirectToLocal(returnUrl);
+                    if (l.UserType == "FrontendUser")
+                    {
+                        if (l.IsActive == true)
+                            ModelState.AddModelError("", "Tài khoản chưa được kích hoạt");
+                        else
+                        { returnUrl = "~/Product/Home"; return RedirectToLocal(returnUrl); }
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng");
                 }
             }
 
@@ -241,28 +245,34 @@ namespace MVCProject.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    string enu = Security.EncryptString("User:" + model.UserName + "~" + 
+                    string enu = Security.EncryptString("User:" + model.UserName + "~" +
                         model.UserType, false, EncryptType.TripleDES);
                     string en = Security.EncryptString(model.UserName + "~" +
                         model.UserType, false, EncryptType.TripleDES);
                     int lid = int.Parse(model.LocationID == null || model.LocationID == "" ? "0" : model.LocationID);
 
-                    Models.AppNetUserType ut = new AppNetUserType {
+                    Models.AppNetUserType ut = new AppNetUserType
+                    {
                         Username = enu,
                         UserType = en,
                         Email = "",
                         Address = "",
-                        Phone="",
-                        DateCreate = DateTime.Now.ToString("yyyyMMdd"),
-                        Expire = DateTime.Now.AddDays(365).ToString("yyyyMMdd"),
-                        LocationID = lid,LocationSubID=int.Parse(model.LocationSubID),
+                        Phone = "",
+                        DateCreate = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        Expire = DateTime.Now.AddDays(365).ToString("yyyyMMddHHmmss"),
+                        LocationID = lid,
+                        LocationSubID = int.Parse(model.LocationSubID),
                         State = "0",
                         TaxID = "0",
                         DisplayName = model.FullName,
                         District = "",
-                        Fax = ""
+                        Fax = "",
+                        IsActive = false,
+                        IsDel = false,
+                        UserOfName = model.UserName,
+                        UserOfType = model.UserType
                     };
-                    
+
                     db.AppNetUserTypes.Add(ut);
                     db.SaveChanges();
 
@@ -272,7 +282,7 @@ namespace MVCProject.Controllers
                 else
                 {
                     AddErrors(result);
-                    return RedirectToLocal("~/Account/Index?msg=" + result.Errors.ToList()[0]);
+                    return RedirectToLocal("~/Account/Index?msg=" + "Tài khoản " + model.UserName + " đã tồn tại");//result.Errors.ToList()[0]);
                 }
             }
 
@@ -567,7 +577,8 @@ namespace MVCProject.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 

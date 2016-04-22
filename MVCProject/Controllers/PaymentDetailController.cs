@@ -67,7 +67,7 @@ namespace MVCProject.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Payment([Bind(Include = "ID,IDAccount,IDAccountInput,IDLocationSub,Pay,PayDate,PayDateSystem,PayBefore,PayAfter,Description")] PaymentDetail Payment)
+        public ActionResult Payment([Bind(Include = "ID,IDAccount,IDAccountInput,IDLocationSub,Pay,PayDate,PayDateSystem,DebtBefore,DebtAfter,Description")] PaymentDetail Payment)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;

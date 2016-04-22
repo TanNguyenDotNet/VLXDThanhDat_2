@@ -18,7 +18,7 @@ namespace MVCProject.Common
         {
             get
             {
-                if(_listLocation==null)
+                if (_listLocation == null)
                 {
                     _listLocation = ModelaspnetEntities.Locations.ToList();
                 }
@@ -38,11 +38,11 @@ namespace MVCProject.Common
         }
         public static IEnumerable<SelectListItem> listItemLocationSub
         {
-            get 
+            get
             {
-                if(_listItemLocationSub==null)
+                if (_listItemLocationSub == null)
                 {
-                    _listItemLocationSub = ModelaspnetEntities.LocationSubs.OrderBy(d => d.Name).AsEnumerable().Select(d => new SelectListItem
+                    _listItemLocationSub = ModelaspnetEntities.LocationSubs.Where(a => a.IsDel != 1 & a.Show == true).OrderBy(d => d.Name).AsEnumerable().Select(d => new SelectListItem
                     {
                         Value = d.ID.ToString(),
                         Text = d.Name
@@ -67,6 +67,6 @@ namespace MVCProject.Common
                 return _retailEntities;
             }
         }
-        
+
     }
 }

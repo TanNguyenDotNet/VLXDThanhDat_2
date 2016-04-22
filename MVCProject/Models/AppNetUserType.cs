@@ -30,7 +30,7 @@ namespace MVCProject.Models
         public string DisplayName { get; set; }
         public string UserOfName { get; set; }
         public string UserOfType { get; set; }
-        public Nullable<bool> IsDel { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public bool IsDel { get; set; }
+        public bool IsActive { get; set; }
     }
 }

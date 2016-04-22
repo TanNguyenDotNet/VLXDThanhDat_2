@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MVCProject.Models.CatalogUnit>
+@{
+    ViewBag.Title = "VLXD Thành Đạt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
+}
+
+<section class="content-header">
+    <h2>
+        Danh mục đơn vị tính
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("3"))
+        {
+            <a href="../Catalog/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        }
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #3c8dbc; color:#fff">
+                    <th>Tiêu đề</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th>
+                            @if (roles.Contains("4"))
+                            {
+                                @Html.ActionLink(item.Name, "Edit", new { id = item.ID })
+                            }
+                            else
+                            {
+                                @item.Name
+                            }
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

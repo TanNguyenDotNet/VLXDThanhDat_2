@@ -26,11 +26,11 @@
         <EntityTypeShape EntityType="Models.ProductImage" Width="1.5" PointX="10.75" PointY="9.625" />
         <EntityTypeShape EntityType="Models.Tax" Width="1.5" PointX="7.125" PointY="3.625" />
         <EntityTypeShape EntityType="Models.UserRole" Width="1.5" PointX="0.875" PointY="0.5" />
-        <EntityTypeShape EntityType="Models.AppNetUserType" Width="1.5" PointX="5.375" PointY="12.75" />
         <EntityTypeShape EntityType="Models.CatalogUnit" Width="1.5" PointX="10.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.LocationSub" Width="1.5" PointX="7.375" PointY="12.75" />
         <EntityTypeShape EntityType="Models.LogSystem" Width="1.5" PointX="9.375" PointY="12.75" />
         <EntityTypeShape EntityType="Models.PaymentDetail" Width="1.5" PointX="11.375" PointY="12.75" />
+        <EntityTypeShape EntityType="Models.LocationSub" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.AppNetUserType" Width="1.5" PointX="5.375" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

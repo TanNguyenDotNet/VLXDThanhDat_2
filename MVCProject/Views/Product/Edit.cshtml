@@ -9,6 +9,7 @@
         <h2>Chỉnh sửa</h2>
         <h4>Sản phẩm: @Model.ItemCode</h4>
         @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.Adwords)
     </section>
     <section class="content">
         <div class='arrage-popup'>
@@ -68,15 +69,6 @@
                     @Html.ValidationMessageFor(model => model.SupplierID)
                 </div>
             </div>
-
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="Adwords">Adwords:</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Adwords, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Adwords)
-                </div>
-            </div>
-
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Show">Hiển thị:</label>
                 <div class="col-md-6">
@@ -104,16 +96,9 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Unit">ĐVT:</label>
                 <div class="col-md-6">
-                    <select name="Unit" id="Unit" class="form-control">
-                        <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")         }>Cái</option>
-                        <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")         }>Chiếc</option>
-                        <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")         }>Cây</option>
-                        <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")          }>Ống</option>
-                        <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")           }>Thùng</option>
-                        <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")            }>Hộp</option>
-                        <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")             }>Kg</option>
-                        <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")              }>Gam</option>
-                    </select>
+                    @Html.DropDownListFor(model => model.Unit, (IEnumerable<SelectListItem>)ViewBag.CatalogUnit,
+                        "Chọn đơn vị tính", new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.UnitName, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Unit)
                 </div>
             </div>
@@ -174,13 +159,17 @@
             var useCatCode = '@ViewData["UseCatCode"].ToString()';
             var arrCatCode = new Array();
             @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
-            int count = 0;
-            foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
-            {
-                 @Html.Raw("arrCatCode[" + count + "]='" + item.ID + "," + item.Code + "';" + Environment.NewLine);
-                                                                                                                  count++;
+                int count = 0;
+                foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
+                {
+                    @Html.Raw("arrCatCode[" + count + "]='" + item.ID + "," + item.Code + "';" + Environment.NewLine);
+                    count++;
+                }
             }
-        }
+            function SetUnitName() {
+                var f = document.odForm;
+                f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
+            }
             function SetPrice() {
                 var f = document.odForm;
                 f.Price.value = f.PriceModel.value;

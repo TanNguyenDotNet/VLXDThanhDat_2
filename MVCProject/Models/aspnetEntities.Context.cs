@@ -32,7 +32,6 @@ namespace MVCProject.Models
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Catalog> Catalogs { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductName> ProductNames { get; set; }
         public virtual DbSet<ProductPrice> ProductPrices { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
@@ -43,10 +42,11 @@ namespace MVCProject.Models
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<CatalogUnit> CatalogUnits { get; set; }
         public virtual DbSet<LogSystem> LogSystems { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<LocationSub> LocationSubs { get; set; }
         public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
+        public virtual DbSet<CatalogUnit> CatalogUnits { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     }
 }

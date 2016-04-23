@@ -13,5 +13,9 @@ namespace MVCProject.Controllers
         {
             return View();
         }
+        public ActionResult RevenueInvoice()
+        {
+            return View();
+        }
     }
 }

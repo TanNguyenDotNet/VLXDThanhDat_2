@@ -3,7 +3,7 @@
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form action="~/PaymentDetail/Payment/" method="post" enctype="multipart/form-data">
+<form action="~/PaymentDetail/Payment/" method="post" enctype="multipart/form-data" name="odForm" id="odForm">
     <section class="content-header">
         <h2>Thêm mới</h2>
         <h4>Giá sản phẩm</h4>
@@ -19,14 +19,15 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Tiền thanh toán</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Pay, new { @class = "form-control" })
+                    <input class="form-control" id="PayModel" name="PayModel" type="text" onchange="SetPrice();" maxlength="9"/>
+                    @Html.TextBoxFor(model => model.Pay, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Pay)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Ghi chú</label>
                 <div class="col-md-6">
-                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @maxlength = "128" })
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>
@@ -38,8 +39,13 @@
         </div>
     </section>
     <script>
+        function SetPrice() {
+            var f = document.odForm;
+            f.Pay.value = f.PayModel.value;
+            f.PayModel.value = accounting.formatMoney(f.Pay.value, { symbol: "đ", precision: 0, format: "%v %s" });
+        }
         $("#PayDate").datetimepicker({
-            value: '@DateTime.Now.ToString("yyyyMMddHHmm")',step : 1
+            value: '@DateTime.Now.ToString("yyyyMMddHHmm")', step: 1
         });
     </script>
 </form>

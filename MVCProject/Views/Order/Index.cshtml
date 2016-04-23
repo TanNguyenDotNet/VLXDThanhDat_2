@@ -124,7 +124,7 @@
                                     }
                                 </td>
                                 <td align="center">
-                                    @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
+                                    @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
                                 </td>
                                 <td align="right">
                                     @item.TotalWithoutTax.ToString("#,###")
@@ -143,7 +143,7 @@
                                     string sdate = "";
                                     if (item.DateProcessed != null && item.DateProcessed != "")
                                     {
-                                        sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                                        sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
                                     }
                                     }
                                     @sdate
@@ -151,7 +151,7 @@
                                 <td align="center">
                                     @if (item.DateShip != null && item.DateShip != "")
                                     {
-                                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
                                     }
                                     @sdate
                                 </td>

@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Doanh thu theo hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="~/ReportSales/RevenueInvoice" method="get" id="productViewForm">
+    <section class="content-header">
+        <h2>
+            Sản phẩm
+        </h2>
+        <div class="arrange-button">
+            <a href="../ReportSales/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Mã hóa đơn..." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+
+                </div>
+                <div class="form-group col-sm-3">
+
+                </div>
+                <div class="form-group col-sm-2">
+
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tên Sản Phẩm</th>
+                        <th>Mã Sản Phẩm</th>
+                        <th>Mã Danh Mục</th>
+                        <th>ĐVT</th>
+                        <th>Giá</th>
+                        <th>Đã Xoá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+
+                            </th>
+                            <td>
+
+                            </td>
+                            <td align="center">
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td style="text-align:right">
+                            
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                           {
+                               page,
+                               order = ViewBag.Order,
+                               filter = ViewBag.Filter,
+                               size = size,
+                               catid = catid
+                           }))
+            </nav>
+        </div>
+        <!-- Your Page Content Here -->
+    </section><!-- /.content -->
+</form>
+

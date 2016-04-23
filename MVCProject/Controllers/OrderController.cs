@@ -78,8 +78,8 @@ namespace MVCProject.Controllers
                 return null;
             var o = db.Orders.Single(c => c.OrderCode == orderCode);
             o.DeliveryMan = deliveryMan;
-            o.DateShip = DateTime.Parse(dateShip, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmm");
-            o.DateProcessed = DateTime.Now.ToString("yyyyMMddHHmm");
+            o.DateShip = DateTime.Parse(dateShip, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmmss");
+            o.DateProcessed = DateTime.Now.ToString("yyyyMMddHHmmss");
             o.State = "2";
             db.SaveChanges();
             Response.Redirect("~/Order/Index");
@@ -91,7 +91,7 @@ namespace MVCProject.Controllers
             if (!string.IsNullOrEmpty(datefrom) & !string.IsNullOrEmpty(dateto))
             {
                 datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
-                dateto = UtilDatetime.FromTime(dateto).ToString("yyyyMMddHHmmss");
+                dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
                 list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
                                            String.Compare(a.DateCreate, dateto) <= 0);
             }

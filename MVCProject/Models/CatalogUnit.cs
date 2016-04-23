@@ -16,7 +16,8 @@ namespace MVCProject.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> Show { get; set; }
+        public string NameCode { get; set; }
+        public bool Show { get; set; }
         public string Description { get; set; }
     }
 }

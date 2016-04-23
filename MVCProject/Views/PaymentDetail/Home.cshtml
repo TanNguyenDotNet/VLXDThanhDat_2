@@ -64,7 +64,7 @@
                     {
                         <tr>
                             <th scope="row" style="text-align:left">
-                                @(DateTime.ParseExact(item.PayDate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"))
+                                @(DateTime.ParseExact(item.PayDate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"))
                             </th>
                             <td>
                                 @item.Pay.Value.ToString("n0")

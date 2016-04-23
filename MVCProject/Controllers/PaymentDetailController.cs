@@ -30,7 +30,7 @@ namespace MVCProject.Controllers
                 listUsers = lstUsers.Where(a => a.UserName.Contains(filter)).Select(a => a.Id).ToList();
             }
             var listPaymentDetail = GetList(dateFrom, dateTo, _idaccount, listUsers);
-        
+
             ViewData["Total"] = listPaymentDetail.ToList().Sum(a => a.Pay);
             ViewData["ListUsers"] = lstUsers.Where(a => listPaymentDetail.Select(p => p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
             ViewBag.UserName = lstUsers.Where(a => a.Id == _idaccount).FirstOrDefault().UserName;
@@ -71,25 +71,22 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-           
-
             if (ModelState.IsValid)
             {
                 Payment.ID = Guid.NewGuid();
                 Payment.IDAccount = TempData["idaccount"].ToString();
-                Payment.PayDate = DateTime.Parse(Payment.PayDate, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmm");
+                Payment.PayDate = DateTime.Parse(Payment.PayDate, new System.Globalization.CultureInfo("vi-VN")).ToString("yyyyMMddHHmmss");
                 Payment.Pay = Payment.Pay;
-                Payment.PayDateSystem = DateTime.Now.ToString("yyyyMMddHHmm");
+                Payment.PayDateSystem = DateTime.Now.ToString("yyyyMMddHHmmss");
                 Payment.IDAccountInput = User.Identity.GetUserId();
                 modelAspnet.PaymentDetails.Add(Payment);
                 modelAspnet.SaveChanges();
                 Response.Redirect("~/PaymentDetail/index?idaccount=" + Payment.IDAccount);
                 return null;
             }
-
             return View(Payment);
         }
-        private IEnumerable<Models.PaymentDetail> GetList(string dateFrom, string dateTo, string _idaccount,List<string> listUsers)
+        private IEnumerable<Models.PaymentDetail> GetList(string dateFrom, string dateTo, string _idaccount, List<string> listUsers)
         {
             var listPaymentDetail = from l in modelAspnet.PaymentDetails where l.IDAccount == _idaccount select l;
             if (listUsers != null)

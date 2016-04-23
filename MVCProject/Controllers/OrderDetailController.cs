@@ -314,7 +314,7 @@ namespace MVCProject.Controllers
                 {
                     db.Orders.Add(new Order
                     {
-                        DateCreate = DateTime.Now.ToString("yyyyMMddHHmm"),
+                        DateCreate = DateTime.Now.ToString("yyyyMMddHHmmss"),
                         DateProcessed = "",
                         DateShip = "",
                         DeliveryMan = "",

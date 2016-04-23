@@ -73,7 +73,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.TotalVAT = _Orders.Total.ToString("n0");
                     InvoiceParams.VAT = _Orders.Tax.ToString();
                     InvoiceParams.InvoiceNum = _Orders.OrderCode;
-                    InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                    InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                     InvoiceParams.Payment = TotalPay(us.Id);
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
@@ -119,7 +119,7 @@ namespace MVCProject.Controllers
             InvoiceRptParams.TotalVAT = o.Total.ToString("n0");
             InvoiceRptParams.VAT = o.Tax.ToString();
             InvoiceRptParams.InvoiceNum = o.OrderCode;
-            InvoiceRptParams.InvoiceDate = DateTime.ParseExact(o.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+            InvoiceRptParams.InvoiceDate = DateTime.ParseExact(o.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
 
             return list;
         }

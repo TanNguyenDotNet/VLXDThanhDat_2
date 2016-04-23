@@ -97,6 +97,7 @@ namespace MVCProject.Controllers
             int useCatCode = 0;
             p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true; p.IsDel = false;
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            ViewBag.CatalogUnit = Params.listItemCatalogUnit;
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
@@ -110,7 +111,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
+        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -167,7 +168,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -412,6 +413,7 @@ namespace MVCProject.Controllers
             p.SupplierID = _product.SupplierID;
             p.TaxID = _product.TaxID;
             p.Unit = _product.Unit;
+            p.UnitName = _product.UnitName;
             p.UserID = _product.UserID;
             p.Warranty = _product.Warranty;
             return p;
@@ -437,6 +439,7 @@ namespace MVCProject.Controllers
             p.SupplierID = _product.SupplierID;
             p.TaxID = _product.TaxID;
             p.Unit = _product.Unit;
+            p.UnitName = _product.UnitName;
             p.UserID = _product.UserID;
             p.Warranty = _product.Warranty;
             return p;

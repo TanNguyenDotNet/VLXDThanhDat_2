@@ -25,6 +25,7 @@ namespace MVCProject.Models
         public string Color { get; set; }
         public string Dimension { get; set; }
         public string Unit { get; set; }
+        public string UnitName { get; set; }
         public string Warranty { get; set; }
         public bool IsDel { get; set; }
         public Nullable<byte> IsState { get; set; }

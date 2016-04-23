@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -102,7 +102,8 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
-          <Property Name="Show" Type="bit" />
+          <Property Name="NameCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Show" Type="bit" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Location">
@@ -186,6 +187,7 @@
           <Property Name="Color" Type="nvarchar" MaxLength="150" />
           <Property Name="Dimension" Type="varchar" MaxLength="50" />
           <Property Name="Unit" Type="nvarchar" MaxLength="255" />
+          <Property Name="UnitName" Type="nvarchar" MaxLength="50" />
           <Property Name="Warranty" Type="varchar" MaxLength="5" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="IsState" Type="tinyint" />
@@ -480,31 +482,6 @@
           <Property Name="LocationCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Order" Type="Int32" />
         </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Barcode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="CatID" Type="Int64" Nullable="false" />
-          <Property Name="SKU" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierID" Type="Int32" />
-          <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Adwords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Show" Type="Boolean" Nullable="false" />
-          <Property Name="DateCreate" Type="DateTime" Precision="3" />
-          <Property Name="Color" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Warranty" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
-          <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <Property Name="IsState" Type="Byte" />
-          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TaxID" Type="Byte" />
-          <Property Name="Price" Type="Decimal" Precision="14" Scale="2" />
-        </EntityType>
         <EntityType Name="ProductName">
           <Key>
             <PropertyRef Name="ID" />
@@ -605,7 +582,6 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ProductNames" EntityType="Self.ProductName" />
           <EntitySet Name="ProductPrices" EntityType="Self.ProductPrice" />
           <EntitySet Name="Promotions" EntityType="Self.Promotion" />
@@ -628,11 +604,12 @@
           <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
           <EntitySet Name="Taxes" EntityType="Models.Tax" />
           <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
-          <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
           <EntitySet Name="LogSystems" EntityType="Models.LogSystem" />
           <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
           <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
           <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
+          <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
+          <EntitySet Name="Products" EntityType="Models.Product" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -682,15 +659,6 @@
           </Key>
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="CatalogUnit">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Show" Type="Boolean" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LogSystem">
           <Key>
@@ -770,6 +738,42 @@
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="CatalogUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Barcode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CatID" Type="Int64" Nullable="false" />
+          <Property Name="SKU" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierID" Type="Int32" />
+          <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Adwords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Color" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UnitName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Warranty" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <Property Name="IsState" Type="Byte" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxID" Type="Byte" />
+          <Property Name="Price" Type="Decimal" Precision="14" Scale="2" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -846,32 +850,6 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationCode" ColumnName="LocationCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="Models.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
-                <ScalarProperty Name="SKU" ColumnName="SKU" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
-                <ScalarProperty Name="Adwords" ColumnName="Adwords" />
-                <ScalarProperty Name="Show" ColumnName="Show" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="Dimension" ColumnName="Dimension" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="IsState" ColumnName="IsState" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1001,16 +979,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CatalogUnits">
-            <EntityTypeMapping TypeName="Models.CatalogUnit">
-              <MappingFragment StoreEntitySet="CatalogUnit">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Show" ColumnName="Show" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LogSystems">
             <EntityTypeMapping TypeName="Models.LogSystem">
               <MappingFragment StoreEntitySet="LogSystem">
@@ -1090,6 +1058,44 @@
                 <ScalarProperty Name="Fax" ColumnName="Fax" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogUnits">
+            <EntityTypeMapping TypeName="Models.CatalogUnit">
+              <MappingFragment StoreEntitySet="CatalogUnit">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="NameCode" ColumnName="NameCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Models.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="IsState" ColumnName="IsState" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Dimension" ColumnName="Dimension" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="Adwords" ColumnName="Adwords" />
+                <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

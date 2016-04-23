@@ -1,6 +1,6 @@
 ﻿@model MVCProject.Models.CatalogUnit
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "VLXD Thành Đạt";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,7 +16,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Title">Tên:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @maxlenght = "64" })
                     @Html.ValidationMessageFor(model => model.Name)
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Description">Mô tả:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @maxlenght = "128" })
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>

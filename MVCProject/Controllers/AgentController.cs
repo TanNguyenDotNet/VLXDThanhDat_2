@@ -39,7 +39,7 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
-                appnetusertype.Expire = DateTime.Now.AddYears(1).ToString("yyyyMMddHHmm");
+                appnetusertype.Expire = DateTime.Now.AddYears(1).ToString("yyyyMMddHHmmss");
                 appnetusertype.State = "1";
                 db.Entry(appnetusertype).State = EntityState.Modified;
                 db.SaveChanges();

@@ -189,18 +189,22 @@ namespace MVCProject.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    await SignInAsync(user, model.RememberMe);
                     string en = Security.EncryptString("User:" + model.UserName + "~BackendUser", false, EncryptType.TripleDES);
                     var db = new Models.aspnetEntities();
                     var l = db.AppNetUserTypes.Where(d => d.UserOfName == user.UserName).FirstOrDefault();
                     returnUrl = "~/Product/Index";
-                    if (l.UserType == "FrontendUser")
+                    if (l.UserOfType == "FrontendUser")
                     {
-                        if (l.IsActive == true)
+                        if (l.IsActive == false)
+                        {
                             ModelState.AddModelError("", "Tài khoản chưa được kích hoạt");
+
+                        }
                         else
-                        { returnUrl = "~/Product/Home"; return RedirectToLocal(returnUrl); }
+                        { returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
                     }
+                    else
+                    { await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
                 }
                 else
                 {

@@ -57,13 +57,6 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="Adwords">Adwords</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Adwords, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Adwords)
-                </div>
-            </div>
-            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Show">Hiển thị</label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.Show)
@@ -87,16 +80,9 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Unit">ĐVT</label>
                 <div class="col-md-6">
-                    <select name="Unit" id="Unit" class="form-control">
-                        <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")                        }>Cái</option>
-                        <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")                        }>Chiếc</option>
-                        <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")                        }>Cây</option>
-                        <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")                         }>Ống</option>
-                        <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")                          }>Thùng</option>
-                        <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")                           }>Hộp</option>
-                        <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")                            }>Kg</option>
-                        <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")                             }>Gam</option>
-                    </select>
+                    @Html.DropDownListFor(model => model.Unit, (IEnumerable<SelectListItem>)ViewBag.CatalogUnit,
+                        "Chọn đơn vị tính", new { @class = "form-control", @onchange = "SetUnitName();" })
+                    @Html.TextBoxFor(model => model.UnitName, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Unit)
                 </div>
             </div>
@@ -165,6 +151,10 @@
             var f = document.odForm;
             f.Price.value = f.PriceModel.value;
             f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
+        }
+        function SetUnitName() {
+            var f = document.odForm;
+            f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
         }
         function SetCode(catid) {
             if (useCatCode == '0')

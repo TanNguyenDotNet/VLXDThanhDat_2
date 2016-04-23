@@ -12,8 +12,24 @@ namespace MVCProject.Common
         private static List<Location> _listLocation = null;
         private static List<LocationSub> _listLocationSub = null;
         private static IEnumerable<SelectListItem> _listItemLocationSub = null;
+        private static IEnumerable<SelectListItem> _listItemCatalogUnit = null;
         private static aspnetEntities _aspnetEntities;
         private static retailEntities _retailEntities;
+        public static IEnumerable<SelectListItem> listItemCatalogUnit
+        {
+            get
+            {
+                if (_listItemCatalogUnit == null)
+                {
+                    _listItemCatalogUnit = ModelaspnetEntities.CatalogUnits.Where(a => a.Show == true).OrderBy(d => d.Name).AsEnumerable().Select(d => new SelectListItem
+                    {
+                        Value = d.ID.ToString(),
+                        Text = d.Name
+                    });
+                }
+                return _listItemCatalogUnit;
+            }
+        }
         public static List<Location> listLocation
         {
             get

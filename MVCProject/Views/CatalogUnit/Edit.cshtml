@@ -1,0 +1,46 @@
+﻿@model MVCProject.Models.CatalogUnit
+
+@{
+    ViewBag.Title = "VLXD Thành Đạt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/CatalogUnit/Edit" method="post" enctype="multipart/form-data">
+    <section class="content-header">
+        <h2>Danh mục đơn vị tính</h2>
+        <h4>Chỉnh sửa đơn vị tính</h4>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+    </section>
+    <section class="content">
+        <div class='arrage-popup'>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Title">Tên:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @maxlenght = "64" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Show">Hiển thị</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Show)
+                    @Html.ValidationMessageFor(model => model.Show)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Description">Mô tả:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control",@maxlenght="128" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/CatalogUnit/Index" class="btn btn-info">Về danh sách</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+</form>

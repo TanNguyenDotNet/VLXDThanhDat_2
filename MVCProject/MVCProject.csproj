@@ -191,11 +191,13 @@
     <Compile Include="Common\UserType.cs" />
     <Compile Include="Common\UtilDatetime.cs" />
     <Compile Include="Common\UtilEntities.cs" />
+    <Compile Include="Common\UtilException.cs" />
     <Compile Include="Common\UtilXML.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\AspNetUserTypeController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\CatalogUnitController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSubController.cs">
@@ -224,6 +226,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessData\AOrders.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppNetUserType.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
@@ -259,6 +262,9 @@
     <Compile Include="Models\Catalog.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CatalogUnit.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CommonModels.cs" />
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
@@ -268,6 +274,9 @@
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LocationSub.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LogSystem.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order.cs">
@@ -533,6 +542,10 @@
     <Content Include="Views\PaymentDetail\index.cshtml" />
     <Content Include="Views\PaymentDetail\Payment.cshtml" />
     <Content Include="Views\PaymentDetail\Home.cshtml" />
+    <Content Include="Views\CatalogUnit\Create.cshtml" />
+    <Content Include="Views\CatalogUnit\Index.cshtml" />
+    <Content Include="Views\CatalogUnit\Edit.cshtml" />
+    <Content Include="Views\ReportsSales\RevenueInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />
@@ -544,9 +557,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ReportsSales\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

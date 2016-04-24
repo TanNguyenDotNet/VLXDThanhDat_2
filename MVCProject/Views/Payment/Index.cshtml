@@ -81,7 +81,7 @@
                                     <a href="~/PaymentDetail/index?idaccount=@item.Id">@listUserType.Where(a => a.Username == nameUser).FirstOrDefault().DisplayName</a>
                                 </th>
                                 <td align="center">
-                                    @listLocationSub.Where(a => a.ID == listUserType.Where(b => b.Username == nameUser).FirstOrDefault().LocationSubID).FirstOrDefault().Name
+                                    @listLocationSub.Where(a => a.ID == listUserType.Where(b => b.Username == nameUser).FirstOrDefault().LocationSubID).SingleOrDefault().Name
                                 </td>
                                 <td align="right">
                                     @if (dicSumOfOrders.Keys.Contains(item.Id) == false)

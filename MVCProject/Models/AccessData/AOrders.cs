@@ -8,7 +8,7 @@ namespace MVCProject.Models.AccessData
 {
     public class AOrders
     {
-        private static IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")
+        public static IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")
         {
             using (var model = Params.ModelRetail)
             {

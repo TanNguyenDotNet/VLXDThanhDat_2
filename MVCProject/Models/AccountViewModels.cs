@@ -9,6 +9,14 @@ namespace MVCProject.Models
         [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
     }
+    public class RevenueInvoice
+    {
+        public string AccountName { get; set; }
+        public string DateCreate { get; set; }
+        public decimal Total { get; set; }
+        public string OrderCode { get; set; }
+
+    }
     public class ProductViewModel
     {
         public long ID { get; set; }

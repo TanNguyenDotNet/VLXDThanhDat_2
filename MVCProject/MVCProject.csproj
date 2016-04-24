@@ -227,6 +227,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccessData\AOrders.cs" />
+    <Compile Include="Models\AccessData\AReportSales.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppNetUserType.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>

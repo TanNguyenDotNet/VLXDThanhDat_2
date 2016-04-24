@@ -10,7 +10,7 @@ namespace MVCProject.Common
 {
     public static class ExcelUtils
     {
-        private static Stream CreateExcelFile<T>(List<T> list,string[] header,Stream stream = null)
+        private static Stream CreateExcelFile<T>(List<T> list, string[] header, Stream stream = null)
         {
             using (var excelPackage = new ExcelPackage(stream ?? new MemoryStream()))
             {
@@ -31,16 +31,16 @@ namespace MVCProject.Common
                 return excelPackage.Stream;
             }
         }
-        private static void BindingFormatForExcel<T>(ExcelWorksheet worksheet, List<T> listItems,string[] header)
+        private static void BindingFormatForExcel<T>(ExcelWorksheet worksheet, List<T> listItems, string[] header)
         {
             // Set default width cho tất cả column
             worksheet.DefaultColWidth = 15;
             // Tự động xuống hàng khi text quá dài
             //worksheet.Cells.Style.WrapText = true;
             // Tạo header
-            for (int i = 1; i <= header.Count(); i++)
+            for (int i = 0; i < header.Count(); i++)
             {
-                worksheet.Cells[1, i].Value = header[i].ToString();
+                worksheet.Cells[1, i + 1].Value = header[i].ToString();
             }
 
             // Lấy range vào tạo format cho range đó ở đây là từ A1 tới D1
@@ -99,10 +99,10 @@ namespace MVCProject.Common
             //// Dòng này có nghĩa là ở column hiện tại lấy với địa chỉ (Row hiện tại - 1)/ (Row hiện tại - 2) Cùng một colum
             //worksheet.Cells[listItems.Count + 5, 4].FormulaR1C1 = "(R[-1]C/R[-2]C)";
         }
-        public static byte[] ExportByteExcel<T>(List<T> list, params object[] args)
+        public static byte[] ExportByteExcel<T>(List<T> list, params string[] headers)
         {
-            string[] header = (string[])args;
-            var stream = CreateExcelFile(list,header);
+
+            var stream = CreateExcelFile(list, headers);
 
             var buffer = stream as MemoryStream;
             return buffer.ToArray();

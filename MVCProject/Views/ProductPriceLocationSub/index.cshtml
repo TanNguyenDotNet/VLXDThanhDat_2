@@ -36,7 +36,7 @@
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Khu vực</span>
                         <select class="form-control" name="subid" id="subid" onchange="productViewForm.submit()">
-                            <option value="0">Chọn khu vực</option>
+                            <option value="1">Chọn khu vực</option>
                             @foreach (var i in listLocatSub)
                             {
                                 <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")              }>

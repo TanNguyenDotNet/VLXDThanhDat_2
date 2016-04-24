@@ -59,7 +59,7 @@ namespace MVCProject.Controllers
                                      _Tax=a.Tax,
                                      _Total=a.Total,
                                      _ProductName=b.ProductName,
-                                     _Unit=b.Unit
+                                     _Unit=b.UnitName
                                     }).ToList();
                    
                     InvoiceParams = new InvoiceDetailParams();
@@ -75,6 +75,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.InvoiceNum = _Orders.OrderCode;
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                     InvoiceParams.Payment = TotalPay(us.Id);
+                    InvoiceParams.Debt = (decimal)InvoiceParams.Payment - _Orders.Total;
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
                     model.InvoiceDetail = UtilEntities.modelDynamic(query);

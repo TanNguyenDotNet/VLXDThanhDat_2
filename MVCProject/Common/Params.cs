@@ -47,7 +47,7 @@ namespace MVCProject.Common
             {
                 if (_listLocationSub == null)
                 {
-                    _listLocationSub = ModelaspnetEntities.LocationSubs.ToList();
+                    _listLocationSub = ModelaspnetEntities.LocationSubs.Where(a => a.IsDel != 1 & a.Show == true).OrderBy(d => d.Name).ToList();
                 }
                 return _listLocationSub;
             }

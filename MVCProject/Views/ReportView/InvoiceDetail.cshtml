@@ -90,7 +90,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <td style="text-align:left">@item._ProductCode</td>
                             <td style="text-align:left">@item._ProductName</td>
                             <td>@item._Unit</td>
-                            <td style="text-align:right">@item._Amount</td>
+                            <td style="text-align:center">@item._Amount</td>
                             <td style="text-align:right" width="100px">@item._Price.ToString("n0")</td>
                             <td style="text-align:center" width="100px">@item._Tax</td>
                             <td style="text-align:right" width="100px">@item._Total.ToString("n0")</td>
@@ -111,12 +111,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <td colspan=2 width="200px" style="text-align:right">@invoiceparams.VAT</td>
                     </tr>
                     <tr>
-                        <td colspan=2 width="200px">Công nợ</td>
-                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.Payment.Value.ToString("n0")</td>
+                        <td colspan=2 width="200px">Tổng cộng tiền hàng</td>
+                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.TotalVAT</td>
                     </tr>
                     <tr>
-                        <td colspan=2 width="200px">Tổng Cộng</td>
-                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.TotalVAT</td>
+                        <td colspan=2 width="200px">Công nợ cũ</td>
+                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.Debt.ToString("n0")</td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 width="200px">Tổng công nợ</td>
+                        <td colspan=2 width="200px" style="text-align:right">@invoiceparams.Payment.Value.ToString("n0")</td>
                     </tr>
                 </table>
             </div>

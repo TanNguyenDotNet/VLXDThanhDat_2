@@ -13,7 +13,7 @@ namespace MVCProject.Models.AccessData
             using (var model = Params.ModelaspnetEntities)
             {
                 var listOrder = AOrders.GetList(filter, state, datefrom, dateto);
-                if (listOrder.Count() > 0) 
+                if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
                                   join
@@ -23,13 +23,13 @@ namespace MVCProject.Models.AccessData
                                   select new RevenueInvoice()
                                   {
                                       AccountName = a.DisplayName,
-                                      DateCreate = od.DateCreate,
+                                      DateCreate = DateTime.ParseExact(od.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"),
                                       OrderCode = od.OrderCode,
                                       Total = od.Total
                                   };
                     return listRpt.ToList();
                 }
-                return null;
+                return new List<RevenueInvoice>();
             }
         }
     }

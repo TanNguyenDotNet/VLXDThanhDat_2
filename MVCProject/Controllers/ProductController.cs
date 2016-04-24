@@ -154,6 +154,7 @@ namespace MVCProject.Controllers
             _productView = SetObjViewModel(product);
             int useCatCode = 0;
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            ViewBag.CatalogUnit = Params.listItemCatalogUnit;
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
@@ -302,7 +303,7 @@ namespace MVCProject.Controllers
             { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
             if (show)
                 list.Where(a => a.Show == show);
-            list.Where(a => a.IsDel == false);
+            list = list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
             ViewBag.Order = order == null ? "" : order;

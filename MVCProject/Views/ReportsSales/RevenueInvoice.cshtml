@@ -7,13 +7,13 @@
     if (size == null || size == "") { size = "50"; }
 }
 
-<form action="~/ReportSales/RevenueInvoice" method="get" id="RevenueInvoice">
+<form action="~/ReportsSales/RevenueInvoice" method="get" id="RevenueInvoice">
     <section class="content-header">
         <h2>
             Sản phẩm
         </h2>
         <div class="arrange-button">
-            <a href="../ReportSales/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
+            <a href="../ReportsSales/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
         </div>
     </section>
     <section class="content">
@@ -45,7 +45,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
                             }
                         </select>
                     </div>
@@ -73,7 +73,7 @@
                                 @item.AccountName
                             </td>
                             <td align="center">
-                                @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
+                                @item.DateCreate
                             </td>
                             <td>
                                 @item.Total.ToString("n0")
@@ -87,7 +87,7 @@
                            {
                                page,
                                filter = ViewBag.Filter,
-                               size= size
+                               size = size
                            }))
             </nav>
         </div>

@@ -89,7 +89,7 @@ namespace MVCProject.Controllers
         void initList()
         {
             ViewData["CatList"] = modelAspnet.Catalogs.ToList();
-            ViewData["SubList"] = modelAspnet.LocationSubs.ToList();
+            ViewData["SubList"] = Params.listLocationSub;
         }
     }
 }

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Thêm chi tiết đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    IEnumerable<SelectListItem> listProdcut = (IEnumerable<SelectListItem>)ViewBag.ProductList;
     Dictionary<long, decimal> priceList = (Dictionary<long, decimal>)ViewBag.PriceList;
 
 }
@@ -26,8 +26,13 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.IDProduct, (IEnumerable<SelectListItem>)ViewBag.ProductList,
-                     "Chọn sản phẩm", new { @class = "form-control", @onchange = "setPrice(this.value);" })
+                    <input type="text" id="favGtrPlayer" list="listProduct">
+                    <datalist id="listProduct">
+                        @foreach (var item in listProdcut)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </datalist>
                     @Html.ValidationMessageFor(model => model.IDProduct)
                 </div>
             </div>

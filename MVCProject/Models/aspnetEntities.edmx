@@ -25,8 +25,8 @@
           <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="UserType" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="DateCreate" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="Expire" Type="varchar" MaxLength="14" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="LocationSubID" Type="int" />
           <Property Name="District" Type="nvarchar" MaxLength="255" />
@@ -761,8 +761,8 @@
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Expire" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="Expire" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="LocationSubID" Type="Int32" />
           <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />

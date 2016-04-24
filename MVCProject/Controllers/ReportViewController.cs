@@ -125,10 +125,10 @@ namespace MVCProject.Controllers
         }
         private decimal? TotalPay(string id)
         {
-            var listPaymentDetail = from l in _db.PaymentDetails where l.IDAccount == id select l;
-            var listOrder = from o in db.Orders
+            var listPaymentDetail = (from l in _db.PaymentDetails where l.IDAccount == id select l).ToList();
+            var listOrder = (from o in db.Orders
                             where o.IDAccount == id
-                            select o;
+                            select o).ToList();
             decimal? total = listOrder.Sum(a => a.Total) - listPaymentDetail.Sum(a => a.Pay);
             return total == null ? 0 : total;
         }

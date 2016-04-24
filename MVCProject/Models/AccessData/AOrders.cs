@@ -35,7 +35,7 @@ namespace MVCProject.Models.AccessData
                 if (!string.IsNullOrEmpty(state) && state != "3")
                     list = list.Where(a => a.State == state);
 
-                return list = list.OrderBy(a => a.DateCreate);
+                return list.OrderBy(a => a.DateCreate).ToList();
             }
         }
     }

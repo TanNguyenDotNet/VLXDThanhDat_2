@@ -13,19 +13,23 @@ namespace MVCProject.Models.AccessData
             using (var model = Params.ModelaspnetEntities)
             {
                 var listOrder = AOrders.GetList(filter, state, datefrom, dateto);
-                var listRpt = from od in listOrder.ToList()
-                              join
-                                  u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
-                              join
-                              a in model.AppNetUserTypes on u.UserName equals a.UserOfName
-                              select new RevenueInvoice()
-                              {
-                                  AccountName = a.DisplayName,
-                                  DateCreate = od.DateCreate,
-                                  OrderCode = od.OrderCode,
-                                  Total = od.Total
-                              };
-                return listRpt.ToList();
+                if (listOrder.Count() > 0) 
+                {
+                    var listRpt = from od in listOrder.ToList()
+                                  join
+                                      u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
+                                  join
+                                  a in model.AppNetUserTypes on u.UserName equals a.UserOfName
+                                  select new RevenueInvoice()
+                                  {
+                                      AccountName = a.DisplayName,
+                                      DateCreate = od.DateCreate,
+                                      OrderCode = od.OrderCode,
+                                      Total = od.Total
+                                  };
+                    return listRpt.ToList();
+                }
+                return null;
             }
         }
     }

@@ -26,7 +26,6 @@ namespace MVCProject.Controllers
         }
         public ActionResult ExportExcel()
         {
-            var test = string.Format("{2}", "te");
             var buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueInvoice>)TempData["ExportExcel"],"Mã đơn hàng","Tên đại lý","Ngày lập đơn hàng","Tổng tiền");
             // Đây là content Type dành cho file excel, còn rất nhiều content-type khác nhưng cái này mình thấy okay nhất
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

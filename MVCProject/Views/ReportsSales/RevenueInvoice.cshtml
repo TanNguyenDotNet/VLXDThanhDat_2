@@ -73,7 +73,7 @@
                                 @item.AccountName
                             </td>
                             <td align="center">
-                                @item.DateCreate
+                                @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
                             </td>
                             <td>
                                 @item.Total.ToString("n0")

@@ -24,5 +24,12 @@ namespace MVCProject.Common
         {
             return DateTime.Parse(date, new System.Globalization.CultureInfo("vi-VN"));
         }
+        private static List<DateTime> ListGetDayInMonth(string month,string year)
+        {
+            int day = DateTime.DaysInMonth(int.Parse(year), int.Parse(month));
+
+            DateTime dt = new DateTime();
+            
+        }
     }
 }

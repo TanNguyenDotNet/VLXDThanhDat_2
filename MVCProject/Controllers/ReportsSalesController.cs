@@ -27,6 +27,10 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
+        public ActionResult RevenueOfMonth(int? page,int? size,string Month,string Year)
+        {
+            return View();
+        }
         public ActionResult ExportExcel()
         {
             var buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueInvoice>)TempData["ExportExcel"], "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền");

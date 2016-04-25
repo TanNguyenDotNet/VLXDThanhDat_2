@@ -26,12 +26,14 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ProductID">Sản phẩm</label>
                 <div class="col-md-6">
-                    <input type="text" id="favGtrPlayer" list="listProduct">
+                    <input type="text" id="displayproduct" list="listProduct" class="form-control" onchange="setPrice();">
                     <datalist id="listProduct">
-                        @foreach (var item in listProdcut)
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
+                        <select class="form-control" id="IDProduct" name="IDProduct" >
+                            @foreach (var item in listProdcut)
+                            {
+                                <option value="@item.Text">@item.Value</option>
+                            }
+                        </select>
                     </datalist>
                     @Html.ValidationMessageFor(model => model.IDProduct)
                 </div>
@@ -81,9 +83,10 @@
                 @Html.Raw(string.Format("arr[{0}] = '{1}';", l, priceList[l]));
             }
 
-        function setPrice(val) {
-            f.Price.value = arr[val];
-            f.PriceModel.value = accounting.formatMoney(arr[val], "", 0);
+        function setPrice() {
+            var id = f.IDProduct.options[f.IDProduct.selectedIndex].text;
+            f.Price.value = arr[id];
+            f.PriceModel.value = accounting.formatMoney(arr[id], "", 0);
             this.thanhtien();
             //f.Amount.value = 0;
             //f.Tax.value = 0;

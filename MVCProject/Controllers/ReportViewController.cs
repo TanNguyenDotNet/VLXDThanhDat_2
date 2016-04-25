@@ -71,7 +71,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.Name = u.DisplayName;
                     InvoiceParams.Total = _Orders.TotalWithoutTax.ToString("n0");
                     InvoiceParams.TotalVAT = _Orders.Total.ToString("n0");
-                    InvoiceParams.VAT = _Orders.Tax.ToString();
+                    InvoiceParams.VAT = decimal.Parse(_Orders.Tax).ToString("n0");
                     InvoiceParams.InvoiceNum = _Orders.OrderCode;
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                     InvoiceParams.Payment = TotalPay(us.Id);

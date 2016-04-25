@@ -27,7 +27,7 @@
                         Tổng tiền trước thuế
                     </th>
                     <th>
-                        Thuế suất
+                        Tổng tiền thuế
                     </th>
                     <th>
                         Tổng thanh toán
@@ -62,7 +62,7 @@
                                 @item.TotalWithoutTax.ToString("#,###")
                             </td>
                             <td align="right">
-                                @item.Tax
+                                @decimal.Parse(item.Tax).ToString("n0")
                             </td>
                             <td align="right">
                                 @item.Total.ToString("#,###")

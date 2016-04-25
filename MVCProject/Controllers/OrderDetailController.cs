@@ -279,7 +279,7 @@ namespace MVCProject.Controllers
 
             if (li.Count > 0)
             {
-                decimal dicount = 0, tax = decimal.Parse(li[0].Tax), taxid = 0, total = 0, totalouttax = 0;
+                decimal dicount = 0, tax = 0, taxid = 0, total = 0, totalouttax = 0;
 
                 foreach (Models.OrdersDetail od in li)
                 {
@@ -323,7 +323,7 @@ namespace MVCProject.Controllers
                         IDAccount = User.Identity.GetUserId(),
                         OrderCode = code,
                         State = "0",
-                        Tax = tax.ToString(),
+                        Tax = (total - totalouttax).ToString(),
                         TaxID = taxid.ToString(),
                         Total = total,
                         TotalWithoutTax = totalouttax
@@ -530,6 +530,7 @@ namespace MVCProject.Controllers
                 o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * item.Price);
                 o.Total += item.Total;
             }
+            o.Tax = (o.Total - o.TotalWithoutTax).ToString();
             return o;
         }
         private List<Product> GetListProductPrices(string subid)

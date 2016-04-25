@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Doanh thu theo tháng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "50"; }
+}
+
+<form action="~/ReportsSales/RevenueOfMonth" method="get" id="RevenueOfMonth">
+    <section class="content-header">
+        <h2>
+            Doanh thu theo tháng
+        </h2>
+        <div class="arrange-button">
+            <a href="../ReportsSales/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="RevenueOfMonth.submit();" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Tháng</span>
+                        <select class="form-control" name="month" id="month" onchange="RevenueOfMonth.submit();">
+                            @for (int s = 1; s <= 12; s += 1)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Năm</span>
+                        <select class="form-control" name="year" id="year" onchange="RevenueOfMonth.submit();">
+                            @for (int s = 2016; s <= 2026; s += 1)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 50; s <= 100; s += 50)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")         }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Mã đơn hàng</th>
+                        <th>Tên đại lý</th>
+                        <th>Ngày lập đơn hàng</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @item.OrderCode
+                            </th>
+                            <td>
+                                @item.AccountName
+                            </td>
+                            <td align="center">
+                                @item.DateCreate
+                            </td>
+                            <td>
+                                @item.Total.ToString("n0")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                           {
+                               page,
+                               filter = ViewBag.Filter,
+                               size = size
+                           }))
+            </nav>
+        </div>
+    </section>
+    <script>
+        $('#DateFrom').datetimepicker({
+            value: '@Request.QueryString["DateFrom"]', step: 1
+        });
+        $('#DateTo').datetimepicker({
+            value: '@Request.QueryString["DateTo"]', step: 1
+        });
+    </script>
+</form>

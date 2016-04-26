@@ -17,6 +17,12 @@ namespace MVCProject.Models
         public string OrderCode { get; set; }
 
     }
+    public class RevenueOfMonth
+    {
+        public string AccountName { get; set; }
+        public string DateCreate { get; set; }
+        public decimal Total { get; set; }
+    }
     public class ProductViewModel
     {
         public long ID { get; set; }
@@ -68,7 +74,6 @@ namespace MVCProject.Models
         [Compare("NewPassword", ErrorMessage = "Mật khẩu mới và nhập lại không giống nhau.")]
         public string ConfirmPassword { get; set; }
     }
-
     public class LoginViewModel
     {
         [Required]

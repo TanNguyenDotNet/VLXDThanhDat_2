@@ -295,12 +295,9 @@ namespace MVCProject.Controllers
                     od.DateOfOrder = DateTime.Now;
                     od.OrderCode = code;
 
-                    if (od.IDProduct > 0)
-                    {
-                        var p = _db.Products.Single(c => c.ID == od.IDProduct);
-                        od.ProductCode = p.ItemCode;
-                    }
-                    else
+                    if (od.IDProduct < 0)//(od.IDProduct > 0)
+                        //var p = _db.Products.Single(c => c.ID == od.IDProduct);
+                        //od.ProductCode = p.ItemCode;
                     {
                         od.ProductCode = "";
                         od.Discount = 0;
@@ -432,7 +429,7 @@ namespace MVCProject.Controllers
                 double thue = (double)od.Price * (double)(double.Parse(od.Tax) / 100);
                 od.Total = (decimal)(double.Parse(od.Amount) * ((double)od.Price + thue));
                 od.Total = od.Total - (discount * decimal.Parse(od.Amount));
-
+                od.ProductCode = li.Where(a => a.ID == od.IDProduct).Select(b => b.ItemCode).FirstOrDefault();
                 Total += (double)od.Total;
                 listOd.Add(od);
             }
@@ -456,7 +453,7 @@ namespace MVCProject.Controllers
             decimal priceSub = subprice == null ? 0 : decimal.Parse(subprice) / 100;
             li.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
 
-            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == subid).ToList();// lay danh sach co' trong gio hang
+            var listProductPriceSub = _db.ProductPrices.Where(a => a.LocationID == subid).ToList();// lay danh sach gia co' trong gio hang
             listProductPriceSub = listProductPriceSub.Where(a => li.Select(b => b.ID).Contains(a.ProductID)).ToList();
             if (listProductPriceSub.Count != 0)
             {

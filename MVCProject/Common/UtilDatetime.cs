@@ -24,12 +24,14 @@ namespace MVCProject.Common
         {
             return DateTime.Parse(date, new System.Globalization.CultureInfo("vi-VN"));
         }
-        private static List<DateTime> ListGetDayInMonth(string month,string year)
+        public static List<DateTime> ListGetBeginDayAndEndDayInMonth(string month,string year)
         {
             int day = DateTime.DaysInMonth(int.Parse(year), int.Parse(month));
 
-            DateTime dt = new DateTime();
-            
+            DateTime BeginDay = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+            DateTime EndDay = new DateTime(int.Parse(year), int.Parse(month), day, 23, 59, 59);
+            List<DateTime> lst = new List<DateTime>() { BeginDay, EndDay };
+            return lst;
         }
     }
 }

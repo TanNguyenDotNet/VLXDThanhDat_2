@@ -1,4 +1,6 @@
-﻿@{
+﻿@model PagedList.IPagedList<MVCProject.Models.RevenueOfMonth>
+           @using PagedList.Mvc;
+@{
     ViewBag.Title = "Doanh thu theo tháng";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string size = Request.QueryString["size"];
@@ -27,7 +29,7 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Tháng</span>
-                        <select class="form-control" name="month" id="month" onchange="RevenueOfMonth.submit();">
+                        <select class="form-control" name="month" id="month" >
                             @for (int s = 1; s <= 12; s += 1)
                             {
                                 <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
@@ -38,7 +40,7 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Năm</span>
-                        <select class="form-control" name="year" id="year" onchange="RevenueOfMonth.submit();">
+                        <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
                                 <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>

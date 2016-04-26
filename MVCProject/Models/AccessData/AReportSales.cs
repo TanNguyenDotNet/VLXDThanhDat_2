@@ -32,5 +32,35 @@ namespace MVCProject.Models.AccessData
                 return new List<RevenueInvoice>();
             }
         }
+        public static IEnumerable<Models.RevenueOfMonth> GetRevenueOfMonth(string state = "", string month = "", string year = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                List<DateTime> lstTime = UtilDatetime.ListGetBeginDayAndEndDayInMonth(month, year);
+                string datefrom = lstTime[0].ToString(new System.Globalization.CultureInfo("vi-VN")),
+                    dateto = lstTime[1].ToString(new System.Globalization.CultureInfo("vi-VN"));
+                var listOrder = AOrders.GetList("",state, datefrom, dateto);
+                if (listOrder.Count() > 0)
+                {
+                    var listRpt = from od in listOrder.ToList()
+                                  join
+                                      u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
+                                  join
+                                  a in model.AppNetUserTypes on u.UserName equals a.UserOfName
+                                  group od by new
+                                  {
+                                      od.IDAccount,
+                                      a.DisplayName
+                                  } into g
+                                  select new RevenueOfMonth()
+                                  {
+                                      AccountName=g.Key.DisplayName, Total=g.Sum(s=>s.Total)
+                                  };
+  
+                    return listRpt.ToList();
+                }
+                return new List<RevenueOfMonth>();
+            }
+        }
     }
 }

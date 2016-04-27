@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "50"; }
+    string month = Request.QueryString["month"];
+    if (month == null || month == "") { month = "1"; }
+    string year = Request.QueryString["year"];
+    if (year == null || year == "") { year = "2016"; }
 }
 
 <form action="~/ReportsSales/RevenueOfMonth" method="get" id="RevenueOfMonth">
@@ -65,9 +69,8 @@
             <table class="table table-striped">
                 <thead>
                     <tr style="background-color: #3c8dbc; color:#fff">
-                        <th>Mã đơn hàng</th>
                         <th>Tên đại lý</th>
-                        <th>Ngày lập đơn hàng</th>
+                        <th>Khu vực</th>
                         <th>Tổng tiền</th>
                     </tr>
                 </thead>
@@ -75,14 +78,11 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <th scope="row" style="text-align:left">
-                                @item.OrderCode
-                            </th>
                             <td>
                                 @item.AccountName
                             </td>
                             <td align="center">
-                                @item.DateCreate
+                                @item.LocationSub
                             </td>
                             <td>
                                 @item.Total.ToString("n0")
@@ -95,7 +95,6 @@
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {
                                page,
-                               filter = ViewBag.Filter,
                                size = size
                            }))
             </nav>

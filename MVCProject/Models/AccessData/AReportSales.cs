@@ -39,24 +39,29 @@ namespace MVCProject.Models.AccessData
                 List<DateTime> lstTime = UtilDatetime.ListGetBeginDayAndEndDayInMonth(month, year);
                 string datefrom = lstTime[0].ToString(new System.Globalization.CultureInfo("vi-VN")),
                     dateto = lstTime[1].ToString(new System.Globalization.CultureInfo("vi-VN"));
-                var listOrder = AOrders.GetList("",state, datefrom, dateto);
+                var listOrder = AOrders.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
                                   join
                                       u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
                                   join
-                                  a in model.AppNetUserTypes on u.UserName equals a.UserOfName
+                                  a in model.AppNetUserTypes.ToList() on u.UserName equals a.UserOfName
+                                  join
+                                  l in model.LocationSubs.ToList() on a.LocationSubID equals l.ID
                                   group od by new
                                   {
                                       od.IDAccount,
-                                      a.DisplayName
+                                      a.DisplayName,
+                                      l.Name
                                   } into g
                                   select new RevenueOfMonth()
                                   {
-                                      AccountName=g.Key.DisplayName, Total=g.Sum(s=>s.Total)
+                                      AccountName = g.Key.DisplayName,
+                                      Total = g.Sum(s => s.Total),
+                                      LocationSub = g.Key.Name
                                   };
-  
+
                     return listRpt.ToList();
                 }
                 return new List<RevenueOfMonth>();

@@ -99,7 +99,7 @@ namespace MVCProject.Common
             //// Dòng này có nghĩa là ở column hiện tại lấy với địa chỉ (Row hiện tại - 1)/ (Row hiện tại - 2) Cùng một colum
             //worksheet.Cells[listItems.Count + 5, 4].FormulaR1C1 = "(R[-1]C/R[-2]C)";
         }
-        public static byte[] ExportByteExcel<T>(List<T> list, params string[] headers)
+        public static byte[] ExportByteExcel<T>(List<T> list,params string[] headers)
         {
 
             var stream = CreateExcelFile(list, headers);

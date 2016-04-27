@@ -42,7 +42,7 @@ namespace MVCProject.Controllers
             listUser = listUser.Where(a => lstUser.Contains(a.Id)).ToList();
             ViewData["SumOfOrders"] = SumOfOrders(lstUser);
             ViewData["SumOfPaymentDetail"] = SumOfPaymentDetail(lstUser);
-            ViewData["LocationSub"] = Params.listLocationSub.Where(a => listUserType.Select(p => p.LocationSubID).ToList().Contains(a.ID)).ToList();
+            ViewData["LocationSub"] = modelAspnet.LocationSubs.ToList().Where(a => listUserType.Select(p => p.LocationSubID).ToList().Contains(a.ID)).ToList();
             ViewData["UsersType"] = listUserType;
             return View(listUser.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));

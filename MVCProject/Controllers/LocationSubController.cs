@@ -35,8 +35,8 @@ namespace MVCProject.Controllers
         }
         public ActionResult Create()
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
             //return RedirectToAction("AccessDenied", "Account");
             using (var model = Params.ModelaspnetEntities)

@@ -64,7 +64,6 @@ namespace MVCProject.Controllers
                    
                     InvoiceParams = new InvoiceDetailParams();
                     InvoiceParams.Address = u.Address + ", Q." + u.District;
-                    InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(_Orders.Total.ToString().Replace(".00", "")));
                     InvoiceParams.CellPhone = u.Phone;
                     InvoiceParams.Contact = "_";
                     InvoiceParams.Discount = "_";
@@ -76,6 +75,7 @@ namespace MVCProject.Controllers
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                     InvoiceParams.Payment = TotalPay(us.Id);
                     InvoiceParams.Debt = (decimal)InvoiceParams.Payment - _Orders.Total;
+                    InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(InvoiceParams.Payment.ToString().Replace(".00", "")));
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
                     model.InvoiceDetail = UtilEntities.modelDynamic(query);

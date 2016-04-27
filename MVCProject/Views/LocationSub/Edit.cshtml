@@ -21,9 +21,9 @@
     <section class="content">
         <div class='arrage-popup'>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="Title">Tiêu đề:</label>
+                <label class="text-label col-md-2" for="Title">Tên khu vực:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @maxlenght = "64" })
                     @Html.ValidationMessageFor(model => model.Name)
                 </div>
             </div>
@@ -38,7 +38,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="LocationPrice">Tỷ lệ giá khu vực (%)</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.LocationPrice, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.LocationPrice, new { @class = "form-control", @maxlenght = "2" })
                     @Html.ValidationMessageFor(model => model.LocationPrice)
                 </div>
             </div>

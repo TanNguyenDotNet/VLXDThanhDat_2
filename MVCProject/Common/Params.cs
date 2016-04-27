@@ -45,11 +45,11 @@ namespace MVCProject.Common
         {
             get
             {
-                if (_listLocationSub == null)
-                {
-                    _listLocationSub = ModelaspnetEntities.LocationSubs.Where(a => a.IsDel != 1 & a.Show == true).OrderBy(d => d.Name).ToList();
-                }
-                return _listLocationSub;
+                //if (_listLocationSub == null)
+                //{
+                    return ModelaspnetEntities.LocationSubs.Where(a => a.IsDel != 1 & a.Show == true).OrderBy(d => d.Name).ToList();
+                //}
+                //return _listLocationSub;
             }
         }
         public static IEnumerable<SelectListItem> listItemLocationSub

@@ -59,6 +59,11 @@ namespace MVCProject.Controllers
             {
                 using (var model = Params.ModelaspnetEntities)
                 {
+                    double n;
+                    if (string.IsNullOrEmpty(_LocationSub.Name))
+                        _LocationSub.Name = "Chưa nhập tên";
+                    if (string.IsNullOrEmpty(_LocationSub.LocationPrice) || double.TryParse(_LocationSub.LocationPrice.ToString(),out n) == false)
+                        _LocationSub.LocationPrice = "0";
                     model.LocationSubs.Add(_LocationSub);
                     model.SaveChanges();
                     return RedirectToAction("Index");
@@ -75,6 +80,11 @@ namespace MVCProject.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    double n;
+                    if (string.IsNullOrEmpty(_LocationSub.Name))
+                        _LocationSub.Name = "Chưa nhập tên";
+                    if (string.IsNullOrEmpty(_LocationSub.LocationPrice) || double.TryParse(_LocationSub.LocationPrice.ToString(), out n) == false)
+                        _LocationSub.LocationPrice = "0";
                     model.Entry(_LocationSub).State = EntityState.Modified;
                     model.SaveChanges();
                     return RedirectToAction("Index");

@@ -23,6 +23,18 @@ namespace MVCProject.Models
         public string LocationSub { get; set; }
         public decimal Total { get; set; }
     }
+    public class RevenueOfYear
+    {
+        public string AccountName { get; set; }
+        public string LocationSub { get; set; }
+        public decimal Total { get; set; }
+    }
+    public class RevenueOfQuater
+    {
+        public string AccountName { get; set; }
+        public string LocationSub { get; set; }
+        public decimal Total { get; set; }
+    }
     public class ProductViewModel
     {
         public long ID { get; set; }

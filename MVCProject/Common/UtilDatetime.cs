@@ -24,12 +24,45 @@ namespace MVCProject.Common
         {
             return DateTime.Parse(date, new System.Globalization.CultureInfo("vi-VN"));
         }
-        public static List<DateTime> ListGetBeginDayAndEndDayInMonth(string month,string year)
+        public static List<DateTime> ListGetBeginDayAndEndDayInMonth(string month, string year)
         {
             int day = DateTime.DaysInMonth(int.Parse(year), int.Parse(month));
 
             DateTime BeginDay = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
             DateTime EndDay = new DateTime(int.Parse(year), int.Parse(month), day, 23, 59, 59);
+            List<DateTime> lst = new List<DateTime>() { BeginDay, EndDay };
+            return lst;
+        }
+        public static List<DateTime> ListGetBeginDayAndEndDayInYear(string year)
+        {
+            DateTime BeginDay = new DateTime(int.Parse(year), 1, 1, 0, 0, 0);
+            DateTime EndDay = new DateTime(int.Parse(year), 12, 31, 23, 59, 59);
+            List<DateTime> lst = new List<DateTime>() { BeginDay, EndDay };
+            return lst;
+        }
+        public static List<DateTime> ListGetBeginDayAndEndDayInQuarter(string quarter, string year)
+        {
+            DateTime BeginDay = DateTime.Now;
+            DateTime EndDay = DateTime.Now;
+            switch (quarter)
+            {
+                case "1":
+                    BeginDay = new DateTime(int.Parse(year), 1, 1, 0, 0, 0);
+                    EndDay = new DateTime(int.Parse(year), 3, 31, 23, 59, 59);
+                    break;
+                case "2":
+                    BeginDay = new DateTime(int.Parse(year), 3, 1, 0, 0, 0);
+                    EndDay = new DateTime(int.Parse(year), 6, 31, 23, 59, 59);
+                    break;
+                case "3":
+                    BeginDay = new DateTime(int.Parse(year), 7, 1, 0, 0, 0);
+                    EndDay = new DateTime(int.Parse(year), 10, 31, 23, 59, 59);
+                    break;
+                case "4":
+                    BeginDay = new DateTime(int.Parse(year), 11, 1, 0, 0, 0);
+                    EndDay = new DateTime(int.Parse(year), 12, 31, 23, 59, 59);
+                    break;
+            }
             List<DateTime> lst = new List<DateTime>() { BeginDay, EndDay };
             return lst;
         }

@@ -43,8 +43,34 @@ namespace MVCProject.Controllers
             //    return RedirectToAction("AccessDenied", "Account");
             var list = AReportSales.GetRevenueOfMonth("2", month, year);
             TempData["ExportExcel"] = list;
-            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng tiền" };
+            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
             TempData["action"] = "RevenueOfMonth";
+            return View(list.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
+        }
+        public ActionResult RevenueOfQuarter(int? page, int? size, string quarter = "1", string year = "2016")
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            //if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            //    return RedirectToAction("AccessDenied", "Account");
+            var list = AReportSales.RevenueOfQuarter("2", quarter, year);
+            TempData["ExportExcel"] = list;
+            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
+            TempData["action"] = "RevenueOfQuarter";
+            return View(list.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
+        }
+        public ActionResult RevenueOfYear(int? page, int? size, string year = "2016")
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            //if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            //    return RedirectToAction("AccessDenied", "Account");
+            var list = AReportSales.GetRevenueOfMonth("2", year);
+            TempData["ExportExcel"] = list;
+            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
+            TempData["action"] = "RevenueOfYear";
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -58,6 +84,9 @@ namespace MVCProject.Controllers
                     break;
                 case "RevenueOfMonth":
                     buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueOfMonth>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    break;
+                case "RevenueOfYear":
+                    buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueOfYear>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
             }
 

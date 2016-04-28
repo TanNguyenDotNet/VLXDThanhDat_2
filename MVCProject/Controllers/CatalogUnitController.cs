@@ -42,6 +42,8 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrEmpty(catalog.Name))
+                    catalog.Name = "Chưa nhập đơn vị tính";
                 catalog.Show = true;
                 modelAspnet.CatalogUnits.Add(catalog);
                 modelAspnet.SaveChanges();
@@ -72,6 +74,8 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrEmpty(catalog.Name))
+                    catalog.Name = "Chưa nhập đơn vị tính";
                 modelAspnet.Entry(catalog).State = System.Data.Entity.EntityState.Modified;
                 modelAspnet.SaveChanges();
                 return RedirectToAction("Index");

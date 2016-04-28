@@ -547,6 +547,9 @@
     <Content Include="Views\CatalogUnit\Index.cshtml" />
     <Content Include="Views\CatalogUnit\Edit.cshtml" />
     <Content Include="Views\ReportsSales\RevenueInvoice.cshtml" />
+    <Content Include="Views\ReportsSales\RevenueOfMonth.cshtml" />
+    <Content Include="Views\ReportsSales\RevenueOfYear.cshtml" />
+    <Content Include="Views\ReportsSales\RevenueOfQuarter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

@@ -55,7 +55,7 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
-                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                        <select class="form-control" name="size" id="size" onchange="RevenueOfMonth.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
                                 <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")         }>@s</option>
@@ -100,12 +100,4 @@
             </nav>
         </div>
     </section>
-    <script>
-        $('#DateFrom').datetimepicker({
-            value: '@Request.QueryString["DateFrom"]', step: 1
-        });
-        $('#DateTo').datetimepicker({
-            value: '@Request.QueryString["DateTo"]', step: 1
-        });
-    </script>
 </form>

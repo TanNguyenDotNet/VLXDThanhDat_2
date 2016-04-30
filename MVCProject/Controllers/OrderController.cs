@@ -25,6 +25,8 @@ namespace MVCProject.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             try
             {
+                if (string.IsNullOrEmpty(datefrom) && string.IsNullOrEmpty(dateto))
+                    datefrom = DateTime.Now.ToString("dd/MM/yyyy HH:ss");
                 var list = GetList(filter, state, datefrom, dateto);
 
                 return View(list.ToList().ToPagedList(page == null ||

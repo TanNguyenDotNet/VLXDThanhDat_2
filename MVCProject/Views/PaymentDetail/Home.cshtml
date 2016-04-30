@@ -43,7 +43,7 @@
                         <select class="form-control" name="size" id="size" onchange="paymentdetailViewForm.submit();">
                             @for (int s = 20; s <= 100; s += 20)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
                             }
                         </select>
                     </div>
@@ -77,22 +77,22 @@
                 </tbody>
             </table>
             <div class="arrange-button">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp; thanh toán: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; Thanh toán: <span>@double.Parse(ViewData["Total"].ToString()).ToString("#,###")</span></p>
             </div>
             <div class="arrange-button">
-                <p>Tổng nợ phải trả: <span>@double.Parse(ViewData["TotalDebt"].ToString()).ToString("#,###")</span></p>
+                <p>Tổng công nợ: <span>@double.Parse(ViewData["TotalDebt"].ToString()).ToString("#,###")</span></p>
             </div>
-        </div>
-    </section>
-    <nav style="text-align:right">
-        @Html.PagedListPager(Model, page => Url.Action("Home", new
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Home", new
                            {
                                page,
                                size = size,
                                filter = ViewBag.Filter,
                                order = ViewBag.Order
                            }))
-    </nav>
+            </nav>
+        </div>
+    </section>
     <script>
         $('#DateFrom').datetimepicker({
             value: '@Request.QueryString["DateFrom"]', step: 1

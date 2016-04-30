@@ -108,7 +108,7 @@ namespace MVCProject.Controllers
                 dateTo = UtilDatetime.FromTime(dateTo).ToString("yyyyMMddHHmmss");
                 listPaymentDetail = listPaymentDetail.Where(a => String.Compare(a.PayDate, dateTo) <= 0);
             }
-            return listPaymentDetail;
+            return listPaymentDetail.OrderBy(a=>a.PayDate);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace MVCProject.Controllers
 
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền" };
-            ViewData["action"] = "RevenueInvoice";
+            TempData["action"] = "RevenueInvoice";
             ViewBag.Filter = filter;
             ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||

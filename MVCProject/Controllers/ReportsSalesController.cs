@@ -33,9 +33,9 @@ namespace MVCProject.Controllers
 
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền" };
-            TempData["action"] = "RevenueInvoice";
+            ViewData["action"] = "RevenueInvoice";
             ViewBag.Filter = filter;
-
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -50,6 +50,7 @@ namespace MVCProject.Controllers
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
             TempData["action"] = "RevenueOfMonth";
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -64,6 +65,7 @@ namespace MVCProject.Controllers
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
             TempData["action"] = "RevenueOfQuarter";
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -78,6 +80,7 @@ namespace MVCProject.Controllers
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
             TempData["action"] = "RevenueOfYear";
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -96,6 +99,7 @@ namespace MVCProject.Controllers
             TempData["ExportExcel"] = list.ToList();
             TempData["header"] = new string[] { "Ngày", "Tổng thanh toán" };
             TempData["action"] = "PaymentOfDay";
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -114,6 +118,7 @@ namespace MVCProject.Controllers
             TempData["ExportExcel"] = list.ToList();
             TempData["header"] = new string[] { "Đại lý", "Tổng thanh toán" };
             TempData["action"] = "PaymentOfStore";
+            ViewData["Total"] = list.Sum(a => a.Total);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }

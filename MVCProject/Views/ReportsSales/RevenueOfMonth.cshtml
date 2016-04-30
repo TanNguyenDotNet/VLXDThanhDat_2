@@ -91,6 +91,9 @@
                     }
                 </tbody>
             </table>
+            <div class="arrange-button">
+                <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
+            </div>
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {

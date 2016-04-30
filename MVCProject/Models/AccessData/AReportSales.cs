@@ -179,7 +179,7 @@ namespace MVCProject.Models.AccessData
                               Date = g.Key.Date,
                               Total = g.Sum(a => a.Total)
                           };
-                return listPay;
+                return listPay.OrderBy(a=>a.Date);
             }
         }
         public static IEnumerable<PaymentOfStore> GetPaymentOfStore(string dateFrom = "", string dateTo = "")

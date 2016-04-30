@@ -10,7 +10,7 @@
 <form action="~/ReportsSales/PaymentOfStore" method="get" id="paymentofday">
     <section class="content-header">
         <h2>
-            Sản phẩm
+            Thông kê doanh thu theo đại lý
         </h2>
         <div class="arrange-button">
             <a href="../ReportsSales/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
@@ -73,6 +73,9 @@
                     }
                 </tbody>
             </table>
+            <div class="arrange-button">
+                <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
+            </div>
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {

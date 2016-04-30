@@ -119,6 +119,10 @@ namespace MVCProject.Controllers
         }
         public ActionResult ExportExcel()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
             byte[] buffer = null;
             switch (TempData["action"].ToString())
             {

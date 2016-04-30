@@ -10,7 +10,7 @@
     string year = Request.QueryString["year"];
     if (year == null || year == "") { year = "2016"; }
 }
-<form action="~/ReportsSales/RevenueOfMonth" method="get" id="RevenueOfQuarter">
+<form action="~/ReportsSales/RevenueOfQuarter" method="get" id="RevenueOfQuarter">
     <section class="content-header">
         <h2>
             Doanh thu quí
@@ -35,7 +35,7 @@
                         <select class="form-control" name="quarter" id="quarter">
                             @for (int s = 1; s <= 4; s += 1)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                                <option value="@s" @if (quarter == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
                             }
                         </select>
                     </div>
@@ -46,7 +46,7 @@
                         <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
                             }
                         </select>
                     </div>
@@ -57,7 +57,7 @@
                         <select class="form-control" name="size" id="size" onchange="RevenueOfQuarter.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
                             }
                         </select>
                     </div>

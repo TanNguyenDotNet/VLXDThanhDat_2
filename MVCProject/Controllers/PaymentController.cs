@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,6 +18,10 @@ namespace MVCProject.Controllers
         // GET: Payment
         public ActionResult Index(int? page, int? size, string filter)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
             string userEnctypt = "";
             var _listUser = from l in modelAspnet.AspNetUsers select l;
             if (!string.IsNullOrEmpty(filter))

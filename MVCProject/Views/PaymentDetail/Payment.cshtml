@@ -5,8 +5,7 @@
 }
 <form action="~/PaymentDetail/Payment/" method="post" enctype="multipart/form-data" name="odForm" id="odForm">
     <section class="content-header">
-        <h2>Thêm mới</h2>
-        <h4>Giá sản phẩm</h4>
+        <h2>Thanh toán</h2>
         @Html.ValidationSummary(true)
         @Html.AntiForgeryToken()
         <div class='arrage-popup'>
@@ -19,7 +18,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Tiền thanh toán</label>
                 <div class="col-md-6">
-                    <input class="form-control" id="PayModel" name="PayModel" type="text" onchange="SetPrice();" maxlength="9"/>
+                    <input class="form-control" id="PayModel" name="PayModel" type="text" onchange="SetPrice();" maxlength="10"/>
                     @Html.TextBoxFor(model => model.Pay, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Pay)
                 </div>

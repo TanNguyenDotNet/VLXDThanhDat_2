@@ -550,6 +550,8 @@
     <Content Include="Views\ReportsSales\RevenueOfMonth.cshtml" />
     <Content Include="Views\ReportsSales\RevenueOfYear.cshtml" />
     <Content Include="Views\ReportsSales\RevenueOfQuarter.cshtml" />
+    <Content Include="Views\ReportsSales\PaymentOfDay.cshtml" />
+    <Content Include="Views\ReportsSales\PaymentOfStore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

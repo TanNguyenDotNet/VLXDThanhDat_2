@@ -8,7 +8,7 @@
     string year = Request.QueryString["year"];
     if (year == null || year == "") { year = "2016"; }
 }
-<form action="~/ReportsSales/RevenueOfMonth" method="get" id="RevenueOfYear">
+<form action="~/ReportsSales/RevenueOfYear" method="get" id="RevenueOfYear">
     <section class="content-header">
         <h2>
             Doanh thu năm
@@ -33,7 +33,7 @@
                         <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
                             }
                         </select>
                     </div>
@@ -41,10 +41,10 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
-                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                        <select class="form-control" name="size" id="size" onchange="RevenueOfYear.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
                             }
                         </select>
                     </div>

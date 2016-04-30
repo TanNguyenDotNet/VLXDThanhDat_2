@@ -44,23 +44,24 @@ namespace MVCProject.Common
         {
             DateTime BeginDay = DateTime.Now;
             DateTime EndDay = DateTime.Now;
+            int _year = int.Parse(year);
             switch (quarter)
             {
                 case "1":
-                    BeginDay = new DateTime(int.Parse(year), 1, 1, 0, 0, 0);
-                    EndDay = new DateTime(int.Parse(year), 3, 31, 23, 59, 59);
+                    BeginDay = new DateTime(_year, 1, 1, 0, 0, 0);
+                    EndDay = new DateTime(_year, 3, 31, 23, 59, 59);
                     break;
                 case "2":
-                    BeginDay = new DateTime(int.Parse(year), 3, 1, 0, 0, 0);
-                    EndDay = new DateTime(int.Parse(year), 6, 31, 23, 59, 59);
+                    BeginDay = new DateTime(_year, 4, 1, 0, 0, 0);
+                    EndDay = new DateTime(_year, 6, DateTime.DaysInMonth(_year, 6), 23, 59, 59);
                     break;
                 case "3":
-                    BeginDay = new DateTime(int.Parse(year), 7, 1, 0, 0, 0);
-                    EndDay = new DateTime(int.Parse(year), 10, 31, 23, 59, 59);
+                    BeginDay = new DateTime(_year, 7, 1, 0, 0, 0);
+                    EndDay = new DateTime(_year, 9, DateTime.DaysInMonth(_year, 9), 23, 59, 59);
                     break;
                 case "4":
-                    BeginDay = new DateTime(int.Parse(year), 11, 1, 0, 0, 0);
-                    EndDay = new DateTime(int.Parse(year), 12, 31, 23, 59, 59);
+                    BeginDay = new DateTime(_year, 10, 1, 0, 0, 0);
+                    EndDay = new DateTime(_year, 12, DateTime.DaysInMonth(_year, 12), 23, 59, 59);
                     break;
             }
             List<DateTime> lst = new List<DateTime>() { BeginDay, EndDay };

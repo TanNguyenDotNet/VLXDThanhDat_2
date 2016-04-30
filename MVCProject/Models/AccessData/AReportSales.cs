@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PagedList;
 
 namespace MVCProject.Models.AccessData
 {
@@ -135,6 +136,90 @@ namespace MVCProject.Models.AccessData
                     return listRpt.ToList();
                 }
                 return new List<RevenueOfQuater>();
+            }
+        }
+        public static IEnumerable<PaymentOfDay> GetPaymentOfDay(string dateFrom = "", string dateTo = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+
+                var list = from p in model.PaymentDetails select p;
+                if (!string.IsNullOrEmpty(dateFrom) & !string.IsNullOrEmpty(dateTo))
+                {
+                    dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
+                    dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateFrom) >= 0 &&
+                                               String.Compare(a.PayDate, dateTo) <= 0);
+                }
+                else if (!string.IsNullOrEmpty(dateFrom))
+                {
+                    dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateFrom) >= 0);
+                }
+                else if (!string.IsNullOrEmpty(dateTo))
+                {
+                    dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateTo) <= 0);
+                }
+
+                var listPay = from p in list.ToList()
+                              select new PaymentOfDay()
+                              {
+                                  Date = DateTime.ParseExact(p.PayDate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"),
+
+                                  Total = (decimal)p.Pay
+                              };
+                listPay = from p in listPay.ToList()
+                          group p by new
+                          {
+                              p.Date
+                          } into g
+                          select new PaymentOfDay()
+                          {
+                              Date = g.Key.Date,
+                              Total = g.Sum(a => a.Total)
+                          };
+                return listPay;
+            }
+        }
+        public static IEnumerable<PaymentOfStore> GetPaymentOfStore(string dateFrom = "", string dateTo = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+
+                var list = from p in model.PaymentDetails select p;
+                if (!string.IsNullOrEmpty(dateFrom) & !string.IsNullOrEmpty(dateTo))
+                {
+                    dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
+                    dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateFrom) >= 0 &&
+                                               String.Compare(a.PayDate, dateTo) <= 0);
+                }
+                else if (!string.IsNullOrEmpty(dateFrom))
+                {
+                    dateFrom = UtilDatetime.FromTime(dateFrom).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateFrom) >= 0);
+                }
+                else if (!string.IsNullOrEmpty(dateTo))
+                {
+                    dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.PayDate, dateTo) <= 0);
+                }
+
+                var listPay = from p in list.ToList()
+                              join a in model.AspNetUsers on p.IDAccount equals a.Id
+                              group p by new
+                              {
+                                  p.IDAccount,
+                                  a.UserName
+                              } into g
+                              select new PaymentOfStore()
+                              {
+                                  Account = g.Key.UserName,
+                                  Total = (decimal)g.Sum(p => p.Pay)
+                              };
+
+                return listPay.ToList();
             }
         }
     }

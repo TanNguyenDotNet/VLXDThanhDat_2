@@ -57,7 +57,7 @@ namespace MVCProject.Controllers
                 list = list.Where(a => a.ProductName.Contains(filter));
             if (cid != "0")
             { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
-            list.Where(a => a.IsDel == false);
+            list = list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
             ViewBag.Order = order == null ? "" : order;

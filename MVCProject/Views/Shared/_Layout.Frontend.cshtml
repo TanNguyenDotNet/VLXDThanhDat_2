@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,7 @@
                         <img src="~/Images/imgs/avatar5.png" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Admin</p>
+                        <p>@User.Identity.GetUserName()</p>
                         <!-- Status -->
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>

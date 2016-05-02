@@ -15,27 +15,27 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Tên đăng nhập</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" ,@maxlenght="32"})
                     @Html.ValidationMessageFor(model => model.UserName)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="FullName">Tên cá nhân/đại lý</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @maxlenght = "128" })
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Password">Mật khẩu</label>
                 <div class="col-md-6">
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @maxlenght = "32" })
                     @Html.ValidationMessageFor(model => model.Password)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ConfirmPassword">Nhập lại mật khẩu</label>
                 <div class="col-md-6">
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @maxlenght = "32" })
                     @Html.ValidationMessageFor(model => model.ConfirmPassword)
                 </div>
             </div>

@@ -41,7 +41,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
                             }
                         </select>
                     </div>
@@ -101,7 +101,6 @@
                                         }
                                         else
                                         { totalpay = (decimal)dicSumOfPay[item.Id]; total = totalOrder - totalpay; }
-
                                     }
                                     else
                                     {
@@ -117,6 +116,9 @@
                     }
                 </tbody>
             </table>
+            <div class="arrange-button">
+                <p>Tổng Cộng: <span>@ViewData["TotalDebt"]</span></p>
+            </div>
             <script>
 
                 function filterFromSubmit() {

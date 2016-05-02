@@ -25,11 +25,11 @@ namespace MVCProject.Controllers
             string userEnctypt = "";
             var _listUser = from l in modelAspnet.AspNetUsers select l;
             if (!string.IsNullOrEmpty(filter))
-            { _listUser = _listUser.Where(a => a.UserName.Contains(filter));}
-            if (_listUser.Count()<1)
+            { _listUser = _listUser.Where(a => a.UserName.Contains(filter)); }
+            if (_listUser.Count() < 1)
                 return View(_listUser.ToList().ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
-             var listUser = _listUser.ToList();
+            var listUser = _listUser.ToList();
             var listUserType = modelAspnet.AppNetUserTypes.ToList();
             List<string> lstType = new List<string>();
             List<string> lstUser = new List<string>();
@@ -37,18 +37,20 @@ namespace MVCProject.Controllers
             {
                 userEnctypt = MVCProject.Common.Security.EncryptString("User:" + listUser[i].UserName + "~FrontendUser",
                             false, MVCProject.Common.EncryptType.TripleDES);
-                if(listUserType.Where(a=>a.Username==userEnctypt).FirstOrDefault()!=null)
+                if (listUserType.Where(a => a.Username == userEnctypt).FirstOrDefault() != null)
                 {
                     lstType.Add(listUserType.Where(a => a.Username == userEnctypt).FirstOrDefault().Username);
                     lstUser.Add(listUser[i].Id);
                 }
             }
             listUserType = listUserType.Where(a => lstType.Contains(a.Username)).ToList();
-            listUser = listUser.Where(a => lstUser.Contains(a.Id)).ToList();
+            listUser = listUser.Where(a => lstUser.Contains(a.Id)).ToList().OrderBy(a => a.UserName).ToList();
             ViewData["SumOfOrders"] = SumOfOrders(lstUser);
             ViewData["SumOfPaymentDetail"] = SumOfPaymentDetail(lstUser);
             ViewData["LocationSub"] = modelAspnet.LocationSubs.ToList().Where(a => listUserType.Select(p => p.LocationSubID).ToList().Contains(a.ID)).ToList();
             ViewData["UsersType"] = listUserType;
+            ViewData["TotalDebt"] = (((Dictionary<string, decimal>)ViewData["SumOfOrders"]).Sum(a => a.Value) - (decimal)((Dictionary<string, decimal?>)ViewData["SumOfPaymentDetail"]).Sum(a => a.Value)).ToString("n0");
+
             return View(listUser.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }

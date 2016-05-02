@@ -10,6 +10,8 @@ using MVCProject.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using MVCProject.Common;
+using MVCProject.Models.AccessData;
+using MVCProject.Extensions;
 
 namespace MVCProject.Controllers
 {
@@ -184,6 +186,7 @@ namespace MVCProject.Controllers
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
+                ALogSystem.Instance.save("Product", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), product.ID.ToString(), product.Price.ToString());
                 return RedirectToAction("Index");
             }
             return View(_product);

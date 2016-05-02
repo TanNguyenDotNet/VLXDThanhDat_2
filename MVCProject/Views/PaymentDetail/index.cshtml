@@ -19,7 +19,6 @@
             <a href="~/PaymentDetail/Payment?PayID=@idaccount" class="btn btn-info" id="modaltrigger" rel="leanModal">Nhập thanh toán</a>
         </div>
     </section>
-
     <section class="content">
         <div class="sidebar-form">
             <div class="row">
@@ -106,7 +105,6 @@
             </nav>
         </div>
     </section>
-    
     <script>
         $('#DateFrom').datetimepicker({
             value: '@Request.QueryString["DateFrom"]', step: 1
@@ -115,6 +113,5 @@
             value: '@Request.QueryString["DateTo"]', step: 1
         });
     </script>
-
 </form>
 

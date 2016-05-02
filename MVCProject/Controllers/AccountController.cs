@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using MVCProject.Models;
 using MVCProject.Common;
 using System.Data.Entity;
+using MVCProject.Models.AccessData;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -31,6 +33,18 @@ namespace MVCProject.Controllers
             var user = db.AspNetUsers.Where(a => a.UserName == id).FirstOrDefault();
             IdentityResult result = await UserManager.RemovePasswordAsync(user.Id);
             IdentityResult resultChange = await UserManager.AddPasswordAsync(user.Id, DateTime.Now.ToString("ddMMyyyy"));
+            return RedirectToAction("Index");
+        }
+        public ActionResult ActiveAccount(string id)
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "13"))
+                return RedirectToAction("AccessDenied", "Account");
+            var user = db.AppNetUserTypes.Where(a => a.UserOfName == id).FirstOrDefault();
+            user.IsActive = user.IsActive == true ? false : true;
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult Agent(string id)
@@ -146,27 +160,16 @@ namespace MVCProject.Controllers
             return us;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string page = "", string size = "", string filter = "", string LocalID = "", string type = "")
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "19"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            ViewBag.TypeList = Common.Commons.GetFullName(db.AppNetUserTypes.ToList());/*Test lại chỗ Key*/
-            ViewBag.LocationList = Common.Commons.GetCityName(db.Locations.ToList());
-            return View(GetUserList());
+            ViewBag.LocationList = Common.Params.listLocation;
+            return View(AAppNetUserType.Instance.GetUserListPaging(User.Identity.GetUserName(), page, size, filter, LocalID,type));
         }
-
-        private IEnumerable<AspNetUser> GetUserList()
-        {
-            string un = User.Identity.GetUserName();
-            var list = (from u in db.AspNetUsers
-                        where u.UserName != un && u.UserName != "admin"
-                        select u).ToList();
-            return list;
-        }
-
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {

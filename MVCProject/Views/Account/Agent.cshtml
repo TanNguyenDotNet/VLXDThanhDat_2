@@ -37,7 +37,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="DisplayName">Tên cá nhân/đại lý:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", @maxlength = "20" })
+                    @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", @maxlength = "32" })
                     @Html.ValidationMessageFor(model => model.DisplayName)
                 </div>
             </div>
@@ -51,21 +51,21 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Address">Địa chỉ:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @maxlenght = "128" })
                     @Html.ValidationMessageFor(model => model.Address)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="District">Quận/huyện:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.District, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.District, new { @class = "form-control", @maxlenght = "32" })
                     @Html.ValidationMessageFor(model => model.District)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Email">Email:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @maxlenght = "64" })
                     @Html.ValidationMessageFor(model => model.Email)
                 </div>
             </div>

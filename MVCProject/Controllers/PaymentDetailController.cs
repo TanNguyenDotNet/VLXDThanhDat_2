@@ -39,6 +39,7 @@ namespace MVCProject.Controllers
             ViewData["ListUsers"] = lstUsers.Where(a => listPaymentDetail.Select(p => p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
             ViewBag.UserName = lstUsers.Where(a => a.Id == _idaccount).FirstOrDefault().UserName;
             ViewData["idaccount"] = _idaccount;
+          
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             return View(listPaymentDetail.ToList().ToPagedList(page == null ||

@@ -13,7 +13,7 @@ namespace MVCProject.Common
         public static UserType UT { set; get; }
         public static IEnumerable<SelectListItem> GetLocationList(Models.aspnetEntities db)
         {
-            return db.Locations.OrderBy(d=>d.Order).AsEnumerable()
+            return db.Locations.OrderBy(d => d.Order).AsEnumerable()
                 .Select(d => new SelectListItem
                 {
                     Value = d.ID.ToString(),
@@ -54,7 +54,16 @@ namespace MVCProject.Common
 
         public static IEnumerable<SelectListItem> GetProductList(Models.aspnetEntities db)
         {
-            return db.Products.OrderBy(c=>c.ProductName).AsEnumerable()
+            return db.Products.OrderBy(c => c.ProductName).AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.ProductName
+                });
+        }
+        public static IEnumerable<SelectListItem> GetProductList(Models.aspnetEntities db, long? id)
+        {
+            return db.Products.Where(a => a.ID == id).OrderBy(c => c.ProductName).AsEnumerable()
                 .Select(d => new SelectListItem
                 {
                     Value = d.ID.ToString(),
@@ -107,7 +116,7 @@ namespace MVCProject.Common
             int s = pc.ScrollNumber + 1;
             pc.ScrollNumber = s;
             db.SaveChanges();
-            useCatCode = ((bool) pc.CatID) ? 1 : 0;
+            useCatCode = ((bool)pc.CatID) ? 1 : 0;
             string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
                 string.Format("{0:00000}", pc.ScrollNumber);
@@ -208,7 +217,7 @@ namespace MVCProject.Common
                 {
                     string enu = Security.EncryptString("User:" + u.UserName + "~DeliveryMan", false, EncryptType.TripleDES);
                     List<Models.AppNetUserType> utl = db.AppNetUserTypes.Where(c => c.Username == enu).ToList();
-                    
+
                     if (utl != null && utl.Count > 0)
                     {
                         if (utl[0].DisplayName != null && utl[0].DisplayName != "")
@@ -236,7 +245,7 @@ namespace MVCProject.Common
             catch { return null; }
         }
 
-        public static bool CheckPermission(ViewDataDictionary ViewData, Models.aspnetEntities db, 
+        public static bool CheckPermission(ViewDataDictionary ViewData, Models.aspnetEntities db,
             string username, string role)
         {
             string enu = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);

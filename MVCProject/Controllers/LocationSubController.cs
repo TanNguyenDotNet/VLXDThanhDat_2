@@ -14,13 +14,12 @@ namespace MVCProject.Controllers
 {
     public class LocationSubController : Controller
     {
+        aspnetEntities modelAspnet = Params.ModelaspnetEntities;
         // GET: LocationSub
         public ActionResult Index()
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
-            //return RedirectToAction("AccessDenied", "Account");
             dynamic model = new ExpandoObject();
             using (var _model = Params.ModelaspnetEntities)
             {
@@ -37,8 +36,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
-            //return RedirectToAction("AccessDenied", "Account");
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
             using (var model = Params.ModelaspnetEntities)
             {
                 ViewBag.LocationList = Common.Commons.GetLocationList(Params.ModelaspnetEntities);
@@ -52,8 +51,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            //if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
-            //return RedirectToAction("AccessDenied", "Account");
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)
             {
@@ -76,6 +75,10 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,IDLocation,LocationPrice,Name,Description,IsDel,Show")]LocationSub _LocationSub)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             using (var model = Params.ModelaspnetEntities)
             {
                 if (ModelState.IsValid)
@@ -94,6 +97,10 @@ namespace MVCProject.Controllers
         }
         public ActionResult Edit(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             using (var model = Params.ModelaspnetEntities)
             {
                 if (id == null)

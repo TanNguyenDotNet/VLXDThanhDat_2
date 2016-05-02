@@ -131,7 +131,7 @@ namespace MVCProject.Common
             // Dau [+ , - ]
             if (gNum < 0)
                 dau = "[-]";
-            dau = "";
+                dau = "";// Dau' am
 
             // Tach hang lon nhat
             if (mod.Equals(1))

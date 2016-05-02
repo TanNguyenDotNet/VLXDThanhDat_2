@@ -7,9 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using MVCProject.Models.AccessData;
 using Microsoft.AspNet.Identity;
 using System.Dynamic;
 using PagedList;
+using MVCProject.Extensions;
 
 namespace MVCProject.Controllers
 {
@@ -18,7 +20,7 @@ namespace MVCProject.Controllers
         private aspnetEntities db = new aspnetEntities();
 
         // GET: /ProductPrice/
-        public ActionResult Index(int? page, int? size, string filter, string order,string subid)
+        public ActionResult Index(int? page, int? size, string filter, string order, string subid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -27,19 +29,19 @@ namespace MVCProject.Controllers
             List<Models.ProductPriceViewModel> list = null;
             filter = filter == null ? "" : filter;
             list = (from l in db.ProductPrices.ToList()
-                    join p in db.Products.Where(a=>a.ProductName.Contains(filter)).ToList() on l.ProductID equals p.ID
+                    join p in db.Products.Where(a => a.ProductName.Contains(filter)).ToList() on l.ProductID equals p.ID
                     join ls in db.LocationSubs.ToList() on l.LocationID equals ls.ID
                     select new ProductPriceViewModel()
                                                                                     {
-                                                                                        id = l.ProductID.ToString(),
+                                                                                        id = l.ID.ToString(),
                                                                                         name = p.ProductName,
                                                                                         price = l.Price,
                                                                                         desc = l.Description,
                                                                                         date = l.Created,
                                                                                         locationsub = ls.Name,
-                                                                                        idlocationsub=ls.ID
+                                                                                        idlocationsub = ls.ID
                                                                                     }).ToList();
-            
+
             //Tìm giải pháp search tiếng việt không dấu
             //if (filter != null)
             //    list = list.Where(a => a.name.Contains(char.Parse(filter))).ToList();
@@ -73,7 +75,7 @@ namespace MVCProject.Controllers
         }
 
         // GET: /ProductPrice/Create
-        public ActionResult Create(long? id,string subid)
+        public ActionResult Create(long? id, string subid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -85,8 +87,8 @@ namespace MVCProject.Controllers
             if (subid != null)
                 pp.LocationID = int.Parse(subid);
 
-            ViewBag.ProductList = Common.Commons.GetProductList(db).Where(a=>a.Value==id.Value.ToString());
-            ViewBag.LocationSubList = Common.Params.listItemLocationSub.Where(a => a.Value == subid); 
+            ViewBag.ProductList = Common.Commons.GetProductList(db, id);
+            ViewBag.LocationSubList = Common.Params.listItemLocationSub.Where(a => a.Value == subid);
 
             return View(pp);
         }
@@ -96,7 +98,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
+        public ActionResult Create([Bind(Include = "ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -107,7 +109,10 @@ namespace MVCProject.Controllers
             {
                 var pp = db.ProductPrices.Where(a => a.LocationID == productprice.LocationID & a.ProductID == productprice.ProductID).FirstOrDefault();
                 if (pp != null)
+                {
                     db.ProductPrices.Remove(pp);
+                    ALogSystem.Instance.save("ProductPrice", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), pp.ProductID.ToString(), pp.Price.ToString(), pp.LocationID.ToString(), pp.UserID);
+                }
                 db.SaveChanges();
                 productprice.Created = DateTime.Now;
                 productprice.UserID = User.Identity.GetUserId();
@@ -147,7 +152,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
+        public ActionResult Edit([Bind(Include = "ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -158,6 +163,7 @@ namespace MVCProject.Controllers
             {
                 db.Entry(productprice).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(productprice);
@@ -166,20 +172,16 @@ namespace MVCProject.Controllers
         // GET: /ProductPrice/Delete/5
         public ActionResult Delete(long? id)
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
-
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //ProductPrice productprice = db.ProductPrices.Find(id);
-            //if (productprice == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(productprice);
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "27"))
+                return RedirectToAction("AccessDenied", "Account");
+            var pp = db.ProductPrices.Where(a => a.ID == id).FirstOrDefault();
+            if (pp != null)
+                db.ProductPrices.Remove(pp);
+            ALogSystem.Instance.save("ProductPrice", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), pp.ProductID.ToString(), pp.Price.ToString(), pp.LocationID.ToString(), pp.UserID);
+            db.SaveChanges();
+            return RedirectToAction("Index", "ProductPrice");
         }
 
         // POST: /ProductPrice/Delete/5

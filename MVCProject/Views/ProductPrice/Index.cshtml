@@ -9,6 +9,7 @@
     string subid = Request.QueryString["SubID"];
     if (subid == null || subid == "") { subid = "0"; }
     List<MVCProject.Models.LocationSub> listLocatSub = (List<MVCProject.Models.LocationSub>)ViewData["SubList"];
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 <section class="content-header">
     <h2>
@@ -67,6 +68,7 @@
                         <th>Ngày tạo</th>
                         <th>Mô tả</th>
                         <th>Khu vực</th>
+                        <th>Xóa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,6 +90,12 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.locationsub)
                             </td>
+                            <td>
+                                @if (roles.Contains("2"))
+                                {
+                                    <a href="#" id="@item.id" onclick="FunctionDel('@item.id')">Xóa</a>
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -105,4 +113,13 @@
         </div>
         <!-- Your Page Content Here -->
     </section><!-- /.content -->
+    <script>
+    function FunctionDel(val) {
+        var r = confirm("Xóa sản phẩm này?");
+        if (r == true) {
+            var url = 'Delete/' + val;
+            window.location.href = url;
+        } 
+    }
+    </script>
 </form>

@@ -101,7 +101,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "28"))
                 return RedirectToAction("AccessDenied", "Account");
             var listProduct = db.OrdersDetails.Where(a => a.OrderCode == code).Select(b => b.IDProduct).ToList();
             ViewBag.ProductList = Common.Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);//Han che ket noi xuong database
@@ -117,7 +117,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "28"))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)
@@ -141,7 +141,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "27"))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (id == null)
@@ -166,7 +166,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "2"))
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "27"))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)

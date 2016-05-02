@@ -23,7 +23,8 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Giá</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" ,@maxlenght="8"})
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="SetPrice();" maxlength="9" />
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
             </div>
@@ -44,12 +45,16 @@
             </div>
             <div style="text-align:center" class="col-md-12">
                 <input type="submit" value="Lưu Lại" class="btn btn-info" />
-                <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
+                <a href="~/ProductPriceLocationSub/Index" class="btn btn-info">Về danh sách</a>
             </div>
             <div class="clearfix"></div>
         </div>
     </section>
+    <script>
+        function SetPrice() {
+            var f = document.odForm;
+            f.Price.value = f.PriceModel.value;
+            f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
+        }
+    </script>
 </form>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

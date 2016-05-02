@@ -18,6 +18,10 @@ namespace MVCProject.Controllers
         [HttpGet]
         public ActionResult index(int? page, int? size, string filter, string order, string dateFrom, string dateTo, string _idaccount)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "21"))
+                return RedirectToAction("AccessDenied", "Account");
             if (string.IsNullOrEmpty(_idaccount))
             {
                 _idaccount = Request.QueryString["idaccount"].ToString();
@@ -62,6 +66,10 @@ namespace MVCProject.Controllers
         }
         public ActionResult Payment()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "22"))
+                return RedirectToAction("AccessDenied", "Account");
             TempData["idaccount"] = Request.QueryString["PayID"].ToString();
             return View();
         }

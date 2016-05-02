@@ -26,7 +26,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "3"))
                 return RedirectToAction("AccessDenied", "Account");
 
             return View();
@@ -56,7 +56,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "4"))
                 return RedirectToAction("AccessDenied", "Account");
             var catalog = modelAspnet.CatalogUnits.Where(a => a.ID == id).FirstOrDefault();
 
@@ -69,7 +69,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "3"))
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "4"))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)

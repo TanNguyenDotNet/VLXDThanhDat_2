@@ -8,6 +8,7 @@ namespace MVCProject.Common
     public class UtilDatetime
     {
         private static DateTime _datetime;
+        
         public static DateTime FromTime(string date)
         {
             _datetime = StringToDateTime(date);

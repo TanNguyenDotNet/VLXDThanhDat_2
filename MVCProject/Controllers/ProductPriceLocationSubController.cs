@@ -18,7 +18,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "25"))
                 return RedirectToAction("AccessDenied", "Account");
             if (modelAspnet.LocationSubs.Count() < 1)
                 return View();
@@ -66,8 +66,6 @@ namespace MVCProject.Controllers
         }
         IQueryable<Models.Product> OrderList(IQueryable<Models.Product> list, string order)
         {
-
-
             switch (order)
             {
                 case "price":

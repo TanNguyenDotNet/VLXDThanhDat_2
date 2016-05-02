@@ -22,6 +22,17 @@ namespace MVCProject.Controllers
         {
             return View();
         }
+        public async Task<ActionResult> RestPassword(string id)
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "26"))
+                return RedirectToAction("AccessDenied", "Account");
+            var user = db.AspNetUsers.Where(a => a.UserName == id).FirstOrDefault();
+            IdentityResult result = await UserManager.RemovePasswordAsync(user.Id);
+            IdentityResult resultChange = await UserManager.AddPasswordAsync(user.Id, DateTime.Now.ToString("ddMMyyyy"));
+            return RedirectToAction("Index");
+        }
         public ActionResult Agent(string id)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))

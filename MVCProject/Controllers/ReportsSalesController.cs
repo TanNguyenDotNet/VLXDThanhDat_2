@@ -22,7 +22,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             if (string.IsNullOrEmpty(dateFrom) == true && string.IsNullOrEmpty(dateTo))
             {
@@ -39,13 +39,14 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
-        public ActionResult RevenueOfMonth(int? page, int? size, string month = "1", string year = "")
+        public ActionResult RevenueOfMonth(int? page, int? size, string month = "", string year = "")
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             year = string.IsNullOrEmpty(year) == true ? DateTime.Now.Year.ToString() : year;
+            month = string.IsNullOrEmpty(month) == true ? DateTime.Now.Month.ToString() : month;
             var list = AReportSales.GetRevenueOfMonth("2", month, year);
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
@@ -58,7 +59,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             year = string.IsNullOrEmpty(year) == true ? DateTime.Now.Year.ToString() : year;
             var list = AReportSales.RevenueOfQuarter("2", quarter, year);
@@ -73,7 +74,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             year = string.IsNullOrEmpty(year) == true ? DateTime.Now.Year.ToString() : year;
             var list = AReportSales.GetRevenueOfYear("2", year);
@@ -88,7 +89,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             if (string.IsNullOrEmpty(dateFrom) == true && string.IsNullOrEmpty(dateTo))
             {
@@ -107,7 +108,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
             if (string.IsNullOrEmpty(dateFrom) == true && string.IsNullOrEmpty(dateTo))
             {
@@ -126,7 +127,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "24"))
                 return RedirectToAction("AccessDenied", "Account");
             byte[] buffer = null;
             switch (TempData["action"].ToString())

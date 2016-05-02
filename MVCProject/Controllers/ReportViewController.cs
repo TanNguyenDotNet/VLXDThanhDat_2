@@ -26,7 +26,7 @@ namespace MVCProject.Controllers
         {
             string path = Request.MapPath(Request.ApplicationPath) + @"Report\ReportOrderDetail.rdlc";
             GetDetail();
-            ViewBag.ReportViewer = ShowReport.ProcessShowReport(path, "DataSetOrderDetail", dsDetail.Tables["OrdersDetail"], InvoiceRptParams.rptParams,out byte_pdf);
+            ViewBag.ReportViewer = ShowReport.ProcessShowReport(path, "DataSetOrderDetail", dsDetail.Tables["OrdersDetail"], InvoiceRptParams.rptParams, out byte_pdf);
             TempData["bytePDF"] = byte_pdf;
             return View();
         }
@@ -38,30 +38,31 @@ namespace MVCProject.Controllers
         {
             dynamic model = new ExpandoObject();
 
-            using (var _modelAsp= Params.ModelaspnetEntities)
+            using (var _modelAsp = Params.ModelaspnetEntities)
             {
                 using (var _model = Params.ModelRetail)
                 {
                     string code = Request.QueryString["code"];
                     var _OrdersDetails = _model.OrdersDetails.Where(c => c.OrderCode == code).ToList();
                     var _Orders = _model.Orders.Where(c => c.OrderCode == code).FirstOrDefault();
-                    
+
                     var us = _modelAsp.AspNetUsers.Single(c => c.Id == _Orders.IDAccount);
                     string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
                     var u = _modelAsp.AppNetUserTypes.Find(enu);
                     var l = _modelAsp.Locations.Find(u.LocationID);
                     var query = (from a in _OrdersDetails
                                  join b in _modelAsp.Products.ToList() on a.ProductCode equals b.ItemCode
-                                 select new {
-                                     _ProductCode = a.ProductCode, 
-                                     _Amount = a.Amount, 
-                                     _Price = a.Price, 
-                                     _Tax=a.Tax,
-                                     _Total=a.Total,
-                                     _ProductName=b.ProductName,
-                                     _Unit=b.UnitName
-                                    }).ToList();
-                   
+                                 select new
+                                 {
+                                     _ProductCode = a.ProductCode,
+                                     _Amount = a.Amount,
+                                     _Price = a.Price,
+                                     _Tax = a.Tax,
+                                     _Total = a.Total,
+                                     _ProductName = b.ProductName,
+                                     _Unit = b.UnitName
+                                 }).ToList();
+
                     InvoiceParams = new InvoiceDetailParams();
                     InvoiceParams.Address = u.Address + ", Q." + u.District;
                     InvoiceParams.CellPhone = u.Phone;
@@ -75,14 +76,14 @@ namespace MVCProject.Controllers
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                     InvoiceParams.Payment = TotalPay(us.Id);
                     InvoiceParams.Debt = (decimal)InvoiceParams.Payment - _Orders.Total;
-                    InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(InvoiceParams.Payment.ToString().Replace(".00", "")));
+                    InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(InvoiceParams.Payment.ToString().Replace(".00", "").Replace("-", "")));
 
                     ViewData["InvoiceRptParams"] = InvoiceParams;
                     model.InvoiceDetail = UtilEntities.modelDynamic(query);
                     return View(model);
                 }
             }
-            
+
         }
         #region function
         List<OrdersDetail> GetDetail()
@@ -128,8 +129,8 @@ namespace MVCProject.Controllers
         {
             var listPaymentDetail = (from l in _db.PaymentDetails where l.IDAccount == id select l).ToList();
             var listOrder = (from o in db.Orders
-                            where o.IDAccount == id
-                            select o).ToList();
+                             where o.IDAccount == id
+                             select o).ToList();
             decimal? total = listOrder.Sum(a => a.Total) - listPaymentDetail.Sum(a => a.Pay);
             return total == null ? 0 : total;
         }

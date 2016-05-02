@@ -20,7 +20,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "21"))
                 return RedirectToAction("AccessDenied", "Account");
             string userEnctypt = "";
             var _listUser = from l in modelAspnet.AspNetUsers select l;

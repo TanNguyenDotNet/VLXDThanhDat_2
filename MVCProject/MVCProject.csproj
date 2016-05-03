@@ -351,11 +351,13 @@
     <Content Include="App_Data\dbo_110316.sql" />
     <Content Include="App_Data\retail.sql" />
     <Content Include="Content\AdminLTE.min.css" />
+    <Content Include="Content\alertify.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\modalStyles.css" />
     <Content Include="Content\printStyle.css" />
+    <Content Include="Content\semantic.min.css" />
     <Content Include="Content\skin-blue.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -379,6 +381,7 @@
     <Content Include="Images\no-image.png" />
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="Scripts\accounting.min.js" />
+    <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

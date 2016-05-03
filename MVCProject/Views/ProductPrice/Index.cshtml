@@ -75,7 +75,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <th scope="row" style="text-align:left">
+                            <th scope="row" style="text-align:left" id="@item.id">
                                 @item.name
                             </th>
                             <td align="right">
@@ -93,7 +93,7 @@
                             <td>
                                 @if (roles.Contains("2"))
                                 {
-                                    <a href="#" id="@item.id" onclick="FunctionDel('@item.id')">Xóa</a>
+                                    <a href="#" onclick="FunctionDel('@item.id')">Xóa</a>
                                 }
                             </td>
                         </tr>
@@ -115,11 +115,15 @@
     </section><!-- /.content -->
     <script>
     function FunctionDel(val) {
-        var r = confirm("Xóa sản phẩm này?");
-        if (r == true) {
-            var url = 'Delete/' + val;
-            window.location.href = url;
-        } 
+        var name = document.getElementById(val).innerText;
+       // var r = alertify.confirm('Xóa sản phẩm ' + name + '?').set('title', 'Thong Bao').show();
+        var a = alertify.confirm('Xóa sản phẩm ' + name + '?', function (e) {
+            if (e) {
+                var url = 'Delete/' + val;
+                window.location.href = url;
+            }
+        }).set('title', 'Thông Báo').show();
+           
     }
     </script>
 </form>

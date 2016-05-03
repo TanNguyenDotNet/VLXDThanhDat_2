@@ -35,7 +35,7 @@
                         <select class="form-control" name="quarter" id="quarter">
                             @for (int s = 1; s <= 4; s += 1)
                             {
-                                <option value="@s" @if (quarter == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
+                                <option value="@s" @if (quarter == s.ToString()) { @Html.Raw("selected='selected'")               }>@s</option>
                             }
                         </select>
                     </div>
@@ -46,7 +46,7 @@
                         <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
-                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
+                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")               }>@s</option>
                             }
                         </select>
                     </div>
@@ -57,7 +57,7 @@
                         <select class="form-control" name="size" id="size" onchange="RevenueOfQuarter.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
                             }
                         </select>
                     </div>
@@ -93,6 +93,8 @@
             <div class="arrange-button">
                 <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
             </div>
+        </div>
+        <div class="arrange-button">
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {

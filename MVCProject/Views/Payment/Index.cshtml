@@ -41,7 +41,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")      }>@s</option>
                             }
                         </select>
                     </div>
@@ -126,6 +126,8 @@
                 }
 
             </script>
+        </div>
+        <div class="arrange-button">
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("index", new
                            {

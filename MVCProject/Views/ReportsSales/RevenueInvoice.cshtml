@@ -36,7 +36,7 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
-                        <input class="form-control" type="text" name="DateTo" id="DateTo" />
+                        <input class="form-control" type="text" name="DateTo"  id="DateTo" />
                     </div>
                 </div>
                 <div class="form-group col-sm-2">
@@ -85,6 +85,8 @@
             <div class="arrange-button">
                 <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
             </div>
+        </div>
+        <div class="arrange-button">
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {

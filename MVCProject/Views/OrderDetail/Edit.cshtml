@@ -33,8 +33,8 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Giá</label>
                 <div class="col-md-6">
-                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" readonly="true" value="@ViewBag.Price">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "true", @type = "hidden" })
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="setPrice(this.value);" value="@ViewBag.Price">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @readonly = "false", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Price)
                 </div>
             </div>
@@ -75,6 +75,12 @@
                 return false;
             }
             return true;
+        }
+        function setPrice(val) {
+            var f = document.odForm;
+            f.Price.value = val;
+            f.PriceModel.value = accounting.formatMoney(val, "", 0);
+            this.thanhtien();
         }
         function thanhtien() {
             var f = document.odForm;

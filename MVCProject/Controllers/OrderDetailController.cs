@@ -23,7 +23,7 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 return null;
 
-            Common.UserType ut = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
+            UserType ut = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
             if (ut == UserType.Delivery)
                 Response.Redirect("~/Order/OrderList");
             if (!AddToCart(id))
@@ -71,11 +71,11 @@ namespace MVCProject.Controllers
 
         public ActionResult AdmView()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "15"))
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "15"))
                 return RedirectToAction("AccessDenied", "Account");
-            ViewBag.DeliveryList = Common.Commons.GetDeliveryList(_db);
+            ViewBag.DeliveryList = Commons.GetDeliveryList(_db);
             return View(AdminViewOrder(1));
         }
 
@@ -99,12 +99,12 @@ namespace MVCProject.Controllers
 
         public ActionResult AddOrderDetail(string code, string subid)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "28"))
                 return RedirectToAction("AccessDenied", "Account");
             var listProduct = db.OrdersDetails.Where(a => a.OrderCode == code).Select(b => b.IDProduct).ToList();
-            ViewBag.ProductList = Common.Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);//Han che ket noi xuong database
+            ViewBag.ProductList = Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);//Han che ket noi xuong database
             ViewBag.PriceList = GetListProductPrices(subid).ToDictionary(a => a.ID, b => (decimal)b.Price);
             ViewBag.OrderCode = code;
             return View(new OrdersDetail { OrderCode = code, Tax = "0" });
@@ -115,7 +115,7 @@ namespace MVCProject.Controllers
         public ActionResult AddOrderDetail([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
             "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "28"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -139,7 +139,7 @@ namespace MVCProject.Controllers
         // GET: /OrderDetail/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "27"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -148,7 +148,7 @@ namespace MVCProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.OrdersDetail od = db.OrdersDetails.Find(id);
+            OrdersDetail od = db.OrdersDetails.Find(id);
             if (od == null)
             {
                 return HttpNotFound();
@@ -164,7 +164,7 @@ namespace MVCProject.Controllers
         public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
             "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "27"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -179,7 +179,7 @@ namespace MVCProject.Controllers
                 return RedirectToAction("AdmView", new { code = od.OrderCode });
             }
 
-            return View(db);
+            return View(od);
         }
 
         // GET: /OrderDetail/Delete/5
@@ -206,7 +206,7 @@ namespace MVCProject.Controllers
         }
 
         #region Functions
-        private IEnumerable<Models.OrdersDetail> AdminViewOrder(int viewBy)
+        private IEnumerable<OrdersDetail> AdminViewOrder(int viewBy)
         {
             string code = Request.QueryString["code"];
             if (code == null) return null;
@@ -227,7 +227,7 @@ namespace MVCProject.Controllers
             ViewData["State"] = o.State;
 
             var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
-            List<Models.Product> lp = new List<Product>();
+            List<Product> lp = new List<Product>();
             double total = 0;
             foreach (var od in list)
             {
@@ -244,7 +244,7 @@ namespace MVCProject.Controllers
         }
         private void GetCart()
         {
-            List<Models.OrdersDetail> li = (List<Models.OrdersDetail>)GenCartDetails();
+            List<OrdersDetail> li = (List<OrdersDetail>)GenCartDetails();
             if (li == null) li = new List<OrdersDetail>();
 
             List<string> list = new List<string>();
@@ -252,14 +252,14 @@ namespace MVCProject.Controllers
                 list = (List<string>)Session["CartRequestDetail"];
 
             int ucat = 0;
-            string code = Common.Commons.GenItemCode(_db, out ucat, "OC");
+            string code = Commons.GenItemCode(_db, out ucat, "OC");
 
             if (list.Count > 0)
             {
                 foreach (string s in list)
                 {
                     string[] parts = s.Split('|');
-                    Models.OrdersDetail od = new OrdersDetail
+                    OrdersDetail od = new OrdersDetail
                     {
                         Amount = parts[1],
                         DateOfOrder = DateTime.Now,
@@ -281,7 +281,7 @@ namespace MVCProject.Controllers
             {
                 decimal dicount = 0, tax = 0, taxid = 0, total = 0, totalouttax = 0;
 
-                foreach (Models.OrdersDetail od in li)
+                foreach (OrdersDetail od in li)
                 {
                     if (!od.RequestByUser)
                     {
@@ -296,8 +296,8 @@ namespace MVCProject.Controllers
                     od.OrderCode = code;
 
                     if (od.IDProduct < 0)//(od.IDProduct > 0)
-                        //var p = _db.Products.Single(c => c.ID == od.IDProduct);
-                        //od.ProductCode = p.ItemCode;
+                    //var p = _db.Products.Single(c => c.ID == od.IDProduct);
+                    //od.ProductCode = p.ItemCode;
                     {
                         od.ProductCode = "";
                         od.Discount = 0;
@@ -380,17 +380,17 @@ namespace MVCProject.Controllers
             Response.Redirect("~/OrderDetail/Index");
         }
 
-        private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd, AppNetUserType u)
+        private IEnumerable<OrdersDetail> SetDetailForm(List<Product> li, string[,] cd, AppNetUserType u)
         {
             if (cd.Length == 0)
                 Response.Redirect("~/Account/Login");
 
             double Total = 0;
-            List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
+            List<OrdersDetail> listOd = new List<OrdersDetail>();
 
             for (int i = 0; i < cd.GetLength(0); i++)
             {
-                Models.OrdersDetail od = new OrdersDetail();
+                OrdersDetail od = new OrdersDetail();
                 od.IDProduct = long.Parse(cd[i, 0]);
                 od.Price = decimal.Parse(cd[i, 1]);
                 od.Amount = cd[i, 2];
@@ -447,7 +447,7 @@ namespace MVCProject.Controllers
 
             return listOd;
         }
-        private List<Models.Product> ListPrice(int? subid, string[] parts, string subprice)
+        private List<Product> ListPrice(int? subid, string[] parts, string subprice)
         {
             var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
             decimal priceSub = subprice == null ? 0 : decimal.Parse(subprice) / 100;
@@ -467,7 +467,7 @@ namespace MVCProject.Controllers
 
             return li;
         }
-        private IEnumerable<Models.OrdersDetail> GenCartDetails()
+        private IEnumerable<OrdersDetail> GenCartDetails()
         {
             if (Session["Cart"] == null || Session["Cart"].ToString() == "")
                 return null;

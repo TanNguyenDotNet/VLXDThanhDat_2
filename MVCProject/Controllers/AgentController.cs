@@ -31,7 +31,7 @@ namespace MVCProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AgentInfo([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID,District,State,TaxID,DisplayName")] 
+        public ActionResult AgentInfo([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID,District,State,TaxID,DisplayName,UserOfName,UserOfType,IsDel,IsActive")] 
             AppNetUserType appnetusertype)
         {
             if (!Request.IsAuthenticated)

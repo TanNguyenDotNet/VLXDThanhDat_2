@@ -116,14 +116,12 @@
     <script>
     function FunctionDel(val) {
         var name = document.getElementById(val).innerText;
-       // var r = alertify.confirm('Xóa sản phẩm ' + name + '?').set('title', 'Thong Bao').show();
         var a = alertify.confirm('Xóa sản phẩm ' + name + '?', function (e) {
             if (e) {
                 var url = 'Delete/' + val;
                 window.location.href = url;
             }
-        }).set('title', 'Thông Báo').show();
-           
+        }).set('title', 'Thông Báo').show();   
     }
     </script>
 </form>

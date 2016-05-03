@@ -27,7 +27,7 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            ViewBag.UserType = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
+            ViewBag.UserType = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
 
             string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
             var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace MVCProject.Controllers
         // GET: /Product/
         public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
@@ -90,19 +90,19 @@ namespace MVCProject.Controllers
         // GET: /Product/Create
         public ActionResult Create()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            var p = new Models.ProductViewModel();
+            var p = new ProductViewModel();
             int useCatCode = 0;
-            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true; p.IsDel = false;
-            ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            p.Barcode = p.SKU = p.ItemCode = Commons.GenItemCode(db, out useCatCode, "SP"); p.Show = true; p.IsDel = false;
+            ViewBag.CatalogList = Commons.GetCatalogList(db, 0);
             ViewBag.CatalogUnit = Params.listItemCatalogUnit;
-            ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
-            ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
-            ViewBag.TaxList = Common.Commons.GetTaxList(db);
+            ViewBag.SupplierList = Commons.GetSupplierList(db);
+            ViewBag.WarrantyList = Commons.GetWarrantyList(db);
+            ViewBag.TaxList = Commons.GetTaxList(db);
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.ToList();
             return View(p);
@@ -115,7 +115,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -138,7 +138,7 @@ namespace MVCProject.Controllers
         // GET: /Product/Edit/5
         public ActionResult Edit(long? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "2"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -155,11 +155,11 @@ namespace MVCProject.Controllers
             ProductViewModel _productView = new ProductViewModel();
             _productView = SetObjViewModel(product);
             int useCatCode = 0;
-            ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            ViewBag.CatalogList = Commons.GetCatalogList(db, 0);
             ViewBag.CatalogUnit = Params.listItemCatalogUnit;
-            ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
-            ViewBag.TaxList = Common.Commons.GetTaxList(db);
-            ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
+            ViewBag.SupplierList = Commons.GetSupplierList(db);
+            ViewBag.TaxList = Commons.GetTaxList(db);
+            ViewBag.WarrantyList = Commons.GetWarrantyList(db);
             ViewBag.Price = _productView.Price.Value.ToString("n0");
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
@@ -173,7 +173,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "2"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -250,7 +250,7 @@ namespace MVCProject.Controllers
                     string name = "IMG_" + DateTime.Now.ToString("ddMMyyyy") + "_" +
                         r.Next(1000000, 9999999);
 
-                    string fileName = Common.Commons.Save(file, RootPath + (inputTagName == "intro" ? "Intro" : "Details"), name);
+                    string fileName = Commons.Save(file, RootPath + (inputTagName == "intro" ? "Intro" : "Details"), name);
 
                     if (fileName != "")
                     {
@@ -285,7 +285,7 @@ namespace MVCProject.Controllers
                     }
                 }
 
-                Models.ProductImage pi = new ProductImage();
+                ProductImage pi = new ProductImage();
                 pi.Image = image;
                 pi.ImageAddIn = addIn;
                 pi.ProductCode = itemCode;
@@ -296,7 +296,7 @@ namespace MVCProject.Controllers
             }
         }
 
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid, bool show = false)
+        IEnumerable<Product> GetList(string filter, string order, string cid, bool show = false)
         {
             var list = from p in db.Products
                        select p;
@@ -309,8 +309,8 @@ namespace MVCProject.Controllers
             list = list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
+            ViewBag.Order = order ?? "";
+            ViewBag.Filter = filter ?? "";
             return list.ToList();
         }
 
@@ -334,7 +334,7 @@ namespace MVCProject.Controllers
             ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
         }
 
-        IQueryable<Models.Product> OrderList(IQueryable<Models.Product> list, string order)
+        IQueryable<Product> OrderList(IQueryable<Product> list, string order)
         {
             if (list == null || list.Count() == 0)
                 return list;

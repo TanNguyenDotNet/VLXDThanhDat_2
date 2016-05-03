@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 
@@ -24,12 +23,12 @@ namespace MVCProject.Controllers
                 || (id == "OC" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "11")))
                 return RedirectToAction("AccessDenied", "Account");
 
-            List<Models.ProductCode> item = db.ProductCodes.Where(d => (bool)d.Active == true && d.CatCode == id).ToList();
+            List<ProductCode> item = db.ProductCodes.Where(d => (bool)d.Active == true && d.CatCode == id).ToList();
             if (item != null && item.Count > 0)
                 return View(item[0]);
             else
             {
-                return View(new Models.ProductCode { CatCode = id });
+                return View(new ProductCode { CatCode = id });
             }
         }
 
@@ -52,13 +51,13 @@ namespace MVCProject.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    List<Models.ProductCode> item = db.ProductCodes.Where(d => d.Group1 == pc.Group1 && 
+                    List<ProductCode> item = db.ProductCodes.Where(d => d.Group1 == pc.Group1 &&
                         d.Group2 == pc.Group2 && d.CatCode == pc.CatCode).ToList();
 
-                    foreach (Models.ProductCode c in db.ProductCodes)
+                    foreach (ProductCode c in db.ProductCodes)
                         if (c.CatCode == pc.CatCode)
                             c.Active = false;
-                    
+
                     if (item == null || item.Count == 0)
                     {
                         pc.Active = true;

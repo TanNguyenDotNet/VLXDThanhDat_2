@@ -78,10 +78,26 @@
         <div class="arrange-button" style="text-align:right; padding-top: 20px">
             <input type="submit" value="Cập nhật đơn hàng" class="btn btn-info" id="exportOrder"/>
             <input type="button" value="Xác Nhận Đơn Hàng" 
-               onclick="if(confirm('Xác nhận yêu cầu đơn hàng!') == true) { window.location = '../Agent/AgentInfo'; }" class="btn btn-info" id="confirmOrder" />
+               onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
             <input type="button" value="Hủy Yêu Cầu"
-               onclick="if(confirm('Xác nhận hủy yêu cầu đơn hàng!') == true) { window.location = '../Order/Cancel'; }" class="btn btn-info" id="confirmOrder" />
+               onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
         </div>
         }   
     </section>
+    <script>
+        function FunctionAccept() {
+            var a = alertify.confirm('Xác nhận yêu cầu đơn hàng?', function (e) {
+                if (e) {
+                    window.location = '../Agent/AgentInfo';
+                }
+            }).set('title', 'Thông Báo').show();
+        }
+        function FunctionClear() {
+            var a = alertify.confirm('Hủy đơn hàng?', function (e) {
+                if (e) {
+                    window.location = '../Order/Cancel';
+                }
+            }).set('title', 'Thông Báo').show();
+        }
+    </script>
 </form>

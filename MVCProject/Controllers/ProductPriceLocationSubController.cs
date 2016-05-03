@@ -16,7 +16,7 @@ namespace MVCProject.Controllers
         // GET: ProductPriceLocationSub
         public ActionResult index(int? page, int? size, string filter, string order, string catid, string subid = "1")
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "25"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -44,7 +44,7 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
+        IEnumerable<Product> GetList(string filter, string order, string cid)
         {
             var list = from p in modelAspnet.Products
 
@@ -60,11 +60,11 @@ namespace MVCProject.Controllers
             list = list.Where(a => a.IsDel == false);
             list = OrderList(list, order);
 
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
+            ViewBag.Order = order ?? "";
+            ViewBag.Filter = filter ?? "";
             return list.ToList();
         }
-        IQueryable<Models.Product> OrderList(IQueryable<Models.Product> list, string order)
+        IQueryable<Product> OrderList(IQueryable<Product> list, string order)
         {
             switch (order)
             {

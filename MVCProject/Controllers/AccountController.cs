@@ -26,9 +26,9 @@ namespace MVCProject.Controllers
         }
         public async Task<ActionResult> RestPassword(string id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "26"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "26"))
                 return RedirectToAction("AccessDenied", "Account");
             var user = db.AspNetUsers.Where(a => a.UserName == id).FirstOrDefault();
             IdentityResult result = await UserManager.RemovePasswordAsync(user.Id);
@@ -37,9 +37,9 @@ namespace MVCProject.Controllers
         }
         public ActionResult ActiveAccount(string id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "13"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "13"))
                 return RedirectToAction("AccessDenied", "Account");
             var user = db.AppNetUserTypes.Where(a => a.UserOfName == id).FirstOrDefault();
             user.IsActive = user.IsActive == true ? false : true;
@@ -49,7 +49,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult Agent(string id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             string enu = Security.EncryptString("User:" + id + "~FrontendUser", false, EncryptType.TripleDES);
@@ -59,8 +59,8 @@ namespace MVCProject.Controllers
                 Response.Redirect("~/Account/Index/?Err=0");
                 return null;
             }
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
-            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
+            ViewBag.LocationList = Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Params.listItemLocationSub;
             ViewData["UserName"] = id;
             return View(u);
         }
@@ -69,7 +69,7 @@ namespace MVCProject.Controllers
         public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,LocationSubID," +
             "District,State,TaxID,DisplayName,UserOfName,UserOfType,IsDel,IsActive")] AppNetUserType appnetusertype)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             if (ModelState.IsValid)
@@ -88,7 +88,7 @@ namespace MVCProject.Controllers
         [HttpPost]
         public ActionResult Roles(string UserName, string EncrytUser, string Password, string[] Roles)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             if (Password != null && Password != "")
@@ -104,9 +104,7 @@ namespace MVCProject.Controllers
 
             foreach (string s in Roles)
             {
-                UserRole u = new UserRole();
-                u.RoleId = s;
-                u.UserName = EncrytUser;
+                UserRole u = new UserRole() { RoleId = s, UserName = EncrytUser };
                 db.UserRoles.Add(u);
             }
             db.SaveChanges();
@@ -116,9 +114,9 @@ namespace MVCProject.Controllers
 
         public ActionResult Roles(string id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "14"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "14"))
                 return RedirectToAction("AccessDenied", "Account");
 
             return View(GetFormInfo(id));
@@ -138,8 +136,8 @@ namespace MVCProject.Controllers
             ViewData["EncrytUser"] = enu;
             ViewBag.RoleList = db.AspNetRoles.OrderBy(o => o.GroupName).ToList();
             ViewBag.UserRoles = GetRoles(enu);
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
-            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
+            ViewBag.LocationList = Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Params.listItemLocationSub;
 
             Models.RegisterViewModel model = new RegisterViewModel();
             model.LocationID = u.LocationID.ToString();
@@ -162,13 +160,13 @@ namespace MVCProject.Controllers
 
         public ActionResult Index(string page = "", string size = "", string filter = "", string LocalID = "", string type = "")
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "19"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "19"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            ViewBag.LocationList = Common.Params.listLocation;
-            return View(AAppNetUserType.Instance.GetUserListPaging(User.Identity.GetUserName(), page, size, filter, LocalID,type));
+            ViewBag.LocationList = Params.listLocation;
+            return View(AAppNetUserType.Instance.GetUserListPaging(User.Identity.GetUserName(), page, size, filter, LocalID, type));
         }
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
@@ -235,13 +233,13 @@ namespace MVCProject.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
-            ViewBag.LocationSubList = Common.Params.listItemLocationSub;
+            ViewBag.LocationList = Commons.GetLocationList(db);
+            ViewBag.LocationSubList = Params.listItemLocationSub;
             return View();
         }
 
@@ -252,9 +250,9 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "12"))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)

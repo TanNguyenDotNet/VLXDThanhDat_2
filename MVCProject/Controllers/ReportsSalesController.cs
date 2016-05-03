@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using MVCProject.Models.AccessData;
@@ -20,7 +19,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult RevenueInvoice(int? page, int? size, string filter, string dateFrom, string dateTo)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -41,7 +40,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult RevenueOfMonth(int? page, int? size, string month = "", string year = "")
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -57,7 +56,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult RevenueOfQuarter(int? page, int? size, string quarter = "1", string year = "")
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -72,7 +71,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult RevenueOfYear(int? page, int? size, string year = "")
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -87,7 +86,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult PaymentOfDay(int? page, int? size, string dateFrom, string dateTo)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -106,7 +105,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult PaymentOfStore(int? page, int? size, string dateFrom, string dateTo)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "23"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -125,7 +124,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult ExportExcel()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "24"))
                 return RedirectToAction("AccessDenied", "Account");
@@ -133,22 +132,22 @@ namespace MVCProject.Controllers
             switch (TempData["action"].ToString())
             {
                 case "RevenueInvoice":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueInvoice>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<RevenueInvoice>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
                 case "RevenueOfMonth":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueOfMonth>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<RevenueOfMonth>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
                 case "RevenueOfYear":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueOfYear>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<RevenueOfYear>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
                 case "RevenueOfQuarter":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<RevenueOfQuater>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<RevenueOfQuater>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
                 case "PaymentOfDay":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<PaymentOfDay>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<PaymentOfDay>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
                 case "PaymentOfStore":
-                    buffer = Common.ExcelUtils.ExportByteExcel((List<PaymentOfStore>)TempData["ExportExcel"], (string[])TempData["header"]);
+                    buffer = ExcelUtils.ExportByteExcel((List<PaymentOfStore>)TempData["ExportExcel"], (string[])TempData["header"]);
                     break;
             }
 
@@ -156,7 +155,7 @@ namespace MVCProject.Controllers
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             // Dòng này rất quan trọng, vì chạy trên firefox hay IE thì dòng này sẽ hiện Save As dialog cho người dùng chọn thư mục để lưu
             // File name của Excel này là ExcelDemo
-            Response.AddHeader("Content-Disposition", "attachment; filename=" + TempData["action"].ToString() + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".xlsx");
+            Response.AddHeader("Content-Disposition", string.Format("attachment; filename={0}{1:dd_MM_yyyy_HH_mm_ss}.xlsx", TempData["action"], DateTime.Now));
             // Lưu file excel của chúng ta như 1 mảng byte để trả về response
             Response.BinaryWrite(buffer);
             // Send tất cả ouput bytes về phía clients

@@ -18,13 +18,13 @@ namespace MVCProject.Controllers
         [HttpGet]
         public ActionResult index(int? page, int? size, string filter, string order, string dateFrom, string dateTo, string _idaccount)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "21"))
                 return RedirectToAction("AccessDenied", "Account");
             if (string.IsNullOrEmpty(_idaccount))
             {
-                _idaccount = Request.QueryString["idaccount"].ToString();
+                _idaccount = Request.QueryString["idaccount"];
             }
             List<string> listUsers = null;
             var lstUsers = modelAspnet.AspNetUsers.ToList();
@@ -39,9 +39,9 @@ namespace MVCProject.Controllers
             ViewData["ListUsers"] = lstUsers.Where(a => listPaymentDetail.Select(p => p.IDAccountInput).Contains(a.Id)).ToList();//modelAspnet.AspNetUsers.Where(a => listPaymentDetail.Select(b => b.IDAccountInput).ToList().Contains(a.Id)).ToList();
             ViewBag.UserName = lstUsers.Where(a => a.Id == _idaccount).FirstOrDefault().UserName;
             ViewData["idaccount"] = _idaccount;
-          
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
+
+            ViewBag.Order = order ?? "";
+            ViewBag.Filter = filter ?? "";
             return View(listPaymentDetail.ToList().ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
@@ -60,25 +60,25 @@ namespace MVCProject.Controllers
             ViewData["TotalDebt"] = _debt - _pay;
             ViewBag.UserName = modelAspnet.AspNetUsers.Where(a => a.Id == idaccount).FirstOrDefault().UserName;
 
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
+            ViewBag.Order = order ?? "";
+            ViewBag.Filter = filter ?? "";
             return View(listPaymentDetail.ToList().ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
         public ActionResult Payment()
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), "22"))
                 return RedirectToAction("AccessDenied", "Account");
-            TempData["idaccount"] = Request.QueryString["PayID"].ToString();
+            TempData["idaccount"] = Request.QueryString["PayID"];
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Payment([Bind(Include = "ID,IDAccount,IDAccountInput,IDLocationSub,Pay,PayDate,PayDateSystem,DebtBefore,DebtAfter,Description")] PaymentDetail Payment)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace MVCProject.Controllers
             }
             return View(Payment);
         }
-        private IEnumerable<Models.PaymentDetail> GetList(string dateFrom, string dateTo, string _idaccount, List<string> listUsers)
+        private IEnumerable<PaymentDetail> GetList(string dateFrom, string dateTo, string _idaccount, List<string> listUsers)
         {
             var listPaymentDetail = from l in modelAspnet.PaymentDetails where l.IDAccount == _idaccount select l;
             if (listUsers != null)
@@ -117,7 +117,7 @@ namespace MVCProject.Controllers
                 dateTo = UtilDatetime.FromTime(dateTo).ToString("yyyyMMddHHmmss");
                 listPaymentDetail = listPaymentDetail.Where(a => String.Compare(a.PayDate, dateTo) <= 0);
             }
-            return listPaymentDetail.OrderBy(a=>a.PayDate);
+            return listPaymentDetail.OrderBy(a => a.PayDate);
         }
     }
 }

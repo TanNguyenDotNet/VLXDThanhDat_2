@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using MVCProject.Models.AccessData;
 using Microsoft.AspNet.Identity;
-using System.Dynamic;
 using PagedList;
 using MVCProject.Extensions;
 
@@ -26,8 +23,8 @@ namespace MVCProject.Controllers
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
-            List<Models.ProductPriceViewModel> list = null;
-            filter = filter == null ? "" : filter;
+            List<ProductPriceViewModel> list = null;
+            filter = filter ?? "";
             list = (from l in db.ProductPrices.ToList()
                     join p in db.Products.Where(a => a.ProductName.Contains(filter)).ToList() on l.ProductID equals p.ID
                     join ls in db.LocationSubs.ToList() on l.LocationID equals ls.ID
@@ -47,8 +44,8 @@ namespace MVCProject.Controllers
             //    list = list.Where(a => a.name.Contains(char.Parse(filter))).ToList();
             if (subid != null & subid != "0")
                 list = list.Where(a => a.idlocationsub.ToString() == subid).ToList();
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
+            ViewBag.Order = order ?? "";
+            ViewBag.Filter = filter ?? "";
             ViewData["SubList"] = Common.Params.listLocationSub;
             return View(list.ToList().ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
@@ -82,7 +79,7 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "7"))
                 return RedirectToAction("AccessDenied", "Account");
 
-            var pp = new Models.ProductPrice();
+            var pp = new ProductPrice();
             if (id != null) pp.ProductID = (long)id;
             if (subid != null)
                 pp.LocationID = int.Parse(subid);

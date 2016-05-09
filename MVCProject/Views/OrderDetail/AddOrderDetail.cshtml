@@ -40,6 +40,13 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Chiết khấu</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @maxlenght = "2" })
+                    @Html.ValidationMessageFor(model => model.Discount)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Số lượng</label>
                 <div class="col-md-6">
                     @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @onchange = "if(check(this))thanhtien();", @maxlength = "6" })
@@ -100,7 +107,9 @@
             var sl = parseFloat(f.Amount.value);
             var thue = parseFloat(f.Tax.value);
             var tt = parseFloat(f.Total.value);
+            var discount = parseFloat(f.Discount.value);
 
+            dg = dg - ((discount / 100) * dg);
             tt = (sl * dg) + ((thue / 100) * (sl * dg));
             f.Total.value = tt;
             f.TotalModel.value = accounting.formatMoney(tt, "", 0);

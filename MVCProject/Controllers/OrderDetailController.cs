@@ -107,13 +107,13 @@ namespace MVCProject.Controllers
             ViewBag.ProductList = Commons.GetProductList(_db).Where(a => listProduct.Any(b => b.ToString() == a.Value) == false);//Han che ket noi xuong database
             ViewBag.PriceList = GetListProductPrices(subid).ToDictionary(a => a.ID, b => (decimal)b.Price);
             ViewBag.OrderCode = code;
-            return View(new OrdersDetail { OrderCode = code, Tax = "0" });
+            return View(new OrdersDetail { OrderCode = code, Tax = "0", Discount = 0 });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddOrderDetail([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
-            "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
+            "ProductCode,RequestByUser,OrderCode,Discount,Sale")] OrdersDetail od)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -271,7 +271,9 @@ namespace MVCProject.Controllers
                         RequestByUser = true,
                         ReturnGood = false,
                         Tax = "0",
-                        Total = 0
+                        Total = 0,
+                        Sale = 0,
+                        Discount = 0
                     };
                     li.Add(od);
                 }
@@ -323,7 +325,8 @@ namespace MVCProject.Controllers
                         Tax = (total - totalouttax).ToString(),
                         TaxID = taxid.ToString(),
                         Total = total,
-                        TotalWithoutTax = totalouttax
+                        TotalWithoutTax = totalouttax,
+                        TotalSale = 0
                     });
 
                     db.SaveChanges();
@@ -396,34 +399,34 @@ namespace MVCProject.Controllers
                 od.Amount = cd[i, 2];
                 od.Tax = (cd[i, 3] != null && cd[i, 3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
                 od.RequestByUser = false;
-
+                od.Sale = 0;//Viet mot function get gia giam? trong table ProductSale
                 decimal discount = 0;
-                var p = (from prom in _db.Promotions
-                         join promtype in _db.PromotionTypes
-                         on prom.PromotionTypeID equals promtype.ID
-                         where prom.ProductID == od.IDProduct && prom.Active == true
-                             && prom.StartDate >= DateTime.Now && prom.EndDate <= DateTime.Now
-                             && (prom.LocationID == 0 || prom.LocationID == u.LocationID)
-                             && !promtype.AddType.Contains("P")
-                         select new
-                         {
-                             prom.PromotionValue,
-                             promtype.AddType,
-                             promtype.ExRate
-                         });
+                //var p = (from prom in _db.Promotions
+                //         join promtype in _db.PromotionTypes
+                //         on prom.PromotionTypeID equals promtype.ID
+                //         where prom.ProductID == od.IDProduct && prom.Active == true
+                //             && prom.StartDate >= DateTime.Now && prom.EndDate <= DateTime.Now
+                //             && (prom.LocationID == 0 || prom.LocationID == u.LocationID)
+                //             && !promtype.AddType.Contains("P")
+                //         select new
+                //         {
+                //             prom.PromotionValue,
+                //             promtype.AddType,
+                //             promtype.ExRate
+                //         });
 
-                if (p != null && p.Count() > 0)
-                {
-                    foreach (var item in p)
-                    {
-                        if (item.ExRate > 0)
-                        {
-                            discount += (decimal)(od.Price * (item.PromotionValue / item.ExRate));
-                        }
-                        else
-                            discount += item.PromotionValue;
-                    }
-                }
+                //if (p != null && p.Count() > 0)
+                //{
+                //    foreach (var item in p)
+                //    {
+                //        if (item.ExRate > 0)
+                //        {
+                //            discount += (decimal)(od.Price * (item.PromotionValue / item.ExRate));
+                //        }
+                //        else
+                //            discount += item.PromotionValue;
+                //    }
+                //}
 
                 od.Discount = (discount * decimal.Parse(od.Amount));
                 double thue = (double)od.Price * (double)(double.Parse(od.Tax) / 100);

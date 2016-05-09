@@ -29,8 +29,8 @@
         <EntityTypeShape EntityType="Models.PaymentDetail" Width="1.5" PointX="11.375" PointY="12.75" />
         <EntityTypeShape EntityType="Models.LocationSub" Width="1.5" PointX="13.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.CatalogUnit" Width="1.5" PointX="5.75" PointY="9.75" />
-        <EntityTypeShape EntityType="Models.Product" Width="1.5" PointX="0.75" PointY="13.75" />
         <EntityTypeShape EntityType="Models.AppNetUserType" Width="1.5" PointX="5.375" PointY="12.75" />
+        <EntityTypeShape EntityType="Models.Product" Width="1.5" PointX="0.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

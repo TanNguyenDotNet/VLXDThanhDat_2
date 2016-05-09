@@ -113,7 +113,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
+        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix")] ProductViewModel _product)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -123,6 +123,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 product = SetObj(_product);
+                product.PriceFix = string.IsNullOrEmpty(product.PriceFix.Value.ToString()) ? 0 : product.PriceFix;
+                product.ProductCost = string.IsNullOrEmpty(product.ProductCost.Value.ToString()) ? 0 : product.ProductCost;
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -171,7 +173,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName")] ProductViewModel _product)
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix")] ProductViewModel _product)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -181,6 +183,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 product = SetObj(_product);
+                product.PriceFix = string.IsNullOrEmpty(product.PriceFix.Value.ToString()) ? 0 : product.PriceFix;
+                product.ProductCost = string.IsNullOrEmpty(product.ProductCost.Value.ToString()) ? 0 : product.ProductCost;
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -420,6 +424,8 @@ namespace MVCProject.Controllers
             p.UnitName = _product.UnitName;
             p.UserID = _product.UserID;
             p.Warranty = _product.Warranty;
+            p.ProductCost = _product.ProductCost;
+            p.PriceFix = _product.PriceFix;
             return p;
         }
         private ProductViewModel SetObjViewModel(Product _product)
@@ -446,6 +452,8 @@ namespace MVCProject.Controllers
             p.UnitName = _product.UnitName;
             p.UserID = _product.UserID;
             p.Warranty = _product.Warranty;
+            p.ProductCost = _product.ProductCost;
+            p.PriceFix = _product.PriceFix;
             return p;
         }
         #endregion

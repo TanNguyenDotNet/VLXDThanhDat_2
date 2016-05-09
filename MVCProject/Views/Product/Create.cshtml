@@ -49,6 +49,14 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductCost">Giá vốn</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="ProductCostModel" name="ProductCostModel" type="text" onchange="SetProductCost();" maxlength="12" />
+                    @Html.TextBoxFor(model => model.ProductCost, new { @class = "form-control", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.ProductCost)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Danh mục">Danh mục</label>
                 <div class="col-md-6">
                     @Html.DropDownListFor(model => model.CatID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
@@ -152,6 +160,11 @@
             f.Price.value = f.PriceModel.value;
             f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
         }
+        function SetProductCost(){
+            var f= document.odForm;
+            f.ProductCost.value = f.ProductCostModel.value;
+            f.ProductCostModel.value = accounting.formatMoney(f.ProductCost.value, { symbol: "đ", precision: 0, format: "%v %s" });
+        }
         function SetUnitName() {
             var f = document.odForm;
             f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
@@ -178,6 +191,3 @@
     </script>
 
 </form>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

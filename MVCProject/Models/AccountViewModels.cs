@@ -77,6 +77,16 @@ namespace MVCProject.Models
             get;
             set;
         }
+        public Nullable<decimal> ProductCost
+        {
+            get;
+            set;
+        }
+        public Nullable<decimal> PriceFix
+        {
+            get;
+            set;
+        }
     }
     public class ManageUserViewModel
     {

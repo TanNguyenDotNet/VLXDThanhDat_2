@@ -53,7 +53,17 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
+        public ActionResult Order(string page="", string size="", string filter="", string order="", string catid="", string subid = "",string id="")
+        {
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "25"))
+                return RedirectToAction("AccessDenied", "Account");
 
+            if (!string.IsNullOrEmpty(id))
+            { int _subid = int.Parse(id); subid = db.AppNetUserTypes.Where(a => a.LocationSubID == _subid).FirstOrDefault().LocationSubID.ToString(); }
+            return View(AProductPriceLocationSub.Instance.GetList(page, size, filter, order, catid, subid));
+        }
         // GET: /Product/
         public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {

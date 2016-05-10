@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVCProject.Models
@@ -8,6 +9,22 @@ namespace MVCProject.Models
         [Required]
         [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
+    }
+    public class OrderProductView
+    {
+        private IPagedList<Product> _PageList;
+        public IPagedList<Product> PageList
+        {
+            get { return _PageList; }
+            set { _PageList = value; }
+        }
+        private string _Quantity;
+
+        public string Quantity
+        {
+            get { return _Quantity; }
+            set { _Quantity = value; }
+        }
     }
     public class PaymentOfStore
     {
@@ -123,7 +140,7 @@ namespace MVCProject.Models
 
     public class RegisterViewModel
     {
-        [Required(ErrorMessage="Nhập tên đăng nhập")]
+        [Required(ErrorMessage = "Nhập tên đăng nhập")]
         [Display(Name = "Tên đăng nhập")]
         [StringLength(100, ErrorMessage = "Tên đăng nhập từ 6 kí tự", MinimumLength = 6)]
         public string UserName { get; set; }
@@ -136,7 +153,7 @@ namespace MVCProject.Models
         [Required]
         [Display(Name = "Tỉnh/Thành phố")]
         public string LocationID { get; set; }
-        
+
         [Required]
         [Display(Name = "Khu vực")]
         public string LocationSubID { get; set; }
@@ -151,7 +168,7 @@ namespace MVCProject.Models
         [Display(Name = "Nhập lại mật khẩu")]
         [Compare("Password", ErrorMessage = "Mật khẩu và nhập lại không giống nhau.")]
         public string ConfirmPassword { get; set; }
-        
+
     }
     public class LocationSubViewModel
     {
@@ -159,12 +176,12 @@ namespace MVCProject.Models
         [Display(Name = "Tỉnh/Thành phố")]
         public int IDLocation { get; set; }
         [Required]
-        [Display(Name="Nhập tên")]
-        [StringLength(50,MinimumLength=3,ErrorMessage="Nhập tên")]
+        [Display(Name = "Nhập tên")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Nhập tên")]
         public string Name { get; set; }
         [Required]
-        [Display(Name="Nhập %")]
-        [Range(0,99,ErrorMessage="Nhập số")]
+        [Display(Name = "Nhập %")]
+        [Range(0, 99, ErrorMessage = "Nhập số")]
         public string LocationPrice { get; set; }
     }
     public class ProductPriceViewModel

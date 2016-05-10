@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<MVCProject.Models.ProductImage> imgList = (List<MVCProject.Models.ProductImage>)ViewData["ImageList"];
+
+    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
+
+}
+<form action="~/Product/Home" method="get" id="productViewForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <input class="form-control" type="text" name="subid" id="subid" value="@Request.QueryString["subid"]" />
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4" style="float:left">
+                    @if (ViewData["CartCount"] != "0")
+                    {
+                        <input type="button" onclick="GoToCart();" class="btn btn-info" value="(@ViewData["CartCount"]) Xem hóa đơn" />
+                    }
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Danh Mục</span>
+                        <select class="form-control" name="catid" id="catid" onchange="filterFromSubmit()">
+                            <option value="0">Chọn danh mục</option>
+                            @foreach (var i in listCat)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")      }>
+                                    @i.Title
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")      }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped wide-clickable">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <!--<th>
+                            Tên mặt hàng
+                        </th>-->
+                        <th>
+                            Tên mặt hàng
+                        </th>
+                        <th>
+                            Mã hàng
+                        </th>
+                        <th>
+                            ĐVT
+                        </th>
+                        <th>
+                            Giá
+                        </th>
+                        <th>
+                            Số lượng
+                        </th>
+                        <th>
+                            Thêm đơn hàng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                    @item.ProductName
+                                </th>
+                                <td align="center">
+                                    @Html.DisplayFor(modelItem => item.ItemCode)
+                                </td>
+                                <td align="center">
+                                    @Html.DisplayFor(modelItem => item.UnitName)
+                                </td>
+                                <td align="right">
+                                    @item.Price.Value.ToString("n0")
+                                </td>
+                                <td align="center">
+                                    <input type="text" name="Amount" id="Amount" maxlength="6" class="quantity-box" />
+                                </td>
+                                <td align="center">
+                                    <a href="#" class="elem-demo-@item.ItemCode">
+                                        <img class='add-button-disable' src='../Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Order", new
+               {
+                   page,
+                   order = ViewBag.Order,
+                   filter = ViewBag.Filter,
+                   size = size,
+                   catid = catid,
+                   subid = Request.QueryString["subid"]
+               }))
+            </nav>
+        </div>
+    </section>
+</form>

@@ -1,9 +1,8 @@
-﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+﻿@model MVCProject.Models.OrderProductView
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Sản phẩm";
+    ViewBag.Title = "Chọn sản phẩm cho đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<MVCProject.Models.ProductImage> imgList = (List<MVCProject.Models.ProductImage>)ViewData["ImageList"];
 
     string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
@@ -13,7 +12,7 @@
     if (catid == null || catid == "") { catid = "0"; }
 
 }
-<form action="~/Product/Home" method="get" id="productViewForm">
+<form action="~/Product/Order" method="get" id="productViewForm">
     <section class="content-header">
         <h2>
             @ViewBag.Title
@@ -25,7 +24,9 @@
                 <div class="form-group col-sm-3">
                     <div class="input-group">
                         <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
-                        <input class="form-control" type="text" name="subid" id="subid" value="@Request.QueryString["subid"]" />
+                        <input class="form-control" type="hidden" name="subid" id="subid" value="@Model.SubId" />
+                        <input class="form-control" type="hidden" name="id" id="id" value="@Model.UserId" />
+                        <input class="form-control" type="hidden" name="username" id="username" value="@Model.UserName" />
                         <span class="input-group-btn">
                             <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -40,11 +41,11 @@
                 <div class="form-group col-sm-3">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Danh Mục</span>
-                        <select class="form-control" name="catid" id="catid" onchange="filterFromSubmit()">
+                        <select class="form-control" name="catid" id="catid" onchange="productViewForm.submit()">
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")      }>
+                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")        }>
                                     @i.Title
                                 </option>
                             }
@@ -57,7 +58,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")      }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")        }>@s</option>
                             }
                         </select>
                     </div>
@@ -92,9 +93,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Count() > 0)
+                    @if (Model.PageList.Count > 0)
                     {
-                        foreach (var item in Model)
+                        foreach (var item in Model.PageList)
                         {
                             <tr>
                                 <th scope="row" style="text-align:left">
@@ -110,11 +111,11 @@
                                     @item.Price.Value.ToString("n0")
                                 </td>
                                 <td align="center">
-                                    <input type="text" name="Amount" id="Amount" maxlength="6" class="quantity-box" />
+                                    <input type="text" id="Amount" maxlength="6" class="quantity-box" />
                                 </td>
                                 <td align="center">
                                     <a href="#" class="elem-demo-@item.ItemCode">
-                                        <img class='add-button-disable' src='../Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
+                                        <img class='add-button-disable' src='~/Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
                                     </a>
                                 </td>
                             </tr>
@@ -123,14 +124,15 @@
                 </tbody>
             </table>
             <nav style="text-align:right">
-                @Html.PagedListPager(Model, page => Url.Action("Order", new
+                @Html.PagedListPager(Model.PageList, page => Url.Action("Order", new
                {
                    page,
-                   order = ViewBag.Order,
-                   filter = ViewBag.Filter,
+                   filter = @Request.QueryString["filter"],
                    size = size,
                    catid = catid,
-                   subid = Request.QueryString["subid"]
+                   subid = @Model.SubId,
+                   id = @Model.UserId,
+                   username = @Model.UserName
                }))
             </nav>
         </div>

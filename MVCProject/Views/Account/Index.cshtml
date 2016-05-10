@@ -1,98 +1,143 @@
-﻿@model IEnumerable<MVCProject.Models.AspNetUser>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.AppNetUserType>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Danh sách người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    Dictionary<string,string> types = (Dictionary<string,string>)ViewBag.TypeList;
-    Dictionary<int,string> location = (Dictionary<int,string>)ViewBag.LocationList;
-    List<string> roles = (List<string>)ViewData["AccessList"];
+    List<MVCProject.Models.Location> listLocation = (List<MVCProject.Models.Location>)ViewBag.LocationList;
     string msg = Request.QueryString["msg"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string LocalID = Request.QueryString["LocalID"];
+    if (LocalID == null || LocalID == "") { LocalID = ""; }
     
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
-<section class="content-header">
-    <h2>
-        @ViewBag.Title
-    </h2>
-    <span style="color:red;font-weight:bold;">
-        @if (msg == null) { msg = ""; }
-        @msg
+<form action="~/Account/Index" method="get" id="AccountForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+        <span style="color:red;font-weight:bold;">
+            @if (msg == null) { msg = ""; }
+            @msg
         </span>
-    <div class="arrange-button">
-        @if (roles.Contains("12"))
-        {
-            <a href="~/Account/Register" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
-        }
-    </div>
-</section>
-<section class="content">
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr style="background-color: #3c8dbc; color:#fff">
-                    <th>
-                        Tên đăng nhập
-                    </th>
-                    <th>
-                        Tên cá nhân/đại lý
-                    </th>
-                    <th>#</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model) {
-                    string actname = "Phân quyền", action = "Roles";
-                    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", 
-                        false, MVCProject.Common.EncryptType.TripleDES);
-                    if (types.Keys.Contains(en))
+        <div class="arrange-button">
+            @if (roles.Contains("12"))
+            {
+                <a href="~/Account/Register" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+            }
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm tên tài khoản.." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="AccountForm.submit();" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Khu vực</span>
+                        <select class="form-control" name="LocalID" id="LocalID" onchange="AccountForm.submit()">
+                            <option value="">Tất cả</option>
+                            @foreach (var i in listLocation)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == LocalID) { @Html.Raw("selected='selected'")                  }>
+                                    @i.LocationName
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Loại tài khoản</span>
+                        <select class="form-control" name="type" id="type" onchange="AccountForm.submit()">
+                            <option value="" selected="selected">Tất cả</option>
+                            <option value="BackendUser">Quản trị</option>
+                            <option value="FrontendUser">Người dùng</option>
+                            <option value="DeliveryMan">Nhân viên giao hàng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="AccountForm.submit();">
+                            @for (int s = 20; s <= 100; s += 20)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên đăng nhập
+                        </th>
+                        <th>
+                            Tên cá nhân/đại lý
+                        </th>
+                        <th>
+                            Kích Hoạt tài khoản
+                        </th>
+                        <th>#</th>
+                        <th>#</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
                     {
-                        actname = "Thông tin đại lý";
-                        action = "Agent";
-                    }
-                    else
-                    {
-                        string end = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~DeliveryMan",
-                            false, MVCProject.Common.EncryptType.TripleDES);
-                        if (types.Keys.Contains(end))
-                        {
-                            en = end;
-                            actname = "Nhân viên giao hàng";
-                            action = null;
-                        }
-                    }
-                    string name = "";
-                    if (!types.Keys.Contains(en))
-                    {
-                        name = item.UserName;
-                    }
-                    else
-                    {
-                        name = types[en];
-                    }
-                    
-                    if (action == null || (action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
-                    { 
                         <tr>
                             <th scope="row" style="text-align:left">
-                                @Html.DisplayFor(modelItem => item.UserName)
+                                @item.UserOfName
                             </th>
                             <td>
-                  
-                                @name
+                                @item.DisplayName
                             </td>
                             <td>
-                                @if (action != null) { 
-                                    @Html.ActionLink(actname, action, new { id = item.UserName })
+                                @if (item.IsActive == true)
+                                {
+                                    <a href="~/Account/ActiveAccount/@item.UserOfName">Tài khoản đã kích hoạt</a>
                                 }
                                 else
                                 {
-                                    @actname
+                                    <a href="~/Account/ActiveAccount/@item.UserOfName">Tài khoản chưa kích hoạt</a>
                                 }
+                            </td>
+                            <td>
+                                <a href="~/Account/Agent/@item.UserOfName">Thông tin tài khoản</a>
+                            </td>
+                            <td>
+                                <a href="~/Account/Roles/@item.UserOfName">Phân quyền</a>
+                            </td>
+                            <td>
+                                <a href="~/Product/Order/@item.UserOfName">Đặt hàng</a>
                             </td>
                         </tr>
                     }
-                    
-                }
-            </tbody>
-        </table>
-    </div>
-</section>
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("index", new
+                           {
+                               page,
+                               size = size,
+                               filter = Request.QueryString["filter"],
+                               LocalID = LocalID,
+                               type = Request.QueryString["filter"]
+                           }))
+            </nav>
+        </div>
+    </section>
+</form>

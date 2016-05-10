@@ -13,18 +13,18 @@ namespace MVCProject.Models
     public class OrderProductView
     {
         private IPagedList<Product> _PageList;
+
         public IPagedList<Product> PageList
         {
             get { return _PageList; }
             set { _PageList = value; }
         }
-        private string _Quantity;
 
-        public string Quantity
-        {
-            get { return _Quantity; }
-            set { _Quantity = value; }
-        }
+        public string Quantity { get; set; }
+        
+        public string UserName { get; set; }
+        public string UserId { get; set; }
+        public string SubId { get; set; }
     }
     public class PaymentOfStore
     {

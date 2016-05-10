@@ -30,38 +30,32 @@ namespace MVCProject.Models.AccessData
         {
             using (var model = Params.ModelaspnetEntities)
             {
-                var list = from l in model.Products where l.IsDel == false && l.IsState == 1 select l;
-                int _subid = int.Parse(subid.DefaultIfEmpty('0').ToString());
+                var list = from l in model.Products where l.IsDel == false && l.Show == true select l;
+                int _subid = string.IsNullOrEmpty(subid) ? 0 : int.Parse(subid);
                 if (!string.IsNullOrEmpty(filter))
                     list = list.Where(a => a.ProductName.Contains(filter));
-                if (!string.IsNullOrEmpty(catid))
-                    list = list.Where(b => b.CatID == _subid);
+                if (!string.IsNullOrEmpty(catid) && catid != "0")
+                { int _catid = int.Parse(catid); list = list.Where(b => b.CatID == _catid); }
 
                 decimal priceSub = 0;
-                if (!string.IsNullOrEmpty(subid))
+                if (_subid > 0)
                     priceSub = decimal.Parse((model.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;
 
+                var listpp = (from p in model.Products
+                              join pp in model.ProductPrices.Where(a => a.LocationID == _subid) on p.ID equals pp.ProductID
+                              select new { p, pp.Price }).ToList();
+
                 list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
-                
-                var listProductPriceSub = model.ProductPrices.Where(a => a.LocationID == _subid).ToList();
-
-                if (listProductPriceSub.Count != 0)
+                if (listpp.Count > 0)
                 {
-                    var listpp = (from p in list
-                                  join pp in listProductPriceSub on p.ID equals pp.ProductID
-                                  select p).ToList();
-
-                    foreach (var item in listpp)
-                    {
-                        item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
-                    }
-
-                    list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
+                    listpp.ForEach(a => a.p.Price = a.Price);
+                    list.ToList().AddRange(listpp.Select(a => a.p).ToList());
                 }
 
                 int _page = page == "" ? 1 : int.Parse(page);
                 int _size = size == "" ? 20 : int.Parse(size);
-                return list.ToPagedList(_page, _size);
+
+                return list.OrderBy(a => a.ProductName).ToPagedList(_page, _size);
             }
         }
     }

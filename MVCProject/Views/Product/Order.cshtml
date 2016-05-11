@@ -10,8 +10,10 @@
     if (size == null || size == "") { size = "20"; }
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
-
-    string cartCode = ((MVCProject.Models.ModelView.CartView)Session[MVCProject.Common.CommonsConst.SessionCart]).Ordersdetail.Select(a => a.IDProduct).ToArray().ToString();
+    string[] cartCode = null;
+    MVCProject.Models.ModelView.CartView cart = ((MVCProject.Models.ModelView.CartView)Session[MVCProject.Common.CommonsConst.SessionCart]);
+    if (cart.Ordersdetail != null)
+    { cartCode = cart.Ordersdetail.Select(a => a.IDProduct.ToString()).ToArray(); }
 }
 <form action="~/Product/Order" method="get" id="productViewForm">
     <section class="content-header">
@@ -43,7 +45,7 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")        }>
+                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")          }>
                                     @i.Title
                                 </option>
                             }
@@ -56,7 +58,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")        }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
                             }
                         </select>
                     </div>
@@ -105,7 +107,7 @@
                                 <td align="center">
                                     @Html.DisplayFor(modelItem => item.UnitName)
                                 </td>
-                                <td align="right">
+                                <td align="right" id="price-@item.ID" data-id="@item.Price">
                                     @item.Price.Value.ToString("n0")
                                 </td>
                                 <td align="center">
@@ -133,17 +135,11 @@
         </div>
     </section>
     <script>
-        function AddToCart(code)
-        {
+        function AddToCart(code) {
             var quantity = document.getElementById("Amount-" + code).value;
-            var cart = '@cartCode';
-            if (cart.indexOf(code) == -1) {
-                if (val != '') val += ',';
-                $(".elem-demo-" + code).notify("Đã thêm giỏ hàng", "success");
-                window.location.href = "~/Cart/AddItemToCart?id=" + code + "&quantity=" + quantity;
-            }
-            else
-                $(".elem-demo-" + code).notify("Sản phẩm đã được chọn", "warn");
+            var price = document.getElementById("price-" + code);
+            $(".elem-demo-" + code).notify("Đã thêm đơn hàng", "success");
+            window.location.href = "/Cart/AddItemToCart?id=" + code + "&quantity=" + quantity; //url.replace('_id_', code).replace('_q_', quantity).replace('_p_', price.dataset.id);
         }
     </script>
 </form>

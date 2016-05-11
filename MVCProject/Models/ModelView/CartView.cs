@@ -6,13 +6,19 @@ namespace MVCProject.Models.ModelView
 {
     public class CartView
     {
-        private List<OrdersDetail> ordersdetail;
+        private List<OrdersDetail> ordersdetail = null;
         public List<OrdersDetail> Ordersdetail
         {
             get { return ordersdetail; }
             set { ordersdetail = value; }
         }
+        private List<Product> product = null;
 
+        public List<Product> Product
+        {
+            get { return product; }
+            set { product = value; }
+        }
         private string username;
 
         public string Username

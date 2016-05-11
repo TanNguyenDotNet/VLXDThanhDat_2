@@ -20,7 +20,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult CreateCart(string id)
         {
-            using(var model = Params.ModelaspnetEntities)
+            using (var model = Params.ModelaspnetEntities)
             {
                 if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                     return null;
@@ -37,7 +37,7 @@ namespace MVCProject.Controllers
                 cartview.Userid = user.Id;
                 cartview.Username = user.l.UserOfName;
                 cartview.Subid = user.l.LocationSubID.ToString();
-
+                cartview.Ordersdetail = new List<OrdersDetail>();
                 if (Session[CommonsConst.SessionCart] != null)
                     Session.Remove(CommonsConst.SessionCart);
                 Session[CommonsConst.SessionCart] = cartview;
@@ -52,7 +52,26 @@ namespace MVCProject.Controllers
                 return null;
             var cartview = (CartView)Session[CommonsConst.SessionCart];
 
-            cartview.Ordersdetail.Add(new OrdersDetail() { });
+            if (cartview.Ordersdetail != null & cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).Count() > 1)
+            {
+                int amount = int.Parse(quantity) + int.Parse(cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).FirstOrDefault().Amount);
+                cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).FirstOrDefault().Amount = amount.ToString();
+            }
+            cartview.Ordersdetail.Add(new OrdersDetail() { IDProduct = int.Parse(id), Amount = quantity == "" ? "1" : quantity });
+            return RedirectToAction("Order", "Product");
         }
-	}
+
+        public ActionResult CartView()
+        {
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            var cartview = (CartView)Session[CommonsConst.SessionCart];
+
+
+            // code tiep
+            return RedirectToAction("Order", "Product");
+        }
+    }
 }

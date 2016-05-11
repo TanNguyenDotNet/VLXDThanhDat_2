@@ -58,5 +58,29 @@ namespace MVCProject.Models.AccessData
                 return list.OrderBy(a => a.ProductName).ToPagedList(_page, _size);
             }
         }
+        public List<Product> GetList(List<long> listId, string subid = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                var list = from l in model.Products where l.IsDel == false && l.Show == true && listId.Contains(l.ID) select l;
+                int _subid = string.IsNullOrEmpty(subid) ? 0 : int.Parse(subid);
+                decimal priceSub = 0;
+                if (_subid > 0)
+                    priceSub = decimal.Parse((model.LocationSubs.Where(a => a.ID == _subid).FirstOrDefault().LocationPrice)) / 100;
+
+                var listpp = (from p in model.Products
+                              join pp in model.ProductPrices.Where(a => a.LocationID == _subid) on p.ID equals pp.ProductID
+                              select new { p, pp.Price }).ToList();
+
+                list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
+                if (listpp.Count > 0)
+                {
+                    listpp.ForEach(a => a.p.Price = a.Price);
+                    list.ToList().AddRange(listpp.Select(a => a.p).ToList());
+                }
+
+                return list.ToList();
+            }
+        }
     }
 }

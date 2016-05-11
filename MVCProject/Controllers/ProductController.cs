@@ -69,7 +69,6 @@ namespace MVCProject.Controllers
             od.UserId = cartview.Userid;
             od.UserName = cartview.Username;
             od.SubId = cartview.Subid;
-          
             InitItem(false);
             od.PageList = AProductPriceLocationSub.Instance.GetList(page, size, filter, order, catid, od.SubId);
             return View(od);

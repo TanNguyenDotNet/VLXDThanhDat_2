@@ -1,37 +1,36 @@
-﻿@model IEnumerable<MVCProject.Models.OrdersDetail>
+﻿@model MVCProject.Models.ModelView.CartView
 
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
-    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
-    List<string> list = (List<string>)ViewData["CartRequestDetail"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <form action="~/OrderDetail/Index" method="get" id="cartDetail">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        @ViewBag.Title
-      </h1>
+        <h1>
+            @ViewBag.Title
+        </h1>
     </section>
     <!-- Main content -->
     <section class="content">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
-                <tr style="background-color: #3c8dbc; color:#fff">
-                    <th>Mã Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Số Lượng</th>
-                    <th>Ngày Order</th>
-                    <th>Thuế</th>
-                    <th>Tổng</th>
-                    <th>Xoá Sản Phẩm</th>
-                </tr>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Ngày Order</th>
+                        <th>Tax</th>
+                        <th>Tổng</th>
+                        <th>Xoá Sản Phẩm</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count() > 0)
+                    @if (Model.Ordersdetail != null && Model.Ordersdetail.Count > 0)
                     {
-                        foreach (var item in Model)
+                        foreach (var item in Model.Ordersdetail)
                         {
                             <tr>
                                 <th scope="row" style="text-align:left">
@@ -43,9 +42,9 @@
                                 <td align="right">
                                     @item.Price.ToString("#,###")
                                 </td>
-                                <td align="center"> 
+                                <td align="center">
                                     <input type="text" value="@item.Amount" name="quan_@item.IDProduct" id="quan_@item.IDProduct" maxlength="6"
-                                            class="quantity-box" onended="alert('Ok')" />
+                                           class="quantity-box" onended="alert('Ok')" />
                                 </td>
                                 <td>
                                     @DateTime.Now.ToString("dd/MM/yyyy")
@@ -73,16 +72,16 @@
                 }
             </script>
         </div>
-        @if ((Model != null && Model.Count() > 0) ||  (list != null && list.Count > 0))
+        @if ((Model != null && Model.Count() > 0) || (list != null && list.Count > 0))
         {
-        <div class="arrange-button" style="text-align:right; padding-top: 20px">
-            <input type="submit" value="Cập nhật đơn hàng" class="btn btn-info" id="exportOrder"/>
-            <input type="button" value="Xác Nhận Đơn Hàng" 
-               onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
-            <input type="button" value="Hủy Yêu Cầu"
-               onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
-        </div>
-        }   
+            <div class="arrange-button" style="text-align:right; padding-top: 20px">
+                <input type="submit" value="Cập nhật đơn hàng" class="btn btn-info" id="exportOrder" />
+                <input type="button" value="Xác Nhận Đơn Hàng"
+                       onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
+                <input type="button" value="Hủy Yêu Cầu"
+                       onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
+            </div>
+        }
     </section>
     <script>
         function FunctionAccept() {

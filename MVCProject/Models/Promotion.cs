@@ -14,7 +14,6 @@ namespace MVCProject.Models
     
     public partial class Promotion
     {
-        public Nullable<long> ProductID { get; set; }
         public bool Active { get; set; }
         public string PromotionCode { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
@@ -26,5 +25,6 @@ namespace MVCProject.Models
         public long ID { get; set; }
         public Nullable<int> LocationID { get; set; }
         public string Title { get; set; }
+        public Nullable<long> ProductID { get; set; }
     }
 }

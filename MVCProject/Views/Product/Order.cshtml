@@ -1,7 +1,7 @@
 ﻿@model MVCProject.Models.OrderProductView
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Chọn sản phẩm cho đơn hàng";
+    ViewBag.Title = "Chọn sản phẩm cho đơn hàng của " + Model.UserName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
@@ -11,6 +11,7 @@
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
 
+    string cartCode = ((MVCProject.Models.ModelView.CartView)Session[MVCProject.Common.CommonsConst.SessionCart]).Ordersdetail.Select(a => a.IDProduct).ToArray().ToString();
 }
 <form action="~/Product/Order" method="get" id="productViewForm">
     <section class="content-header">
@@ -24,9 +25,6 @@
                 <div class="form-group col-sm-3">
                     <div class="input-group">
                         <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
-                        <input class="form-control" type="hidden" name="subid" id="subid" value="@Model.SubId" />
-                        <input class="form-control" type="hidden" name="id" id="id" value="@Model.UserId" />
-                        <input class="form-control" type="hidden" name="username" id="username" value="@Model.UserName" />
                         <span class="input-group-btn">
                             <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -111,10 +109,10 @@
                                     @item.Price.Value.ToString("n0")
                                 </td>
                                 <td align="center">
-                                    <input type="text" id="Amount" maxlength="6" class="quantity-box" />
+                                    <input type="text" id="Amount-@item.ID" maxlength="6" class="quantity-box" />
                                 </td>
                                 <td align="center">
-                                    <a href="#" class="elem-demo-@item.ItemCode">
+                                    <a href="#" class="elem-demo-@item.ID" onclick="AddToCart(@item.ID)">
                                         <img class='add-button-disable' src='~/Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
                                     </a>
                                 </td>
@@ -129,12 +127,23 @@
                    page,
                    filter = @Request.QueryString["filter"],
                    size = size,
-                   catid = catid,
-                   subid = @Model.SubId,
-                   id = @Model.UserId,
-                   username = @Model.UserName
+                   catid = catid
                }))
             </nav>
         </div>
     </section>
+    <script>
+        function AddToCart(code)
+        {
+            var quantity = document.getElementById("Amount-" + code).value;
+            var cart = '@cartCode';
+            if (cart.indexOf(code) == -1) {
+                if (val != '') val += ',';
+                $(".elem-demo-" + code).notify("Đã thêm giỏ hàng", "success");
+                window.location.href = "~/Cart/AddItemToCart?id=" + code + "&quantity=" + quantity;
+            }
+            else
+                $(".elem-demo-" + code).notify("Sản phẩm đã được chọn", "warn");
+        }
+    </script>
 </form>

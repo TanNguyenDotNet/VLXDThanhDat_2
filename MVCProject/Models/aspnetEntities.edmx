@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -409,25 +409,85 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="aspnetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Models.C__MigrationHistory" />
+          <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
+          <EntitySet Name="AspNetRoles" EntityType="Models.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Models.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Models.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Models.AspNetUser" />
+          <EntitySet Name="Catalogs" EntityType="Models.Catalog" />
+          <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
+          <EntitySet Name="Locations" EntityType="Models.Location" />
+          <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
+          <EntitySet Name="LogSystems" EntityType="Models.LogSystem" />
+          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
+          <EntitySet Name="Products" EntityType="Models.Product" />
+          <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
+          <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
+          <EntitySet Name="ProductNames" EntityType="Models.ProductName" />
+          <EntitySet Name="ProductPrices" EntityType="Models.ProductPrice" />
+          <EntitySet Name="Promotions" EntityType="Models.Promotion" />
+          <EntitySet Name="PromotionTypes" EntityType="Models.PromotionType" />
+          <EntitySet Name="Suppliers" EntityType="Models.Supplier" />
+          <EntitySet Name="Taxes" EntityType="Models.Tax" />
+          <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
+          <EntitySet Name="Warranties" EntityType="Models.Warranty" />
+          <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Models.FK__AspNetUse__User___5AEE82B9">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Models.FK__AspNetUse__UserI__5BE2A6F2">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Models.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
             <PropertyRef Name="ContextKey" />
           </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AppNetUserType">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="Expire" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="LocationSubID" Type="Int32" />
+          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserOfName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserOfType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Order" Type="Int32" Nullable="false" />
           <Property Name="GroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Models.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -436,8 +496,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="User_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Models.FK__AspNetUse__User___5AEE82B9" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUserLogin">
           <Key>
@@ -445,23 +505,23 @@
             <PropertyRef Name="LoginProvider" />
             <PropertyRef Name="ProviderKey" />
           </Key>
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Models.FK__AspNetUse__UserI__5BE2A6F2" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Models.FK__AspNetUse__User___5AEE82B9" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Models.FK__AspNetUse__UserI__5BE2A6F2" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Models.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
         <EntityType Name="Catalog">
           <Key>
@@ -475,6 +535,16 @@
           <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="CatalogUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Location">
           <Key>
             <PropertyRef Name="ID" />
@@ -484,183 +554,17 @@
           <Property Name="LocationCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Order" Type="Int32" />
         </EntityType>
-        <EntityType Name="ProductName">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductID" Type="Int64" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ProductPrice">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductID" Type="Int64" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Created" Type="DateTime" Precision="0" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="LocationID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Promotion">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ProductID" Type="Int64" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="PromotionCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="Created" Type="DateTime" Precision="0" />
-          <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
-          <Property Name="PromotionValue" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PromotionType">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ProTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AddType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ExRate" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="Supplier">
+        <EntityType Name="LocationSub">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="aspnetEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-          <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
-          <EntitySet Name="Locations" EntityType="Self.Location" />
-          <EntitySet Name="ProductNames" EntityType="Self.ProductName" />
-          <EntitySet Name="ProductPrices" EntityType="Self.ProductPrice" />
-          <EntitySet Name="Promotions" EntityType="Self.Promotion" />
-          <EntitySet Name="PromotionTypes" EntityType="Self.PromotionType" />
-          <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
-          <EntitySet Name="Warranties" EntityType="Models.Warranty" />
-          <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
-          <EntitySet Name="Taxes" EntityType="Models.Tax" />
-          <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
-          <EntitySet Name="LogSystems" EntityType="Models.LogSystem" />
-          <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
-          <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
-          <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
-          <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
-          <EntitySet Name="Products" EntityType="Models.Product" />
-        </EntityContainer>
-        <EntityType Name="ProductCode">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CatID" Type="Boolean" Nullable="false" />
-          <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Active" Type="Boolean" />
-          <Property Name="CatCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Warranty">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Value" Type="Byte" />
-          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="ProductImage">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Tax">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Desc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TaxRate" Type="Double" />
-        </EntityType>
-        <EntityType Name="UserRole">
-          <Key>
-            <PropertyRef Name="UserName" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="IDLocation" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDel" Type="Byte" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="LogSystem">
           <Key>
@@ -705,51 +609,6 @@
           <Property Name="DebtAfter" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="LocationSub">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDLocation" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="IsDel" Type="Byte" />
-          <Property Name="Show" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CatalogUnit">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NameCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Show" Type="Boolean" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="AppNetUserType">
-          <Key>
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
-          <Property Name="Expire" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="LocationSubID" Type="Int32" />
-          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserOfName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserOfType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ID" />
@@ -778,7 +637,148 @@
           <Property Name="ProductCost" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="PriceFix" Type="Decimal" Precision="14" Scale="2" />
         </EntityType>
-      </Schema>
+        <EntityType Name="ProductCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CatID" Type="Boolean" Nullable="false" />
+          <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CatCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ProductImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ProductName">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ProductPrice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int64" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="Created" Type="DateTime" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocationID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Precision="0" />
+          <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
+          <Property Name="PromotionValue" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductID" Type="Int64" />
+        </EntityType>
+        <EntityType Name="PromotionType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddType" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ExRate" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tax">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Desc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxRate" Type="Double" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Warranty">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="Byte" />
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="FK__AspNetUse__User___5AEE82B9">
+          <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Models.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
+          <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Models.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="Models.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -787,10 +787,34 @@
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="Models.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppNetUserTypes">
+            <EntityTypeMapping TypeName="Models.AppNetUserType">
+              <MappingFragment StoreEntitySet="AppNetUserType">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="UserOfType" ColumnName="UserOfType" />
+                <ScalarProperty Name="UserOfName" ColumnName="UserOfName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="LocationSubID" ColumnName="LocationSubID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Expire" ColumnName="Expire" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -799,38 +823,38 @@
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
             <EntityTypeMapping TypeName="Models.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
             <EntityTypeMapping TypeName="Models.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="Models.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
                 <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -839,11 +863,22 @@
               <MappingFragment StoreEntitySet="Catalog">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogUnits">
+            <EntityTypeMapping TypeName="Models.CatalogUnit">
+              <MappingFragment StoreEntitySet="CatalogUnit">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="NameCode" ColumnName="NameCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -851,135 +886,22 @@
             <EntityTypeMapping TypeName="Models.Location">
               <MappingFragment StoreEntitySet="Location">
                 <ScalarProperty Name="Order" ColumnName="Order" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationCode" ColumnName="LocationCode" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductNames">
-            <EntityTypeMapping TypeName="Models.ProductName">
-              <MappingFragment StoreEntitySet="ProductName">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductPrices">
-            <EntityTypeMapping TypeName="Models.ProductPrice">
-              <MappingFragment StoreEntitySet="ProductPrice">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
+          <EntitySetMapping Name="LocationSubs">
+            <EntityTypeMapping TypeName="Models.LocationSub">
+              <MappingFragment StoreEntitySet="LocationSub">
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Promotions">
-            <EntityTypeMapping TypeName="Models.Promotion">
-              <MappingFragment StoreEntitySet="Promotion">
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="PromotionTypeID" ColumnName="PromotionTypeID" />
-                <ScalarProperty Name="PromotionValue" ColumnName="PromotionValue" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PromotionTypes">
-            <EntityTypeMapping TypeName="Models.PromotionType">
-              <MappingFragment StoreEntitySet="PromotionType">
-                <ScalarProperty Name="ProTypeName" ColumnName="ProTypeName" />
-                <ScalarProperty Name="AddType" ColumnName="AddType" />
-                <ScalarProperty Name="ExRate" ColumnName="ExRate" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Suppliers">
-            <EntityTypeMapping TypeName="Models.Supplier">
-              <MappingFragment StoreEntitySet="Supplier">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
-                <ScalarProperty Name="AccountBank" ColumnName="AccountBank" />
-                <ScalarProperty Name="NameBank" ColumnName="NameBank" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Models.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="ProductCodes">
-            <EntityTypeMapping TypeName="Models.ProductCode">
-              <MappingFragment StoreEntitySet="ProductCode">
-                <ScalarProperty Name="CatCode" ColumnName="CatCode" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ScrollNumber" ColumnName="ScrollNumber" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
-                <ScalarProperty Name="Group2" ColumnName="Group2" />
-                <ScalarProperty Name="Group1" ColumnName="Group1" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Warranties">
-            <EntityTypeMapping TypeName="Models.Warranty">
-              <MappingFragment StoreEntitySet="Warranty">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="DVT" ColumnName="DVT" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductImages">
-            <EntityTypeMapping TypeName="Models.ProductImage">
-              <MappingFragment StoreEntitySet="ProductImage">
-                <ScalarProperty Name="Component" ColumnName="Component" />
-                <ScalarProperty Name="ImageAddIn" ColumnName="ImageAddIn" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Taxes">
-            <EntityTypeMapping TypeName="Models.Tax">
-              <MappingFragment StoreEntitySet="Tax">
-                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
-                <ScalarProperty Name="Desc" ColumnName="Desc" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserRoles">
-            <EntityTypeMapping TypeName="Models.UserRole">
-              <MappingFragment StoreEntitySet="UserRoles">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1028,54 +950,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LocationSubs">
-            <EntityTypeMapping TypeName="Models.LocationSub">
-              <MappingFragment StoreEntitySet="LocationSub">
-                <ScalarProperty Name="Show" ColumnName="Show" />
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="LocationPrice" ColumnName="LocationPrice" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IDLocation" ColumnName="IDLocation" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CatalogUnits">
-            <EntityTypeMapping TypeName="Models.CatalogUnit">
-              <MappingFragment StoreEntitySet="CatalogUnit">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Show" ColumnName="Show" />
-                <ScalarProperty Name="NameCode" ColumnName="NameCode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AppNetUserTypes">
-            <EntityTypeMapping TypeName="Models.AppNetUserType">
-              <MappingFragment StoreEntitySet="AppNetUserType">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="UserOfType" ColumnName="UserOfType" />
-                <ScalarProperty Name="UserOfName" ColumnName="UserOfName" />
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="LocationSubID" ColumnName="LocationSubID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="Expire" ColumnName="Expire" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="Models.Product">
               <MappingFragment StoreEntitySet="Product">
@@ -1105,6 +979,132 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProductCodes">
+            <EntityTypeMapping TypeName="Models.ProductCode">
+              <MappingFragment StoreEntitySet="ProductCode">
+                <ScalarProperty Name="CatCode" ColumnName="CatCode" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ScrollNumber" ColumnName="ScrollNumber" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="Group2" ColumnName="Group2" />
+                <ScalarProperty Name="Group1" ColumnName="Group1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImages">
+            <EntityTypeMapping TypeName="Models.ProductImage">
+              <MappingFragment StoreEntitySet="ProductImage">
+                <ScalarProperty Name="Component" ColumnName="Component" />
+                <ScalarProperty Name="ImageAddIn" ColumnName="ImageAddIn" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductNames">
+            <EntityTypeMapping TypeName="Models.ProductName">
+              <MappingFragment StoreEntitySet="ProductName">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductPrices">
+            <EntityTypeMapping TypeName="Models.ProductPrice">
+              <MappingFragment StoreEntitySet="ProductPrice">
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promotions">
+            <EntityTypeMapping TypeName="Models.Promotion">
+              <MappingFragment StoreEntitySet="Promotion">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PromotionValue" ColumnName="PromotionValue" />
+                <ScalarProperty Name="PromotionTypeID" ColumnName="PromotionTypeID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PromotionTypes">
+            <EntityTypeMapping TypeName="Models.PromotionType">
+              <MappingFragment StoreEntitySet="PromotionType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ExRate" ColumnName="ExRate" />
+                <ScalarProperty Name="AddType" ColumnName="AddType" />
+                <ScalarProperty Name="ProTypeName" ColumnName="ProTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="Models.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="NameBank" ColumnName="NameBank" />
+                <ScalarProperty Name="AccountBank" ColumnName="AccountBank" />
+                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Taxes">
+            <EntityTypeMapping TypeName="Models.Tax">
+              <MappingFragment StoreEntitySet="Tax">
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="Desc" ColumnName="Desc" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="Models.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warranties">
+            <EntityTypeMapping TypeName="Models.Warranty">
+              <MappingFragment StoreEntitySet="Warranty">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="DVT" ColumnName="DVT" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Models.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

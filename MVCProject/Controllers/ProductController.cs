@@ -12,6 +12,8 @@ using PagedList;
 using MVCProject.Common;
 using MVCProject.Models.AccessData;
 using MVCProject.Extensions;
+using MVCProject.Models.ModelView;
+
 
 namespace MVCProject.Controllers
 {
@@ -53,29 +55,23 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        public ActionResult Order(string page="", string size="", string filter="", string order="", string catid="", string subid = "",string id="",string username="")
+        public ActionResult Order(string page="", string size="", string filter="", string order="", string catid="")
         {
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "25"))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), ""))
                 return RedirectToAction("AccessDenied", "Account");
+            
+            var cartview = (CartView)Session[CommonsConst.SessionCart];
             OrderProductView od = new OrderProductView();
-            od.UserId = id;
-            od.Quantity = "0";
-            od.UserName = username;
-            od.SubId = subid;
-            if (string.IsNullOrEmpty(subid))
-            { 
-                var user = (from l in db.AppNetUserTypes
-                           join u in db.AspNetUsers.Where(a => a.UserName == id) on l.UserOfName equals u.UserName
-                           select new { l, u.Id }).FirstOrDefault();
-                subid = user.l.LocationSubID.ToString();
-                od.SubId = subid;
-                od.UserId = user.Id;
-                od.UserName = user.l.UserOfName.ToString();
-            }
+            od.UserId = cartview.Userid;
+            od.UserName = cartview.Username;
+            od.SubId = cartview.Subid;
+          
             InitItem(false);
-            od.PageList = AProductPriceLocationSub.Instance.GetList(page, size, filter, order, catid, subid);
+            od.PageList = AProductPriceLocationSub.Instance.GetList(page, size, filter, order, catid, od.SubId);
             return View(od);
         }
         // GET: /Product/
@@ -90,8 +86,6 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-
-
 
         // GET: /Product/Details/5
         public ActionResult Details(long? id)

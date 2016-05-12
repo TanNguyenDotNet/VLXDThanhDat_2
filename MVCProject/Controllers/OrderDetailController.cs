@@ -26,6 +26,8 @@ namespace MVCProject.Controllers
             UserType ut = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
             if (ut == UserType.Delivery)
                 Response.Redirect("~/Order/OrderList");
+            if (ut == UserType.Administrator)
+                return RedirectToAction("CartView", "Cart");
             if (!AddToCart(id))
                 return null;
 

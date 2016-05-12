@@ -98,10 +98,9 @@
             var tt = parseFloat(f.Total.value);
             var discount = parseFloat(f.Discount.value);
             
-            dg = dg - ((discount / 100) * dg);
             tt = (sl * dg) + ((thue / 100) * (sl * dg));
-            f.Total.value = tt;
-            f.TotalModel.value = accounting.formatMoney(tt, "", 0);
+            f.Total.value = tt - (tt * (discount / 100));
+            f.TotalModel.value = accounting.formatMoney(f.Total.value, "", 0);
         }
     </script>
 }

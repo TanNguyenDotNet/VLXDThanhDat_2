@@ -6,6 +6,20 @@ namespace MVCProject.Models.ModelView
 {
     public class CartView
     {
+        public CartView()
+        {
+            this.Ordersdetail = null;
+            this.Order = null;
+            this.Product = null;
+            this.Catalogid = string.Empty;
+            this.Filter = string.Empty;
+            this.OrderAsc = string.Empty;
+            this.Page = string.Empty;
+            this.Size = string.Empty;
+            this.Subid = string.Empty;
+            this.Userid = string.Empty;
+            this.Username = string.Empty;
+        }
         private List<OrdersDetail> ordersdetail = null;
         public List<OrdersDetail> Ordersdetail
         {
@@ -44,6 +58,44 @@ namespace MVCProject.Models.ModelView
         {
             get { return subid; }
             set { subid = value; }
+        }
+        private string size;
+
+        public string Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
+
+        private string catalogid;
+        public string Catalogid
+        {
+            get { return catalogid; }
+            set { catalogid = value; }
+        }
+
+        private string _order;
+
+        public string OrderAsc
+        {
+            get { return _order; }
+            set { _order = value; }
+        }
+
+        private string filter;
+
+        public string Filter
+        {
+            get { return filter; }
+            set { filter = value; }
+        }
+
+        private string page;
+
+        public string Page
+        {
+            get { return page; }
+            set { page = value; }
         }
     }
 }

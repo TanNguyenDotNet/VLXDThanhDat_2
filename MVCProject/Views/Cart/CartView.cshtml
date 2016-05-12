@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="~/OrderDetail/Index" method="get" id="cartDetail">
+<form action="~/Cart/CartView" method="get" id="cartView">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -21,7 +21,7 @@
                         <th>Sản Phẩm</th>
                         <th>Giá</th>
                         <th>Số Lượng</th>
-                        <th>Ngày Order</th>
+                        <th>Chiết khấu</th>
                         <th>Tax</th>
                         <th>Tổng</th>
                         <th>Xoá Sản Phẩm</th>
@@ -34,20 +34,16 @@
                         {
                             <tr>
                                 <th scope="row" style="text-align:left">
-                                    @{
-                            var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
-                            @Html.Raw(p.ProductName);
-                                    }
+                                    @Html.Raw(Model.Product.Where(a=>a.ID== item.IDProduct).FirstOrDefault().ProductName)
                                 </th>
                                 <td align="right">
-                                    @item.Price.ToString("#,###")
+                                    @item.Price.ToString("n0")
                                 </td>
                                 <td align="center">
-                                    <input type="text" value="@item.Amount" name="quan_@item.IDProduct" id="quan_@item.IDProduct" maxlength="6"
-                                           class="quantity-box" onended="alert('Ok')" />
+                                    <input type="text" value="@item.Amount" name="amount_@item.IDProduct" id="quan_@item.IDProduct" maxlength="6" class="quantity-box" onended="alert('Ok')" />
                                 </td>
-                                <td>
-                                    @DateTime.Now.ToString("dd/MM/yyyy")
+                                <td align="center">
+                                    <input type="text" value="@item.Discount" name="discount_@item.IDProduct" id="quan_@item.IDProduct" maxlength="2" class="quantity-box" onended="alert('Ok')" />
                                 </td>
                                 <td align="right">
                                     @Html.DisplayFor(modelItem => item.Tax)%
@@ -68,20 +64,19 @@
             </div>
             <script>
                 function RemoveFromCart(id) {
-                    window.location = "../OrderDetail/Index/" + id;
+                    window.location = "../Cart/RemoveItemInCart/" + id;
                 }
             </script>
         </div>
-        @if ((Model != null && Model.Count() > 0) || (list != null && list.Count > 0))
-        {
             <div class="arrange-button" style="text-align:right; padding-top: 20px">
+                <input type="button" value="Trở lại đặt hàng" onclick="ReturnOrders();" class="btn btn-info" id="returnOrder" />
+                @if (Model.Ordersdetail != null && Model.Ordersdetail.Count > 0)
+                {
                 <input type="submit" value="Cập nhật đơn hàng" class="btn btn-info" id="exportOrder" />
-                <input type="button" value="Xác Nhận Đơn Hàng"
-                       onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
-                <input type="button" value="Hủy Yêu Cầu"
-                       onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
+                <input type="button" value="Xác Nhận Đơn Hàng" onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
+                <input type="button" value="Hủy Yêu Cầu" onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
+                }
             </div>
-        }
     </section>
     <script>
         function FunctionAccept() {
@@ -94,9 +89,13 @@
         function FunctionClear() {
             var a = alertify.confirm('Hủy đơn hàng?', function (e) {
                 if (e) {
-                    window.location = '../Order/Cancel';
+                    window.location = '../Cart/Cancel';
                 }
             }).set('title', 'Thông Báo').show();
+        }
+        function ReturnOrders()
+        {
+            window.location = '../Product/Order';
         }
     </script>
 </form>

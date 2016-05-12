@@ -55,7 +55,7 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        public ActionResult Order(string page="", string size="", string filter="", string order="", string catid="")
+        public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "")
         {
             if (Session[CommonsConst.SessionCart] == null)
                 return RedirectToAction("Index", "Account");
@@ -63,14 +63,19 @@ namespace MVCProject.Controllers
                 return null;
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), ""))
                 return RedirectToAction("AccessDenied", "Account");
-            
+
             var cartview = (CartView)Session[CommonsConst.SessionCart];
             OrderProductView od = new OrderProductView();
-            od.UserId = cartview.Userid;
-            od.UserName = cartview.Username;
-            od.SubId = cartview.Subid;
+            if (page != "" || size != "" || filter != "" || catid != "")
+            {
+                cartview.Page = page;
+                cartview.Catalogid = catid;
+                cartview.Size = size;
+                cartview.Filter = filter;
+                cartview.OrderAsc = order;
+            }
             InitItem(false);
-            od.PageList = AProductPriceLocationSub.Instance.GetList(page, size, filter, order, catid, od.SubId);
+            od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Catalogid);
             return View(od);
         }
         // GET: /Product/

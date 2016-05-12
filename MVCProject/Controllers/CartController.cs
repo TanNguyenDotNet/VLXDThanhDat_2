@@ -45,6 +45,14 @@ namespace MVCProject.Controllers
                 return RedirectToAction("Order", "Product");
             }
         }
+        public ActionResult RemoveItemInCart(string id)
+        {
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
+            var cartview = (CartView)Session[CommonsConst.SessionCart];
+            cartview.Ordersdetail.RemoveAll(a => a.IDProduct == int.Parse(id));//cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)));
+            return RedirectToAction("CartView", "Cart");
+        }
         public ActionResult AddItemToCart(string id, string quantity)
         {
             if (Session[CommonsConst.SessionCart] == null)
@@ -53,12 +61,13 @@ namespace MVCProject.Controllers
                 return null;
             var cartview = (CartView)Session[CommonsConst.SessionCart];
 
-            if (cartview.Ordersdetail != null & cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).Count() > 1)
+            if (cartview.Ordersdetail != null & cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).Count() >= 1)
             {
                 int amount = int.Parse(quantity) + int.Parse(cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).FirstOrDefault().Amount);
                 cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).FirstOrDefault().Amount = amount.ToString();
             }
-            cartview.Ordersdetail.Add(new OrdersDetail() { IDProduct = int.Parse(id), Amount = quantity == "" ? "1" : quantity });
+            else
+                cartview.Ordersdetail.Add(new OrdersDetail() { IDProduct = int.Parse(id), Amount = quantity == "" ? "1" : quantity });
             return RedirectToAction("Order", "Product");
         }
 
@@ -72,28 +81,52 @@ namespace MVCProject.Controllers
 
             if(cartview.Ordersdetail!=null)
             {
-                
+                ProcessCartView(cartview);
             }
-            return RedirectToAction("Order", "Product");
+            return View(cartview);
         }
 
         private void ProcessCartView(CartView cartView)
         {
             var list = AProductPriceLocationSub.Instance.GetList(cartView.Ordersdetail.Select(a => a.IDProduct).ToList(), cartView.Subid);
             var listTax = ATax.Instance.GetList();
+            cartView.Product = new List<Product>();
+            cartView.Product = list;
+            cartView.Order = new Order();
+            cartView.Order.IDAccount = cartView.Userid;
+            cartView.Order.DateCreate = DateTime.Now.ToString("yyyyMMddHHmmss");
+            cartView.Order.Discount = 0;
+            cartView.Order.Tax = "0";
+            cartView.Order.Total = 0;
+            cartView.Order.TotalSale = 0;
+            cartView.Order.TotalWithoutTax = 0;
+            cartView.Order.State = "0";
+            string amount = "amount_", discount = "discount_";
             foreach (var item in cartView.Ordersdetail)
             {
                 item.Price = list.Where(a => a.ID == item.IDProduct).Select(b => b.Price).FirstOrDefault().Value;
+                item.Amount = Request.QueryString[amount + item.IDProduct] == null ? "1" : Request.QueryString[amount + item.IDProduct];
                 item.Tax = listTax.Where(a => a.ID == (byte)list.Where(b => b.ID == item.IDProduct).Select(b => b.TaxID).FirstOrDefault().Value).Select(c => c.TaxRate).FirstOrDefault().Value.ToString();
                 item.ProductCode = list.Where(a => a.ID == item.IDProduct).Select(b => b.ItemCode).FirstOrDefault().ToString();
                 item.ReturnGood = false;
                 item.RequestByUser = false;
                 item.DateOfOrder = DateTime.Now;
-                item.Discount = 0;
+                item.Discount = Request.QueryString[discount + item.IDProduct] == null ? 0 : decimal.Parse(Request.QueryString[discount + item.IDProduct]);
                 item.Sale = 0;
-                item.Total = 0;
-                
+                decimal TotalWithTax = (decimal.Parse(item.Amount) * item.Price) + (item.Price * (decimal.Parse(item.Tax) / 100));
+                item.Total = TotalWithTax - ((decimal)item.Discount / 100 * TotalWithTax);
+                cartView.Order.TotalWithoutTax += (decimal)item.Price * decimal.Parse(item.Amount);
+                cartView.Order.Total += item.Total;
+                cartView.Order.Discount += TotalWithTax - item.Total;
+                cartView.Order.Tax = (cartView.Order.Total - cartView.Order.TotalWithoutTax).ToString();
             }
+            ViewData["Total"] = cartView.Order.Total.ToString("n0");
+        }
+        public ActionResult Cancel()
+        {
+            if (Session[CommonsConst.SessionCart] != null)
+                Session.Remove(CommonsConst.SessionCart);
+            return RedirectToAction("Index", "Account");
         }
     }
 }

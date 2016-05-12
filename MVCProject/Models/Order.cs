@@ -20,7 +20,6 @@ namespace MVCProject.Models
         public decimal TotalWithoutTax { get; set; }
         public string Tax { get; set; }
         public decimal Total { get; set; }
-        public Nullable<decimal> TotalSale { get; set; }
         public decimal Discount { get; set; }
         public string DeliveryMan { get; set; }
         public string Description { get; set; }
@@ -29,5 +28,6 @@ namespace MVCProject.Models
         public string TaxID { get; set; }
         public string OrderCode { get; set; }
         public long ID { get; set; }
+        public Nullable<decimal> TotalSale { get; set; }
     }
 }

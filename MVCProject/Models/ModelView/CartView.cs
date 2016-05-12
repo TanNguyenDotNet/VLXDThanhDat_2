@@ -20,7 +20,12 @@ namespace MVCProject.Models.ModelView
             set { product = value; }
         }
         private string username;
-
+        private Order order = null;
+        public Order Order
+        {
+            get { return order; }
+            set { order = value; }
+        }
         public string Username
         {
             get { return username; }

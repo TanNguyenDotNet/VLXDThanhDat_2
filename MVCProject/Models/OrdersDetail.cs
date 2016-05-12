@@ -22,11 +22,11 @@ namespace MVCProject.Models
         public Nullable<System.DateTime> DateOfOrder { get; set; }
         public string Tax { get; set; }
         public decimal Total { get; set; }
+        public Nullable<decimal> Sale { get; set; }
         public string Description { get; set; }
         public string ProductCode { get; set; }
         public bool RequestByUser { get; set; }
         public string OrderCode { get; set; }
         public Nullable<decimal> Discount { get; set; }
-        public Nullable<decimal> Sale { get; set; }
     }
 }

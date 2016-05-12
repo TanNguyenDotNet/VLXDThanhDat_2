@@ -7,6 +7,7 @@ using MVCProject.Common;
 using Microsoft.AspNet.Identity;
 using MVCProject.Models.ModelView;
 using MVCProject.Models;
+using MVCProject.Models.AccessData;
 
 namespace MVCProject.Controllers
 {
@@ -69,9 +70,30 @@ namespace MVCProject.Controllers
                 return null;
             var cartview = (CartView)Session[CommonsConst.SessionCart];
 
-
-            // code tiep
+            if(cartview.Ordersdetail!=null)
+            {
+                
+            }
             return RedirectToAction("Order", "Product");
+        }
+
+        private void ProcessCartView(CartView cartView)
+        {
+            var list = AProductPriceLocationSub.Instance.GetList(cartView.Ordersdetail.Select(a => a.IDProduct).ToList(), cartView.Subid);
+            var listTax = ATax.Instance.GetList();
+            foreach (var item in cartView.Ordersdetail)
+            {
+                item.Price = list.Where(a => a.ID == item.IDProduct).Select(b => b.Price).FirstOrDefault().Value;
+                item.Tax = listTax.Where(a => a.ID == (byte)list.Where(b => b.ID == item.IDProduct).Select(b => b.TaxID).FirstOrDefault().Value).Select(c => c.TaxRate).FirstOrDefault().Value.ToString();
+                item.ProductCode = list.Where(a => a.ID == item.IDProduct).Select(b => b.ItemCode).FirstOrDefault().ToString();
+                item.ReturnGood = false;
+                item.RequestByUser = false;
+                item.DateOfOrder = DateTime.Now;
+                item.Discount = 0;
+                item.Sale = 0;
+                item.Total = 0;
+                
+            }
         }
     }
 }

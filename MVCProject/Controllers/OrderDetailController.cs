@@ -527,10 +527,13 @@ namespace MVCProject.Controllers
                 return o;
             o.TotalWithoutTax = 0;
             o.Total = 0;
+            decimal PriceDiscount = 0;
             foreach (var item in od)
             {
-                o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * item.Price);
+                PriceDiscount = (item.Price - (item.Price * ((decimal)item.Discount / 100)));
+                o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * PriceDiscount);
                 o.Total += item.Total;
+                o.Discount += (item.Price - PriceDiscount) * decimal.Parse(item.Amount);
             }
             o.Tax = (o.Total - o.TotalWithoutTax).ToString();
             return o;

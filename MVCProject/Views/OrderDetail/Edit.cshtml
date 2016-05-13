@@ -41,7 +41,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="UserName">Chiết khấu</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @maxlenght = "2" })
+                    @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @maxlenght = "2", @onchange = "if(check(this))thanhtien();" })
                     @Html.ValidationMessageFor(model => model.Discount)
                 </div>
             </div>
@@ -91,14 +91,14 @@
         }
         function thanhtien() {
             var f = document.odForm;
-
             var dg = parseFloat(f.Price.value);
             var sl = parseFloat(f.Amount.value);
             var thue = parseFloat(f.Tax.value);
             var tt = parseFloat(f.Total.value);
             var discount = parseFloat(f.Discount.value);
+
             dg = dg - (discount / 100) * dg;
-            tt = (sl * dg) + ((thue / 100) * (sl * dg));
+            tt = sl * (dg + ((thue / 100) + dg));
             f.Total.value = tt;
             f.TotalModel.value = accounting.formatMoney(f.Total.value, "", 0);
         }

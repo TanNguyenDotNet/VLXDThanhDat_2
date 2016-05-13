@@ -75,7 +75,7 @@ namespace MVCProject.Controllers
                 cartview.OrderAsc = order;
             }
             InitItem(false);
-            od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Catalogid);
+            od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Subid);
             Session[CommonsConst.SessionCart] = cartview;
             return View(od);
         }
@@ -186,6 +186,7 @@ namespace MVCProject.Controllers
             ViewBag.TaxList = Commons.GetTaxList(db);
             ViewBag.WarrantyList = Commons.GetWarrantyList(db);
             ViewBag.Price = _productView.Price.Value.ToString("n0");
+            ViewBag.ProductCost = _productView.ProductCost == null ? "0" : _productView.ProductCost.Value.ToString("n0");
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
             return View(_productView);

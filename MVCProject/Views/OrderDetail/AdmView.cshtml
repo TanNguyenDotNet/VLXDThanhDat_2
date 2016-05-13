@@ -48,7 +48,7 @@
             <div class="form-group col-sm-2">
                 <div class="input-group">
                     <input type="button" value="Xác Nhận Đơn Hàng"
-                           onclick="if (confirm('Xác nhận yêu cầu?') == true) { completeOrderForm.submit(); }" class="btn btn-info" />
+                           onclick="FunctionAccept();" class="btn btn-info" />
                 </div>
             </div>
             <script>
@@ -170,4 +170,13 @@
             </table>
         }
     </div>
+    <script>
+        function FunctionAccept() {
+            var a = alertify.confirm('Xác nhận yêu cầu đơn hàng?', function (e) {
+                if (e) {
+                    completeOrderForm.submit();
+                }
+            }).set('title', 'Thông Báo').show();
+        }
+    </script>
 </section>

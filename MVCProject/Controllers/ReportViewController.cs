@@ -60,7 +60,8 @@ namespace MVCProject.Controllers
                                      _Tax = a.Tax,
                                      _Total = a.Total,
                                      _ProductName = b.ProductName,
-                                     _Unit = b.UnitName
+                                     _Unit = b.UnitName,
+                                     _Discount = a.Discount
                                  }).ToList();
 
                     InvoiceParams = new InvoiceDetailParams();

@@ -25,7 +25,7 @@ namespace MVCProject.Controllers
             {
                 if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                     return null;
-                if (!Commons.CheckPermission(ViewData, model, User.Identity.GetUserName(), "1"))
+                if (!Commons.CheckPermission(ViewData, model, User.Identity.GetUserName(), "29"))
                     return RedirectToAction("AccessDenied", "Account");
                 if (string.IsNullOrEmpty(id))
                     return RedirectToAction("Index", "Account");
@@ -104,6 +104,7 @@ namespace MVCProject.Controllers
             cartView.Order.TotalSale = 0;
             cartView.Order.TotalWithoutTax = 0;
             cartView.Order.State = "0";
+            decimal tax = 0;
             string amount = "amount_", discount = "discount_";
             foreach (var item in cartView.Ordersdetail)
             {
@@ -122,12 +123,14 @@ namespace MVCProject.Controllers
                 item.RequestByUser = false;
                 item.DateOfOrder = DateTime.Now;
                 item.Sale = 0;
-                decimal TotalWithTax = decimal.Parse(item.Amount) * ((item.Price * ((decimal)item.Discount / 100)) - item.Price + (item.Price * (decimal.Parse(item.Tax) / 100)));
+                decimal PriceDiscount = (item.Price - (item.Price * ((decimal)item.Discount / 100)));// gia da dc chiet khau
+                decimal TotalWithTax = decimal.Parse(item.Amount) * ((PriceDiscount) * (decimal.Parse(item.Tax) / 100) + PriceDiscount);
                 item.Total = TotalWithTax;
-                cartView.Order.TotalWithoutTax += (decimal)item.Price * decimal.Parse(item.Amount);
+                cartView.Order.TotalWithoutTax += (decimal)PriceDiscount * decimal.Parse(item.Amount);
                 cartView.Order.Total += item.Total;
-                cartView.Order.Discount += TotalWithTax - item.Total;
-                cartView.Order.Tax = (cartView.Order.Total - cartView.Order.TotalWithoutTax).ToString();
+                cartView.Order.Discount += decimal.Parse(item.Amount) * (item.Price - PriceDiscount);
+                tax += PriceDiscount * decimal.Parse(item.Tax) / 100 * decimal.Parse(item.Amount);
+                cartView.Order.Tax = tax.ToString();
             }
             ViewData["Total"] = cartView.Order.Total.ToString("n0");
         }

@@ -44,7 +44,8 @@ namespace MVCProject.Models.AccessData
                         .Select(x => x.ErrorMessage);
                 var fullErrorMessage = string.Join("; ", errorMessages);
                 var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+                //throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+                return 0;
             }
         }
         public IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")

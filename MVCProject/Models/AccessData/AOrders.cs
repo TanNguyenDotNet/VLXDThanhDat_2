@@ -3,12 +3,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MVCProject.Models.ModelView;
+using System.Data.Entity.Validation;
 
 namespace MVCProject.Models.AccessData
 {
     public class AOrders
     {
-        public static IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")
+        private volatile static AOrders _instance;
+        static object locked = new object();
+        public static AOrders Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (locked)
+                        _instance = new AOrders();
+                }
+                return _instance;
+            }
+
+        }
+        private AOrders() { }
+        public int CreateOrder(CartView cart)
+        {
+            try
+            {
+                using (var model = Params.ModelRetail)
+                {
+                    model.Orders.Add(cart.Order);
+                    model.OrdersDetails.AddRange(cart.Ordersdetail);
+                    return model.SaveChanges();
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+        }
+        public IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")
         {
             using (var model = Params.ModelRetail)
             {

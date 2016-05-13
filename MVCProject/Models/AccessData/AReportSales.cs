@@ -13,7 +13,7 @@ namespace MVCProject.Models.AccessData
         {
             using (var model = Params.ModelaspnetEntities)
             {
-                var listOrder = AOrders.GetList(filter, state, datefrom, dateto);
+                var listOrder = AOrders.Instance.GetList(filter, state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
@@ -40,7 +40,7 @@ namespace MVCProject.Models.AccessData
                 List<DateTime> lstTime = UtilDatetime.ListGetBeginDayAndEndDayInMonth(month, year);
                 string datefrom = lstTime[0].ToString(new System.Globalization.CultureInfo("vi-VN")),
                     dateto = lstTime[1].ToString(new System.Globalization.CultureInfo("vi-VN"));
-                var listOrder = AOrders.GetList("", state, datefrom, dateto);
+                var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
@@ -75,7 +75,7 @@ namespace MVCProject.Models.AccessData
                 List<DateTime> lstTime = UtilDatetime.ListGetBeginDayAndEndDayInYear(year);
                 string datefrom = lstTime[0].ToString(new System.Globalization.CultureInfo("vi-VN")),
                     dateto = lstTime[1].ToString(new System.Globalization.CultureInfo("vi-VN"));
-                var listOrder = AOrders.GetList("", state, datefrom, dateto);
+                var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
@@ -110,7 +110,7 @@ namespace MVCProject.Models.AccessData
                 List<DateTime> lstTime = UtilDatetime.ListGetBeginDayAndEndDayInQuarter(quarter, year);
                 string datefrom = lstTime[0].ToString(new System.Globalization.CultureInfo("vi-VN")),
                     dateto = lstTime[1].ToString(new System.Globalization.CultureInfo("vi-VN"));
-                var listOrder = AOrders.GetList("", state, datefrom, dateto);
+                var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
@@ -169,6 +169,7 @@ namespace MVCProject.Models.AccessData
 
                                   Total = (decimal)p.Pay
                               };
+                //Group by ngay
                 listPay = from p in listPay.ToList()
                           group p by new
                           {

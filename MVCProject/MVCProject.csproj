@@ -565,6 +565,7 @@
     <Content Include="Views\ReportsSales\PaymentOfStore.cshtml" />
     <Content Include="Views\Product\Order.cshtml" />
     <Content Include="Views\Cart\CartView.cshtml" />
+    <Content Include="Views\Order\SuccessOrderByAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

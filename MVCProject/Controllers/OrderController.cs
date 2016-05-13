@@ -7,6 +7,8 @@ using MVCProject.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using MVCProject.Common;
+using MVCProject.Models.ModelView;
+using MVCProject.Models.AccessData;
 
 namespace MVCProject.Controllers
 {
@@ -16,7 +18,7 @@ namespace MVCProject.Controllers
         private aspnetEntities _db = new aspnetEntities();
         //
         // GET: /Order/
-        public ActionResult Index(int? page, int? size, string filter, string state,string datefrom,string dateto)
+        public ActionResult Index(int? page, int? size, string filter, string state, string datefrom, string dateto)
         {
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -38,7 +40,25 @@ namespace MVCProject.Controllers
                 return View(ex);
             }
         }
+        public ActionResult OrderCreateByAdmin()
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
 
+            var cartview = (CartView)Session[CommonsConst.SessionCart];
+
+            if (cartview.Ordersdetail.Count == 0 || cartview.Order.Total==0)
+                return RedirectToAction("Index", "Account");
+            int ucat = 0;
+            string code = Commons.GenItemCode(_db, out ucat, "OC");
+            cartview.Order.OrderCode = code;
+            cartview.Ordersdetail.ForEach(a => a.OrderCode = code);
+            if (AOrders.Instance.CreateOrder(cartview) <= 0)
+                return RedirectToAction("CartView", "Cart");
+            return Redirect("/Order/SuccessOrderByAdmin?code=" + code);
+        }
         public ActionResult Cancel()
         {
             if (!Request.IsAuthenticated)
@@ -53,12 +73,12 @@ namespace MVCProject.Controllers
         {
             if (!Request.IsAuthenticated)
                 return null;
-            
+
             Common.UserType ut = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
 
             string us = User.Identity.GetUserId();
             IEnumerable<Models.Order> list = null;
-            if(ut == Common.UserType.Delivery)
+            if (ut == Common.UserType.Delivery)
                 list = db.Orders.Where(c => c.DeliveryMan == us).ToList();
             else
                 list = db.Orders.Where(c => c.IDAccount == us).ToList();
@@ -73,7 +93,15 @@ namespace MVCProject.Controllers
             Session.Clear();
             return View();
         }
-        
+        public ActionResult SuccessOrderByAdmin()
+        {
+            if (!Request.IsAuthenticated)
+                Response.Redirect("~/Account/Login");
+            
+            Session.Remove(CommonsConst.SessionCart);
+            return View();
+        }
+
         public ActionResult Complete(string orderCode, string deliveryMan, string dateShip)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="~/Cart/CartView" method="get" id="cartView">
+<form action="Cart-View" method="get" id="cartView">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -82,7 +82,7 @@
         function FunctionAccept() {
             var a = alertify.confirm('Xác nhận yêu cầu đơn hàng?', function (e) {
                 if (e) {
-                    window.location = '../Agent/AgentInfo';
+                    window.location = '../Order/OrderCreateByAdmin';
                 }
             }).set('title', 'Thông Báo').show();
         }

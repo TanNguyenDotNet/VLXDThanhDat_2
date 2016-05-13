@@ -46,7 +46,7 @@
                             <option value="">Tất cả</option>
                             @foreach (var i in listLocation)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == LocalID) { @Html.Raw("selected='selected'")                   }>
+                                <option value="@i.ID" @if (i.ID.ToString() == LocalID) { @Html.Raw("selected='selected'")                    }>
                                     @i.LocationName
                                 </option>
                             }
@@ -70,7 +70,7 @@
                         <select class="form-control" name="size" id="size" onchange="AccountForm.submit();">
                             @for (int s = 20; s <= 100; s += 20)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")      }>@s</option>
                             }
                         </select>
                     </div>
@@ -121,12 +121,13 @@
                             <td>
                                 <a href="~/Account/Roles/@item.UserOfName">Phân quyền</a>
                             </td>
-                            @if (item.UserOfType == "FrontendUser")
-                            {
                             <td>
-                                <a href="~/Cart/CreateCart/@item.UserOfName">Đặt hàng</a>
+                                @if (item.UserOfType == "FrontendUser")
+                                {
+                                    <a href="~/Cart/CreateCart/@item.UserOfName">Đặt hàng</a>
+                                }
                             </td>
-                            }
+
                         </tr>
                     }
                 </tbody>

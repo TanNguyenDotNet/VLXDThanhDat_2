@@ -76,6 +76,7 @@ namespace MVCProject.Controllers
             }
             InitItem(false);
             od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Catalogid);
+            Session[CommonsConst.SessionCart] = cartview;
             return View(od);
         }
         // GET: /Product/
@@ -145,8 +146,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 product = SetObj(_product);
-                product.PriceFix = string.IsNullOrEmpty(product.PriceFix.Value.ToString()) ? 0 : product.PriceFix;
-                product.ProductCost = string.IsNullOrEmpty(product.ProductCost.Value.ToString()) ? 0 : product.ProductCost;
+                product.PriceFix = product.PriceFix == null ? 0 : product.PriceFix;
+                product.ProductCost = product.ProductCost == null ? 0 : product.ProductCost;
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -205,8 +206,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 product = SetObj(_product);
-                product.PriceFix = string.IsNullOrEmpty(product.PriceFix.Value.ToString()) ? 0 : product.PriceFix;
-                product.ProductCost = string.IsNullOrEmpty(product.ProductCost.Value.ToString()) ? 0 : product.ProductCost;
+                product.PriceFix = product.PriceFix == null ? 0 : product.PriceFix;
+                product.ProductCost = product.ProductCost == null ? 0 : product.ProductCost;
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);

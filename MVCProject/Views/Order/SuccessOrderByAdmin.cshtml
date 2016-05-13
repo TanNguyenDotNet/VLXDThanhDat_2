@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Tạo đơn hàng thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Tạo thành công</h2>
+<h4>Mã đơn hàng @Request.QueryString["code"]</h4>
+
+<div>
+    @Html.ActionLink("Về danh sách", "Index")
+</div>

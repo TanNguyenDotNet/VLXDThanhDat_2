@@ -13,7 +13,7 @@
           <Property Name="DateCreate" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="DateShip" Type="varchar" MaxLength="20" />
           <Property Name="TotalWithoutTax" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Tax" Type="varchar" MaxLength="10" />
+          <Property Name="Tax" Type="varchar" MaxLength="64" />
           <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Discount" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="DeliveryMan" Type="nvarchar" MaxLength="50" />
@@ -35,7 +35,7 @@
           <Property Name="Amount" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="ReturnGood" Type="bit" Nullable="false" />
           <Property Name="DateOfOrder" Type="datetime" />
-          <Property Name="Tax" Type="varchar" MaxLength="10" />
+          <Property Name="Tax" Type="varchar" MaxLength="64" />
           <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Sale" Type="decimal" Precision="14" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
@@ -64,7 +64,7 @@
           <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DateShip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TotalWithoutTax" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
-          <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Tax" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="Discount" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="DeliveryMan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -86,7 +86,7 @@
           <Property Name="Amount" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ReturnGood" Type="Boolean" Nullable="false" />
           <Property Name="DateOfOrder" Type="DateTime" Precision="3" />
-          <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Tax" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
           <Property Name="Sale" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />

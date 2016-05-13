@@ -51,14 +51,15 @@ namespace MVCProject.Controllers
                 return RedirectToAction("Index", "Account");
             var cartview = (CartView)Session[CommonsConst.SessionCart];
             cartview.Ordersdetail.RemoveAll(a => a.IDProduct == int.Parse(id));//cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)));
+            Session[CommonsConst.SessionCart] = cartview;
             return RedirectToAction("CartView", "Cart");
         }
         public ActionResult AddItemToCart(string id, string quantity)
         {
-            if (Session[CommonsConst.SessionCart] == null)
-                return RedirectToAction("Index", "Account");
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
             var cartview = (CartView)Session[CommonsConst.SessionCart];
 
             if (cartview.Ordersdetail != null & cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).Count() >= 1)
@@ -68,21 +69,23 @@ namespace MVCProject.Controllers
             }
             else
                 cartview.Ordersdetail.Add(new OrdersDetail() { IDProduct = int.Parse(id), Amount = quantity == "" ? "1" : quantity });
+            Session[CommonsConst.SessionCart] = cartview;
             return RedirectToAction("Order", "Product");
         }
 
         public ActionResult CartView()
         {
-            if (Session[CommonsConst.SessionCart] == null)
-                return RedirectToAction("Index", "Account");
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
             var cartview = (CartView)Session[CommonsConst.SessionCart];
 
-            if(cartview.Ordersdetail!=null)
+            if (cartview.Ordersdetail != null)
             {
                 ProcessCartView(cartview);
             }
+            Session[CommonsConst.SessionCart] = cartview;
             return View(cartview);
         }
 
@@ -104,17 +107,23 @@ namespace MVCProject.Controllers
             string amount = "amount_", discount = "discount_";
             foreach (var item in cartView.Ordersdetail)
             {
-                item.Price = list.Where(a => a.ID == item.IDProduct).Select(b => b.Price).FirstOrDefault().Value;
-                item.Amount = Request.QueryString[amount + item.IDProduct] == null ? "1" : Request.QueryString[amount + item.IDProduct];
+                item.Discount = item.Discount == null ? 0 : item.Discount;
+                if (Request.QueryString[discount + item.IDProduct] != null && Request.QueryString[discount + item.IDProduct] != "")
+                    item.Discount = decimal.Parse(Request.QueryString[discount + item.IDProduct]);
+
+                item.Amount = string.IsNullOrEmpty(item.Amount) ? "0" : item.Amount;
+                if (Request.QueryString[amount + item.IDProduct] != null && Request.QueryString[amount + item.IDProduct] != "")
+                    item.Amount = Request.QueryString[amount + item.IDProduct] == null ? item.Amount : Request.QueryString[amount + item.IDProduct];
+
                 item.Tax = listTax.Where(a => a.ID == (byte)list.Where(b => b.ID == item.IDProduct).Select(b => b.TaxID).FirstOrDefault().Value).Select(c => c.TaxRate).FirstOrDefault().Value.ToString();
+                item.Price = list.Where(a => a.ID == item.IDProduct).Select(b => b.Price).FirstOrDefault().Value;
                 item.ProductCode = list.Where(a => a.ID == item.IDProduct).Select(b => b.ItemCode).FirstOrDefault().ToString();
                 item.ReturnGood = false;
                 item.RequestByUser = false;
                 item.DateOfOrder = DateTime.Now;
-                item.Discount = Request.QueryString[discount + item.IDProduct] == null ? 0 : decimal.Parse(Request.QueryString[discount + item.IDProduct]);
                 item.Sale = 0;
-                decimal TotalWithTax = (decimal.Parse(item.Amount) * item.Price) + (item.Price * (decimal.Parse(item.Tax) / 100));
-                item.Total = TotalWithTax - ((decimal)item.Discount / 100 * TotalWithTax);
+                decimal TotalWithTax = decimal.Parse(item.Amount) * ((item.Price * ((decimal)item.Discount / 100)) - item.Price + (item.Price * (decimal.Parse(item.Tax) / 100)));
+                item.Total = TotalWithTax;
                 cartView.Order.TotalWithoutTax += (decimal)item.Price * decimal.Parse(item.Amount);
                 cartView.Order.Total += item.Total;
                 cartView.Order.Discount += TotalWithTax - item.Total;

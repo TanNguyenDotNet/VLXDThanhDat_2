@@ -70,12 +70,12 @@ namespace MVCProject.Controllers
                     InvoiceParams.Contact = "_";
                     InvoiceParams.Discount = "_";
                     InvoiceParams.Name = u.DisplayName;
-                    InvoiceParams.Total = _Orders.TotalWithoutTax.ToString("n0");
-                    InvoiceParams.TotalVAT = _Orders.Total.ToString("n0");
+                    InvoiceParams.Total = Math.Round(_Orders.TotalWithoutTax).ToString("n0");
+                    InvoiceParams.TotalVAT = Math.Round(_Orders.Total).ToString("n0");
                     InvoiceParams.VAT = decimal.Parse(_Orders.Tax).ToString("n0");
                     InvoiceParams.InvoiceNum = _Orders.OrderCode;
                     InvoiceParams.InvoiceDate = DateTime.ParseExact(_Orders.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
-                    InvoiceParams.Payment = TotalPay(us.Id);
+                    InvoiceParams.Payment = Math.Round((decimal)TotalPay(us.Id));
                     InvoiceParams.Debt = (decimal)InvoiceParams.Payment - _Orders.Total;
                     InvoiceParams.AmountInWord = Common.ConvertNumToWord.So_chu(Int64.Parse(InvoiceParams.Payment.ToString().Replace(".00", "").Replace("-", "")));
 

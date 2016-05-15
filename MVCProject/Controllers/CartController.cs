@@ -125,12 +125,12 @@ namespace MVCProject.Controllers
                 item.Sale = 0;
                 decimal PriceDiscount = (item.Price - (item.Price * ((decimal)item.Discount / 100)));// gia da dc chiet khau
                 decimal TotalWithTax = decimal.Parse(item.Amount) * ((PriceDiscount) * (decimal.Parse(item.Tax) / 100) + PriceDiscount);
-                item.Total = TotalWithTax;
-                cartView.Order.TotalWithoutTax += (decimal)PriceDiscount * decimal.Parse(item.Amount);
+                item.Total = Math.Round(TotalWithTax);
+                cartView.Order.TotalWithoutTax += Math.Round((decimal)PriceDiscount * decimal.Parse(item.Amount));
                 cartView.Order.Total += item.Total;
-                cartView.Order.Discount += decimal.Parse(item.Amount) * (item.Price - PriceDiscount);
+                cartView.Order.Discount += Math.Round(decimal.Parse(item.Amount) * (item.Price - PriceDiscount));
                 tax += PriceDiscount * decimal.Parse(item.Tax) / 100 * decimal.Parse(item.Amount);
-                cartView.Order.Tax = tax.ToString();
+                cartView.Order.Tax = Math.Round(tax).ToString();
             }
             ViewData["Total"] = cartView.Order.Total.ToString("n0");
         }

@@ -68,7 +68,22 @@ namespace MVCProject.Controllers
             Response.Redirect("~/Product/Home");
             return null;
         }
+        public ActionResult OpenAddItemToOrder(string id)
+        {
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "28"))
+                return RedirectToAction("AccessDenied", "Account");
+            if (Session[CommonsConst.SessionOrder] != null)
+                Session.Remove(CommonsConst.SessionOrder);
 
+            var orderview = new OrderAddItemView();
+            orderview.Order = AOrders.Instance.GetOrderByCode(id);
+            orderview.ExceptIdProduct = AOrdersDetail.Instance.GetListByCode(id).Select(a => a.IDProduct).ToList();
+            orderview.Subid = AAppNetUserType.Instance.GetUserById(orderview.Order.IDAccount).LocationSubID.ToString();
+            Session[CommonsConst.SessionOrder] = orderview;
+            return View();
+        }
         public ActionResult OrderList()
         {
             if (!Request.IsAuthenticated)

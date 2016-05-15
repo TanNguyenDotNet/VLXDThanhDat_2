@@ -232,6 +232,7 @@
     <Compile Include="Models\AccessData\AAppNetUserType.cs" />
     <Compile Include="Models\AccessData\ALogSystem.cs" />
     <Compile Include="Models\AccessData\AOrders.cs" />
+    <Compile Include="Models\AccessData\AOrdersDetail.cs" />
     <Compile Include="Models\AccessData\AProductPriceLocationSub.cs" />
     <Compile Include="Models\AccessData\AReportSales.cs" />
     <Compile Include="Models\AccessData\ATax.cs" />
@@ -288,6 +289,7 @@
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelView\CartView.cs" />
+    <Compile Include="Models\ModelView\OrderAddItemView.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>retailEntities.tt</DependentUpon>
     </Compile>
@@ -566,6 +568,8 @@
     <Content Include="Views\Product\Order.cshtml" />
     <Content Include="Views\Cart\CartView.cshtml" />
     <Content Include="Views\Order\SuccessOrderByAdmin.cshtml" />
+    <Content Include="Views\OrderDetail\AddItemOrder.cshtml" />
+    <Content Include="Views\Product\ListProductOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

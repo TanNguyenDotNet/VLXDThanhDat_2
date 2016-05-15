@@ -64,6 +64,14 @@ namespace MVCProject.Models.AccessData
                 return list.ToList();
             }
         }
+        public AppNetUserType GetUserById(string id)
+        {
+            using(var model= Params.ModelaspnetEntities)
+            {
+                var user = model.AspNetUsers.Where(a => a.Id == id).FirstOrDefault();
+                return model.AppNetUserTypes.Where(a => a.UserOfName == user.UserName).FirstOrDefault();
+            }
+        }
         /// <summary>
         /// 
         /// </summary>

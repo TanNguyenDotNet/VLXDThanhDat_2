@@ -48,6 +48,13 @@ namespace MVCProject.Models.AccessData
                 return 0;
             }
         }
+        public Order GetOrderByCode(string code)
+        {
+            using(var model= Params.ModelRetail)
+            {
+                return model.Orders.Where(a => a.OrderCode == code).FirstOrDefault();
+            }
+        }
         public IEnumerable<Models.Order> GetList(string filter = "", string state = "", string datefrom = "", string dateto = "")
         {
             using (var model = Params.ModelRetail)

@@ -1,0 +1,136 @@
+﻿@model MVCProject.Models.ModelView.OrderAddItemView
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Chọn sản phẩm cho đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
+}
+<form action="~/Product/ListProductOrder" method="get" id="listproductorder">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="listproductorder.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Danh Mục</span>
+                        <select class="form-control" name="catid" id="catid" onchange="listproductorder.submit()">
+                            <option value="0">Chọn danh mục</option>
+                            @foreach (var i in listCat)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")            }>
+                                    @i.Title
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="listproductorder.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped wide-clickable">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên mặt hàng
+                        </th>
+                        <th>
+                            Mã hàng
+                        </th>
+                        <th>
+                            ĐVT
+                        </th>
+                        <th>
+                            Giá
+                        </th>
+                        <th>
+                            Số lượng
+                        </th>
+                        <th>
+                            Chiết khấu
+                        </th>
+                        <th>
+                            Thêm đơn hàng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Product.Count > 0)
+                    {
+                        foreach (var item in Model.Product)
+                        {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                    @item.ProductName
+                                </th>
+                                <td align="center">
+                                    @Html.DisplayFor(modelItem => item.ItemCode)
+                                </td>
+                                <td align="center">
+                                    @Html.DisplayFor(modelItem => item.UnitName)
+                                </td>
+                                <td align="right" id="price-@item.ID" data-id="@item.Price">
+                                    @item.Price.Value.ToString("n0")
+                                </td>
+                                <td align="center">
+                                    <input type="text" id="Amount-@item.ID" maxlength="6" class="quantity-box" value="1" />
+                                </td>
+                                <td align="center">
+                                    <input type="text" id="Discount-@item.ID" maxlength="2" class="quantity-box" value="0" />
+                                </td>
+                                <td align="center">
+                                    <a href="#" class="elem-demo-@item.ID" onclick="AddToCart(@item.ID)">
+                                        <img class='add-button-disable' src='~/Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model.Product, page => Url.Action("Order", new
+               {
+                   page,
+                   filter = @Request.QueryString["filter"],
+                   size = size,
+                   catid = catid
+               }))
+            </nav>
+        </div>
+    </section>
+    <script>
+        function AddToCart(code) {
+            var quantity = document.getElementById("Amount-" + code).value;
+            var discount = document.getElementById("Discount-" + code).value;
+            $(".elem-demo-" + code).notify("Đã thêm đơn hàng", "success");
+            window.location.href = "/OrderDetail/AddItemToOrder?id=" + code + "&quantity=" + quantity + "&discount=" + discount; //url.replace('_id_', code).replace('_q_', quantity).replace('_p_', price.dataset.id);
+        }
+    </script>
+</form>

@@ -1,20 +1,14 @@
 ﻿@model MVCProject.Models.OrderProductView
 @using PagedList.Mvc;
 @{
-    
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "20"; }
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
-    string[] cartCode = null;
     MVCProject.Models.ModelView.CartView cart = ((MVCProject.Models.ModelView.CartView)Session[MVCProject.Common.CommonsConst.SessionCart]);
     ViewBag.Title = "Chọn sản phẩm cho đơn hàng của " + cart.Username;
-    if (cart.Ordersdetail != null)
-    { cartCode = cart.Ordersdetail.Select(a => a.IDProduct.ToString()).ToArray(); }
 }
 <form action="~/Product/Order" method="get" id="productViewForm">
     <section class="content-header">
@@ -40,8 +34,8 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")          }>
-                                    @i.Title
+                                <option value="@i.ID" @if (i.ID.ToString() == catid){ @Html.Raw("selected='selected'")          }>
+                                @i.Title
                                 </option>
                             }
                         </select>
@@ -50,10 +44,10 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
-                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit()">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
                             }
                         </select>
                     </div>

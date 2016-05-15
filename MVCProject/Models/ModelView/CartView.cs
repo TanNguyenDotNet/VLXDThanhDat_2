@@ -33,13 +33,14 @@ namespace MVCProject.Models.ModelView
             get { return product; }
             set { product = value; }
         }
-        private string username;
+        
         private Order order = null;
         public Order Order
         {
             get { return order; }
             set { order = value; }
         }
+        private string username;
         public string Username
         {
             get { return username; }

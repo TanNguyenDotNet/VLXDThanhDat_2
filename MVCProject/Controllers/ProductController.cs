@@ -79,6 +79,37 @@ namespace MVCProject.Controllers
             Session[CommonsConst.SessionCart] = cartview;
             return View(od);
         }
+        public ActionResult ListProductOrder(string page = "", string size = "", string filter = "", string order = "", string catid = "")
+        {
+            if (Session[CommonsConst.SessionOrder] == null)
+                return RedirectToAction("Order","Index");
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), ""))
+                return RedirectToAction("AccessDenied", "Account");
+
+            var orderadditemview = (OrderAddItemView)Session[CommonsConst.SessionOrder];
+            if (page != "" || size != "" || filter != "" || catid != "")
+            {
+                orderadditemview.Page = page;
+                orderadditemview.Catalogid = catid;
+                orderadditemview.Size = size;
+                orderadditemview.Filter = filter;
+                orderadditemview.OrderAsc = order;
+            }
+
+            if (orderadditemview.Product == null)
+                orderadditemview.Product = AProductPriceLocationSub.Instance.GetList(orderadditemview.Page, orderadditemview.Size, orderadditemview.Filter, orderadditemview.OrderAsc, orderadditemview.Catalogid, orderadditemview.Subid);
+            if (orderadditemview.ExceptIdProduct != null)
+            {
+                int _page = page == "" ? 1 : int.Parse(page);
+                int _size = size == "" ? 20 : int.Parse(size);
+                orderadditemview.Product = orderadditemview.Product.Where(a => orderadditemview.ExceptIdProduct.Contains(a.ID)).ToPagedList(_page, _size);
+            }
+            InitItem(false);
+            Session[CommonsConst.SessionOrder] = orderadditemview;
+            return View(orderadditemview);
+        }
         // GET: /Product/
         public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {

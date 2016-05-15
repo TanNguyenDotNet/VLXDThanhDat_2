@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using MVCProject.Common;
 using MVCProject.Models;
+using MVCProject.Models.ModelView;
 
 namespace MVCProject.Controllers
 {
@@ -97,6 +98,24 @@ namespace MVCProject.Controllers
 
             GetCart();
             return null;
+        }
+
+        public ActionResult AddItemToOrder()
+        {
+            var item = (OrderAddItemView)Session[CommonsConst.SessionOrder];
+            var od = new OrdersDetail();
+            od.IDProduct = int.Parse(Request.QueryString["id"].ToString());
+            od.Amount = Request.QueryString["quantity"].ToString();
+            od.Discount = Request.QueryString["discount"] == "" ? 0 : decimal.Parse(Request.QueryString["discount"]);
+            od.DateOfOrder = DateTime.Now;
+            od.ProductCode = item.Product.Where(a => a.ID == od.IDProduct).Select(b => b.ItemCode).FirstOrDefault();
+            od.RequestByUser = false;
+            db.OrdersDetails.Add(od);
+            db.SaveChanges();
+            Order _order = RefeshOrder(db.Orders.Where(a => a.OrderCode == od.OrderCode).FirstOrDefault());
+            db.Entry(_order).State = EntityState.Modified;
+            db.SaveChanges();
+            return View();
         }
 
         public ActionResult AddOrderDetail(string code, string subid)
@@ -535,6 +554,9 @@ namespace MVCProject.Controllers
                 o.Total += item.Total;
                 o.Discount += (item.Price - PriceDiscount) * decimal.Parse(item.Amount);
             }
+            o.TotalWithoutTax = Math.Round(o.TotalWithoutTax);
+            o.Total = Math.Round(o.Total);
+            o.Discount = Math.Round(o.Discount);
             o.Tax = (o.Total - o.TotalWithoutTax).ToString();
             return o;
         }

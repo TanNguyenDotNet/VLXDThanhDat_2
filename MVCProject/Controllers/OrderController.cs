@@ -68,7 +68,7 @@ namespace MVCProject.Controllers
             Response.Redirect("~/Product/Home");
             return null;
         }
-        public ActionResult OpenAddItemToOrder(string id)
+        public ActionResult OpenAddItemToOrder()
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -78,11 +78,11 @@ namespace MVCProject.Controllers
                 Session.Remove(CommonsConst.SessionOrder);
 
             var orderview = new OrderAddItemView();
-            orderview.Order = AOrders.Instance.GetOrderByCode(id);
-            orderview.ExceptIdProduct = AOrdersDetail.Instance.GetListByCode(id).Select(a => a.IDProduct).ToList();
-            orderview.Subid = AAppNetUserType.Instance.GetUserById(orderview.Order.IDAccount).LocationSubID.ToString();
+            orderview.Order = AOrders.Instance.GetOrderByCode(Request.QueryString["code"]);
+            orderview.ExceptIdProduct = AOrdersDetail.Instance.GetListByCode(Request.QueryString["code"]).Select(a => a.IDProduct).ToList();
+            orderview.Subid = Request.QueryString["subid"];
             Session[CommonsConst.SessionOrder] = orderview;
-            return View();
+            return Redirect("~/Product/ListProductOrder");
         }
         public ActionResult OrderList()
         {

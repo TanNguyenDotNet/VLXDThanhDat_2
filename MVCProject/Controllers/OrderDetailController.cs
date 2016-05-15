@@ -74,6 +74,8 @@ namespace MVCProject.Controllers
 
         public ActionResult AdmView()
         {
+            if (Session[CommonsConst.SessionOrder] != null)
+                Session.Remove(CommonsConst.SessionOrder);
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "15"))
@@ -103,19 +105,27 @@ namespace MVCProject.Controllers
         public ActionResult AddItemToOrder()
         {
             var item = (OrderAddItemView)Session[CommonsConst.SessionOrder];
+            var product = item.Product.Where(a => a.ID == int.Parse(Request.QueryString["id"].ToString())).FirstOrDefault();
             var od = new OrdersDetail();
-            od.IDProduct = int.Parse(Request.QueryString["id"].ToString());
-            od.Amount = Request.QueryString["quantity"].ToString();
+            od.IDProduct = product.ID;
+            od.Amount = Request.QueryString["quantity"] == "" ? "0" : Request.QueryString["quantity"].ToString();
             od.Discount = Request.QueryString["discount"] == "" ? 0 : decimal.Parse(Request.QueryString["discount"]);
+            od.Tax = _db.Taxes.Where(a => a.ID == product.TaxID).FirstOrDefault().TaxRate.ToString();
             od.DateOfOrder = DateTime.Now;
-            od.ProductCode = item.Product.Where(a => a.ID == od.IDProduct).Select(b => b.ItemCode).FirstOrDefault();
+            od.ProductCode = product.ItemCode;
             od.RequestByUser = false;
+            od.OrderCode = item.Order.OrderCode;
+            od.Price = (decimal)product.Price;
+            decimal priceDiscount = (decimal)(product.Price - (product.Price * (od.Discount / 100)));
+            od.Total = Math.Round(((priceDiscount * (decimal.Parse(od.Tax) / 100)) + priceDiscount) * decimal.Parse(od.Amount));
             db.OrdersDetails.Add(od);
             db.SaveChanges();
             Order _order = RefeshOrder(db.Orders.Where(a => a.OrderCode == od.OrderCode).FirstOrDefault());
             db.Entry(_order).State = EntityState.Modified;
             db.SaveChanges();
-            return View();
+            item.ExceptIdProduct.Add(od.IDProduct);
+            Session[CommonsConst.SessionOrder] = item;
+            return Redirect("~/Product/ListProductOrder");
         }
 
         public ActionResult AddOrderDetail(string code, string subid)
@@ -547,9 +557,11 @@ namespace MVCProject.Controllers
             o.TotalWithoutTax = 0;
             o.Total = 0;
             decimal PriceDiscount = 0;
+            decimal discount = 0;
             foreach (var item in od)
             {
-                PriceDiscount = (item.Price - (item.Price * ((decimal)item.Discount / 100)));
+                discount = (decimal)(item.Discount == null ? 0 : item.Discount);
+                PriceDiscount = (item.Price - (item.Price * discount / 100));
                 o.TotalWithoutTax += (decimal)(decimal.Parse(item.Amount) * PriceDiscount);
                 o.Total += item.Total;
                 o.Discount += (item.Price - PriceDiscount) * decimal.Parse(item.Amount);

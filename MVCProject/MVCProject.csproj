@@ -568,7 +568,6 @@
     <Content Include="Views\Product\Order.cshtml" />
     <Content Include="Views\Cart\CartView.cshtml" />
     <Content Include="Views\Order\SuccessOrderByAdmin.cshtml" />
-    <Content Include="Views\OrderDetail\AddItemOrder.cshtml" />
     <Content Include="Views\Product\ListProductOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>

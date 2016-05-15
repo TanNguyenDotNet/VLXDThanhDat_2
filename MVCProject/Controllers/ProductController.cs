@@ -85,7 +85,7 @@ namespace MVCProject.Controllers
                 return RedirectToAction("Order","Index");
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), ""))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "28"))
                 return RedirectToAction("AccessDenied", "Account");
 
             var orderadditemview = (OrderAddItemView)Session[CommonsConst.SessionOrder];
@@ -98,13 +98,13 @@ namespace MVCProject.Controllers
                 orderadditemview.OrderAsc = order;
             }
 
-            if (orderadditemview.Product == null)
-                orderadditemview.Product = AProductPriceLocationSub.Instance.GetList(orderadditemview.Page, orderadditemview.Size, orderadditemview.Filter, orderadditemview.OrderAsc, orderadditemview.Catalogid, orderadditemview.Subid);
+            orderadditemview.Product = AProductPriceLocationSub.Instance.GetList(orderadditemview.Page, orderadditemview.Size, orderadditemview.Filter, orderadditemview.OrderAsc, orderadditemview.Catalogid, orderadditemview.Subid);
+            
             if (orderadditemview.ExceptIdProduct != null)
             {
                 int _page = page == "" ? 1 : int.Parse(page);
                 int _size = size == "" ? 20 : int.Parse(size);
-                orderadditemview.Product = orderadditemview.Product.Where(a => orderadditemview.ExceptIdProduct.Contains(a.ID)).ToPagedList(_page, _size);
+                orderadditemview.Product = orderadditemview.Product.Where(a => !orderadditemview.ExceptIdProduct.Contains(a.ID)).ToPagedList(_page, _size);
             }
             InitItem(false);
             Session[CommonsConst.SessionOrder] = orderadditemview;

@@ -129,7 +129,7 @@
                         </tr>
                     }
                     <tr>
-                        <td colspan="6" align="right">@Html.ActionLink("Thêm sản phẩm", "AddOrderDetail", new { code = @ViewData["OrderCode"], subid = u.LocationSubID })</td>
+                        <td colspan="6" align="right"><a href="/Order/OpenAddItemToOrder?code=@ViewData["OrderCode"]&subid=@u.LocationSubID">Thêm sản phẩm</a></td>
                     </tr>
                 </tbody>
             }

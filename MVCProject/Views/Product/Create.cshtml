@@ -65,6 +65,14 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="SupplierID">Nhà phân phối:</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.SupplierID, (IEnumerable<SelectListItem>)ViewBag.SupplierList,
+                        "Chọn nhà phân phối", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SupplierID)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Show">Hiển thị</label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.Show)

@@ -26,11 +26,13 @@ namespace MVCProject.Models.AccessData
         }
         private AProductPriceLocationSub()
         { }
-        public IPagedList<Product> GetList(string page = "", string size = "", string filter = "", string order = "", string catid = "", string subid = "")
+        public IPagedList<Product> GetList(string page = "", string size = "", string filter = "", string order = "", string catid = "", string subid = "", List<long> ExceptIdProduct = null)
         {
             using (var model = Params.ModelaspnetEntities)
             {
                 var list = from l in model.Products where l.IsDel == false && l.Show == true select l;
+                if (ExceptIdProduct != null)
+                    list = list.Where(a => !ExceptIdProduct.Contains(a.ID));
                 int _subid = string.IsNullOrEmpty(subid) ? 0 : int.Parse(subid);
                 if (!string.IsNullOrEmpty(filter))
                     list = list.Where(a => a.ProductName.Contains(filter));

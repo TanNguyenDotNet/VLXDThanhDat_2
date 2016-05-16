@@ -80,16 +80,19 @@
                     <th>
                         Sản phẩm
                     </th>
-                    <th width="9%">
+                    <th width="15%">
                         Giá
                     </th>
                     <th width="9%">
                         Số lượng
                     </th>
                     <th width="9%">
-                        Thuế suất
+                        Chiết khấu
                     </th>
                     <th width="9%">
+                        Thuế suất
+                    </th>
+                    <th width="15%">
                         Thành tiền
                     </th>
                     <th width="9%">
@@ -116,7 +119,9 @@
                             <td align="right">
                                 @item.Amount
                             </td>
-
+                            <td>
+                                @item.Discount
+                            </td>
                             <td align="right">
                                 @Html.DisplayFor(modelItem => item.Tax)%
                             </td>
@@ -129,7 +134,7 @@
                         </tr>
                     }
                     <tr>
-                        <td colspan="6" align="right"><a href="/Order/OpenAddItemToOrder?code=@ViewData["OrderCode"]&subid=@u.LocationSubID">Thêm sản phẩm</a></td>
+                        <td colspan="7" align="right"><a href="/Order/OpenAddItemToOrder?code=@ViewData["OrderCode"]&subid=@u.LocationSubID">Thêm sản phẩm</a></td>
                     </tr>
                 </tbody>
             }

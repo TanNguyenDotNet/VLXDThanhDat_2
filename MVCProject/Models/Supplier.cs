@@ -21,5 +21,7 @@ namespace MVCProject.Models
         public string TaxCode { get; set; }
         public string AccountBank { get; set; }
         public string NameBank { get; set; }
+        public bool IsDel { get; set; }
+        public bool IsShow { get; set; }
     }
 }

@@ -98,7 +98,7 @@
             var discount = parseFloat(f.Discount.value);
 
             dg = dg - (discount / 100) * dg;
-            tt = sl * (dg + ((thue / 100) + dg));
+            tt = sl * (dg + (dg * (thue / 100)));
             f.Total.value = tt;
             f.TotalModel.value = accounting.formatMoney(f.Total.value, "", 0);
         }

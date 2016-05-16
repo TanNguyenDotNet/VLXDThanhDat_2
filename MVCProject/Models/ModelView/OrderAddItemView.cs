@@ -66,7 +66,13 @@ namespace MVCProject.Models.ModelView
             get { return size; }
             set { size = value; }
         }
+        private string supplier;
 
+        public string Supplier
+        {
+            get { return supplier; }
+            set { supplier = value; }
+        }
         private string catalogid;
         public string Catalogid
         {

@@ -44,9 +44,9 @@ namespace MVCProject.Models
         public virtual DbSet<ProductPrice> ProductPrices { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
         public virtual DbSet<PromotionType> PromotionTypes { get; set; }
-        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Warranty> Warranties { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
     }
 }

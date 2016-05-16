@@ -20,6 +20,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
             return View(db.Suppliers.ToList());
         }
 
@@ -28,6 +30,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -45,6 +49,10 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
+            var item = new Supplier();
+            item.IsShow = true;
             return View();
         }
 
@@ -53,12 +61,17 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,Name,Address,Phone,TaxCode,AccountBank,NameBank")] Supplier supplier)
+        public ActionResult Create([Bind(Include="ID,Name,Address,Phone,TaxCode,AccountBank,NameBank,IsDel,IsShow")] Supplier supplier)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             if (ModelState.IsValid)
             {
+                supplier.Name = supplier.Name == "" ? "Chưa nhập Tên" : supplier.Name;
+                supplier.IsDel = false;
+                supplier.IsShow = true;
                 db.Suppliers.Add(supplier);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -72,6 +85,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -89,10 +104,12 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,Name,Address,Phone,TaxCode,AccountBank,NameBank")] Supplier supplier)
+        public ActionResult Edit([Bind(Include = "ID,Name,Address,Phone,TaxCode,AccountBank,NameBank,IsDel,IsShow")] Supplier supplier)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             if (ModelState.IsValid)
             {
                 db.Entry(supplier).State = EntityState.Modified;
@@ -107,6 +124,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -126,8 +145,11 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
             Supplier supplier = db.Suppliers.Find(id);
-            db.Suppliers.Remove(supplier);
+            supplier.IsDel = true;
+            db.Entry(supplier).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

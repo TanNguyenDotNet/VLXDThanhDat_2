@@ -118,7 +118,7 @@
                 </tbody>
             </table>
             <nav style="text-align:right">
-                @Html.PagedListPager(Model.Product, page => Url.Action("Order", new
+                @Html.PagedListPager(Model.Product, page => Url.Action("ListProductOrder", new
                {
                    page,
                    filter = @Request.QueryString["filter"],

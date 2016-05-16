@@ -281,6 +281,8 @@
           <Property Name="TaxCode" Type="varchar" MaxLength="20" />
           <Property Name="AccountBank" Type="varchar" MaxLength="50" />
           <Property Name="NameBank" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+          <Property Name="IsShow" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Tax">
           <Key>
@@ -307,7 +309,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__5CD6CB2B">
+        <Association Name="FK__AspNetUse__RoleI__49C3F6B7">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -321,7 +323,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___5AEE82B9">
+        <Association Name="FK__AspNetUse__User___47DBAE45">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -335,7 +337,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
+        <Association Name="FK__AspNetUse__UserI__48CFD27E">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -349,7 +351,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__5DCAEF64">
+        <Association Name="FK__AspNetUse__UserI__4AB81AF0">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -388,19 +390,19 @@
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__5CD6CB2B" Association="Self.FK__AspNetUse__RoleI__5CD6CB2B">
+          <AssociationSet Name="FK__AspNetUse__RoleI__49C3F6B7" Association="Self.FK__AspNetUse__RoleI__49C3F6B7">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Self.FK__AspNetUse__User___5AEE82B9">
+          <AssociationSet Name="FK__AspNetUse__User___47DBAE45" Association="Self.FK__AspNetUse__User___47DBAE45">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Self.FK__AspNetUse__UserI__5BE2A6F2">
+          <AssociationSet Name="FK__AspNetUse__UserI__48CFD27E" Association="Self.FK__AspNetUse__UserI__48CFD27E">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__5DCAEF64" Association="Self.FK__AspNetUse__UserI__5DCAEF64">
+          <AssociationSet Name="FK__AspNetUse__UserI__4AB81AF0" Association="Self.FK__AspNetUse__UserI__4AB81AF0">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -429,7 +431,6 @@
           <EntitySet Name="ProductPrices" EntityType="Models.ProductPrice" />
           <EntitySet Name="Promotions" EntityType="Models.Promotion" />
           <EntitySet Name="PromotionTypes" EntityType="Models.PromotionType" />
-          <EntitySet Name="Suppliers" EntityType="Models.Supplier" />
           <EntitySet Name="Taxes" EntityType="Models.Tax" />
           <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
           <EntitySet Name="Warranties" EntityType="Models.Warranty" />
@@ -445,6 +446,7 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Suppliers" EntityType="Models.Supplier" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -709,18 +711,6 @@
           <Property Name="ExRate" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
-        <EntityType Name="Supplier">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Tax">
           <Key>
             <PropertyRef Name="ID" />
@@ -778,6 +768,20 @@
           <End Type="Models.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <Property Name="IsShow" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1057,19 +1061,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Suppliers">
-            <EntityTypeMapping TypeName="Models.Supplier">
-              <MappingFragment StoreEntitySet="Supplier">
-                <ScalarProperty Name="NameBank" ColumnName="NameBank" />
-                <ScalarProperty Name="AccountBank" ColumnName="AccountBank" />
-                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Taxes">
             <EntityTypeMapping TypeName="Models.Tax">
               <MappingFragment StoreEntitySet="Tax">
@@ -1105,6 +1096,21 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="Models.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="NameBank" ColumnName="NameBank" />
+                <ScalarProperty Name="AccountBank" ColumnName="AccountBank" />
+                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

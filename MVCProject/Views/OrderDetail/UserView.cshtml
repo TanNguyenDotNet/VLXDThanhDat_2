@@ -44,6 +44,9 @@
                     Số lượng
                 </th>
                 <th width="9%">
+                    Chiết khấu
+                </th>
+                <th width="9%">
                     Thuế suất
                 </th>
                 <th width="9%">
@@ -70,6 +73,9 @@
                         </td>
                         <td align="right">
                             @item.Amount
+                        </td>
+                        <td>
+                            @item.Discount.Value.ToString("n0")
                         </td>
                         <td align="right">
                             @Html.DisplayFor(modelItem => item.Tax)%

@@ -3,62 +3,64 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TaxCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountBank)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NameBank)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TaxCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountBank)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NameBank)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+<section>
+    <h2>
+        Danh mục nhà cung cấp
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("3"))
+        {
+            <a href="../Supplier/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        }
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #3c8dbc; color:#fff">
+                    <th>Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>MST</th>
+                    <th>Ngân hàng</th>
+                    <th>STK</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th>
+                            @if (roles.Contains("4"))
+                            {
+                                @Html.ActionLink(item.Name, "Edit", new { id = item.ID })
+                            }
+                            else
+                            {
+                                @item.Name
+                            }
+                        </th>
+                        <td>
+                            @item.Address
+                        </td>
+                        <td>
+                            @item.Phone
+                        </td>
+                        <td>
+                            @item.TaxCode
+                        </td>
+                        <td>
+                            @item.NameBank
+                        </td>
+                        <td>
+                            @item.AccountBank
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

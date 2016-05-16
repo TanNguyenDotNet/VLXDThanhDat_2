@@ -24,13 +24,13 @@
         <EntityTypeShape EntityType="Models.ProductPrice" Width="1.5" PointX="0.75" PointY="12.75" />
         <EntityTypeShape EntityType="Models.Promotion" Width="1.5" PointX="12.75" PointY="3.75" />
         <EntityTypeShape EntityType="Models.PromotionType" Width="1.5" PointX="12.75" PointY="8.75" />
-        <EntityTypeShape EntityType="Models.Supplier" Width="1.5" PointX="12.75" PointY="11.75" />
         <EntityTypeShape EntityType="Models.Tax" Width="1.5" PointX="14.75" PointY="0.75" />
         <EntityTypeShape EntityType="Models.UserRole" Width="1.5" PointX="2.75" PointY="14.75" />
         <EntityTypeShape EntityType="Models.Warranty" Width="1.5" PointX="14.75" PointY="3.75" />
         <AssociationConnector Association="Models.FK__AspNetUse__User___5AEE82B9" />
         <AssociationConnector Association="Models.FK__AspNetUse__UserI__5BE2A6F2" />
         <AssociationConnector Association="Models.AspNetUserRoles" />
+        <EntityTypeShape EntityType="Models.Supplier" Width="1.5" PointX="13.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

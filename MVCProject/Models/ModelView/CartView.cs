@@ -74,9 +74,14 @@ namespace MVCProject.Models.ModelView
             get { return catalogid; }
             set { catalogid = value; }
         }
+        private string supplier;
 
+        public string Supplier
+        {
+            get { return supplier; }
+            set { supplier = value; }
+        }
         private string _order;
-
         public string OrderAsc
         {
             get { return _order; }

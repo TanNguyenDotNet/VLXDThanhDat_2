@@ -193,7 +193,7 @@ namespace MVCProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
-            "ProductCode,RequestByUser,OrderCode,Discount")] OrdersDetail od)
+            "ProductCode,RequestByUser,OrderCode,Discount,Sale")] OrdersDetail od)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -556,6 +556,7 @@ namespace MVCProject.Controllers
                 return o;
             o.TotalWithoutTax = 0;
             o.Total = 0;
+            o.Discount = 0;
             decimal PriceDiscount = 0;
             decimal discount = 0;
             foreach (var item in od)

@@ -24,6 +24,7 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <div class="input-group">
+                        <input type="text" name="filterName" id="filterName" class="form-control" placeholder="Tìm tên" value="@Request.QueryString["filterName"]">
                         <span class="input-group-btn">
                             <button type="submit" onclick="RevenueOfQuarter.submit();" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -35,7 +36,7 @@
                         <select class="form-control" name="quarter" id="quarter">
                             @for (int s = 1; s <= 4; s += 1)
                             {
-                                <option value="@s" @if (quarter == s.ToString()) { @Html.Raw("selected='selected'")               }>@s</option>
+                                <option value="@s" @if (quarter == s.ToString()) { @Html.Raw("selected='selected'")                }>@s</option>
                             }
                         </select>
                     </div>
@@ -46,7 +47,7 @@
                         <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
-                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")               }>@s</option>
+                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")                }>@s</option>
                             }
                         </select>
                     </div>
@@ -57,7 +58,7 @@
                         <select class="form-control" name="size" id="size" onchange="RevenueOfQuarter.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
                             }
                         </select>
                     </div>
@@ -99,7 +100,10 @@
                 @Html.PagedListPager(Model, page => Url.Action("Index", new
                            {
                                page,
-                               size = size
+                               size = size,
+                               quarter = quarter,
+                               year = year,
+                               filter = Request.QueryString["filterName"]
                            }))
             </nav>
         </div>

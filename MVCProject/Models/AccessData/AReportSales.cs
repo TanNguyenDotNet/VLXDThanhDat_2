@@ -33,7 +33,7 @@ namespace MVCProject.Models.AccessData
                 return new List<RevenueInvoice>();
             }
         }
-        public static IEnumerable<Models.RevenueOfMonth> GetRevenueOfMonth(string state = "", string month = "", string year = "")
+        public static IEnumerable<Models.RevenueOfMonth> GetRevenueOfMonth(string state = "", string month = "", string year = "", string filterName = "")
         {
             using (var model = Params.ModelaspnetEntities)
             {
@@ -43,11 +43,14 @@ namespace MVCProject.Models.AccessData
                 var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
+                    var listUser = from l in model.AppNetUserTypes select l;
+                    if (!string.IsNullOrEmpty(filterName))
+                        listUser = listUser.Where(a => a.UserOfName.Contains(filterName) || a.DisplayName.Contains(filterName));
                     var listRpt = from od in listOrder.ToList()
                                   join
                                       u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
                                   join
-                                  a in model.AppNetUserTypes.ToList() on u.UserName equals a.UserOfName
+                                  a in listUser.ToList() on u.UserName equals a.UserOfName
                                   join
                                   l in model.LocationSubs.ToList() on a.LocationSubID equals l.ID
                                   group od by new
@@ -68,7 +71,7 @@ namespace MVCProject.Models.AccessData
                 return new List<RevenueOfMonth>();
             }
         }
-        public static IEnumerable<Models.RevenueOfYear> GetRevenueOfYear(string state = "", string year = "")
+        public static IEnumerable<Models.RevenueOfYear> GetRevenueOfYear(string state = "", string year = "", string filterName = "")
         {
             using (var model = Params.ModelaspnetEntities)
             {
@@ -78,11 +81,14 @@ namespace MVCProject.Models.AccessData
                 var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
+                    var listUser = from l in model.AppNetUserTypes select l;
+                    if (!string.IsNullOrEmpty(filterName))
+                        listUser = listUser.Where(a => a.UserOfName.Contains(filterName) || a.DisplayName.Contains(filterName));
                     var listRpt = from od in listOrder.ToList()
                                   join
                                       u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
                                   join
-                                  a in model.AppNetUserTypes.ToList() on u.UserName equals a.UserOfName
+                                  a in listUser.ToList() on u.UserName equals a.UserOfName
                                   join
                                   l in model.LocationSubs.ToList() on a.LocationSubID equals l.ID
                                   group od by new
@@ -103,7 +109,7 @@ namespace MVCProject.Models.AccessData
                 return new List<RevenueOfYear>();
             }
         }
-        public static IEnumerable<Models.RevenueOfQuater> RevenueOfQuarter(string state = "", string quarter = "", string year = "")
+        public static IEnumerable<Models.RevenueOfQuater> RevenueOfQuarter(string state = "", string quarter = "", string year = "", string filterName = "")
         {
             using (var model = Params.ModelaspnetEntities)
             {
@@ -113,11 +119,14 @@ namespace MVCProject.Models.AccessData
                 var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
+                    var listUser = from l in model.AppNetUserTypes select l;
+                    if (!string.IsNullOrEmpty(filterName))
+                        listUser = listUser.Where(a => a.UserOfName.Contains(filterName) || a.DisplayName.Contains(filterName));
                     var listRpt = from od in listOrder.ToList()
                                   join
                                       u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
                                   join
-                                  a in model.AppNetUserTypes.ToList() on u.UserName equals a.UserOfName
+                                  a in listUser.ToList() on u.UserName equals a.UserOfName
                                   join
                                   l in model.LocationSubs.ToList() on a.LocationSubID equals l.ID
                                   group od by new
@@ -180,10 +189,10 @@ namespace MVCProject.Models.AccessData
                               Date = g.Key.Date,
                               Total = g.Sum(a => a.Total)
                           };
-                return listPay.OrderBy(a=>a.Date);
+                return listPay.OrderBy(a => a.Date);
             }
         }
-        public static IEnumerable<PaymentOfStore> GetPaymentOfStore(string dateFrom = "", string dateTo = "")
+        public static IEnumerable<PaymentOfStore> GetPaymentOfStore(string dateFrom = "", string dateTo = "", string filterName = "")
         {
             using (var model = Params.ModelaspnetEntities)
             {
@@ -206,9 +215,11 @@ namespace MVCProject.Models.AccessData
                     dateTo = UtilDatetime.ToTime(dateTo).ToString("yyyyMMddHHmmss");
                     list = list.Where(a => String.Compare(a.PayDate, dateTo) <= 0);
                 }
-
+                var listUser = from l in model.AspNetUsers select l;
+                if (!string.IsNullOrEmpty(filterName))
+                    listUser = listUser.Where(a => a.UserName.Contains(filterName));
                 var listPay = from p in list.ToList()
-                              join a in model.AspNetUsers on p.IDAccount equals a.Id
+                              join a in listUser on p.IDAccount equals a.Id
                               group p by new
                               {
                                   p.IDAccount,

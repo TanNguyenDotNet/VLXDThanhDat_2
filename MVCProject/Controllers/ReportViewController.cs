@@ -51,17 +51,17 @@ namespace MVCProject.Controllers
                     var u = _modelAsp.AppNetUserTypes.Find(enu);
                     var l = _modelAsp.Locations.Find(u.LocationID);
                     var query = (from a in _OrdersDetails
-                                 join b in _modelAsp.Products.ToList() on a.ProductCode equals b.ItemCode
+                                 join b in _modelAsp.Products.ToList() on a.IDProduct equals b.ID
                                  select new
                                  {
-                                     _ProductCode = a.ProductCode,
+                                     _ProductCode = a.IDProduct.ToString("000000"),
                                      _Amount = a.Amount,
                                      _Price = a.Price,
                                      _Tax = a.Tax,
                                      _Total = a.Total,
                                      _ProductName = b.ProductName,
                                      _Unit = b.UnitName,
-                                     _Discount = a.Discount
+                                     _Discount = a.Discount == null ? "0": a.Discount.Value.ToString("n0")
                                  }).ToList();
 
                     InvoiceParams = new InvoiceDetailParams();

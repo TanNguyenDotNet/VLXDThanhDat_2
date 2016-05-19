@@ -34,7 +34,7 @@ namespace MVCProject.Controllers
         {
             return File((byte[])TempData["bytePDF"], "application/pdf");
         }
-        public ActionResult InvoiceDetail()
+        public ActionResult InvoiceDetails()
         {
             dynamic model = new ExpandoObject();
 

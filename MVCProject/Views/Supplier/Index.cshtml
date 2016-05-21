@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MVCProject.Models.Supplier>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Supplier>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh mục nhà cung cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
@@ -24,9 +24,19 @@
                     <div class="input-group">
                         <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
                         <span class="input-group-btn">
-                            <button type="submit" onclick="supplierFormSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                            <!-- <input type="button" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat" value="Tìm Kiếm"><i class="fa fa-search"></i></input>-->
+                            <button type="submit" onclick="supplierForm.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="supplierForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (Request.QueryString["size"] == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -76,6 +86,15 @@
                     }
                 </tbody>
             </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                   {
+                       page,
+                       order = ViewBag.Order,
+                       filter = ViewBag.Filter,
+                       size = Request.QueryString["size"]
+                   }))
+            </nav>
         </div>
     </section>
 </form>

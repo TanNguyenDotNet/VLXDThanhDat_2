@@ -34,8 +34,28 @@ namespace MVCProject.Models.AccessData
                 if (ExceptIdProduct != null)
                     list = list.Where(a => !ExceptIdProduct.Contains(a.ID));
                 int _subid = string.IsNullOrEmpty(subid) ? 0 : int.Parse(subid);
+                var _list = new List<Product>();
+                string[] _filter;
                 if (!string.IsNullOrEmpty(filter))
-                    list = list.Where(a => a.ProductName.Contains(filter));
+                {
+                    _filter = filter.Split('+');
+                    if (_filter.Length > 1)
+                    {
+                        filter = _filter[0].Trim();
+                        list = list.Where(a => a.ProductName.Contains(filter));
+                        _list = model.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", _filter[1].ToString().Trim())).ToList();
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(filter))
+                        {
+                            filter = filter.Trim();
+                            list = list.Where(a => a.ProductName.Contains(filter));
+                            _list = model.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", filter)).ToList();
+                        }
+                    }
+                }
+              
                 if (!string.IsNullOrEmpty(supplier))
                 { int sup = int.Parse(supplier); list = list.Where(a => a.SupplierID == sup); }
                 if (!string.IsNullOrEmpty(catid) && catid != "0")
@@ -58,8 +78,10 @@ namespace MVCProject.Models.AccessData
 
                 int _page = page == "" ? 1 : int.Parse(page);
                 int _size = size == "" ? 20 : int.Parse(size);
-
-                return list.OrderBy(a => a.ProductName).ToPagedList(_page, _size);
+                var listMain = list.ToList();
+                if (_list.Count > 0)
+                { listMain.AddRange(_list); }
+                return listMain.Distinct().OrderBy(a => a.ProductName).ToPagedList(_page, _size);
             }
         }
         public List<Product> GetList(List<long> listId, string subid = "")

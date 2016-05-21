@@ -47,14 +47,29 @@ namespace MVCProject.Controllers
         IEnumerable<Product> GetList(string filter, string order, string cid)
         {
             var list = from p in modelAspnet.Products
-
-                       //join pp in modelAspnet.ProductPrices on p.ID equals pp.ProductID into pp_join
-                       //from pp in pp_join.DefaultIfEmpty()
-                       //where
-                       //  pp.ID == null && pp.LocationID != _subid //Left join
-                       select p;//Lay danh sach khong bao gom gia chiet khau cua vung
+                       select p;
+            var _list = new List<Product>();
+            string[] _filter;
             if (!string.IsNullOrEmpty(filter))
-                list = list.Where(a => a.ProductName.Contains(filter));
+            {
+                _filter = filter.Split('+');
+                if (_filter.Length > 1)
+                {
+                    filter = _filter[0].Trim();
+                    list = list.Where(a => a.ProductName.Contains(filter));
+                    _list = modelAspnet.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", _filter[1].ToString().Trim())).ToList();
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(filter))
+                    {
+                        filter = filter.Trim();
+                        list = list.Where(a => a.ProductName.Contains(filter));
+                        _list = modelAspnet.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", filter)).ToList();
+                    }
+                }
+            }
+           
             if (cid != "0")
             { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
             list = list.Where(a => a.IsDel == false);
@@ -62,7 +77,10 @@ namespace MVCProject.Controllers
 
             ViewBag.Order = order ?? "";
             ViewBag.Filter = filter ?? "";
-            return list.ToList();
+            var listMain = list.ToList();
+            if (_list.Count > 0)
+            { listMain.AddRange(_list); }
+            return listMain.Distinct().OrderBy(a=>a.ProductName).ToList();
         }
         IQueryable<Product> OrderList(IQueryable<Product> list, string order)
         {

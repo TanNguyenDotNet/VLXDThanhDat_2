@@ -1,7 +1,7 @@
 ﻿@model MVCProject.Models.ModelView.OrderAddItemView
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Chọn sản phẩm cho đơn hàng";
+    ViewBag.Title = "Chọn sản phẩm cho đơn hàng " + Model.Order.OrderCode;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
     string size = Request.QueryString["size"];

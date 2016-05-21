@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -16,13 +17,18 @@ namespace MVCProject.Controllers
         private aspnetEntities db = new aspnetEntities();
 
         // GET: /Supplier/
-        public ActionResult Index()
+        public ActionResult Index(string page="",string size="",string filter="")
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
                 return RedirectToAction("AccessDenied", "Account");
-            return View(db.Suppliers.Where(a => a.IsDel == false).ToList());
+
+            var list = from a in db.Suppliers select a;
+            if (!string.IsNullOrEmpty(filter))
+                list = list.Where(a => a.Name.Contains(filter));
+            list = list.Where(a => a.IsDel == false);
+            return View(list.OrderBy(a=>a.Name).ToPagedList(page == "" ? 1 : int.Parse(page), size == "" ? 20 : int.Parse(size)));
         }
 
         // GET: /Supplier/Details/5

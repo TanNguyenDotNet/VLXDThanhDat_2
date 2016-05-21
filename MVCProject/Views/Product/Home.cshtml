@@ -45,7 +45,7 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")   }>
+                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")    }>
                                     @i.Title
                                 </option>
                             }
@@ -58,7 +58,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
                             }
                         </select>
                     </div>
@@ -181,7 +181,6 @@
                         $(".elem-demo-" + code).notify("Sản phẩm đã được chọn", "warn");
                 }
             </script>
-
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Home", new
        {
@@ -192,7 +191,6 @@
            catid = catid
        }))
             </nav>
-
         </div>
         <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
         <input type="hidden" name="page" id="page" value="@Request.QueryString["page"]" />

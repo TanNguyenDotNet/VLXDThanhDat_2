@@ -373,6 +373,7 @@ namespace MVCProject.Controllers
                 {
                     if (!string.IsNullOrEmpty(filter))
                     {
+                        filter = filter.Trim();
                         list = list.Where(a => a.ProductName.Contains(filter));
                         _list = db.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", filter)).ToList();
                     }
@@ -389,8 +390,8 @@ namespace MVCProject.Controllers
             ViewBag.Filter = filter ?? "";
             var listMain = list.ToList();
             if (_list.Count > 0)
-            { listMain.AddRange(_list); }
-            return listMain.OrderBy(a => a.ProductName);
+            { listMain.ToList().AddRange(_list); }
+            return listMain.Distinct().OrderBy(a => a.ProductName);
         }
 
         void InitItem(bool isAdmin)

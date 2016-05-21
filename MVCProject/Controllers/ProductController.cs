@@ -13,6 +13,7 @@ using MVCProject.Common;
 using MVCProject.Models.AccessData;
 using MVCProject.Extensions;
 using MVCProject.Models.ModelView;
+using System.Data.Entity.Infrastructure;
 
 
 namespace MVCProject.Controllers
@@ -24,7 +25,7 @@ namespace MVCProject.Controllers
         private string introImg = "";
 
         #region Local actions
-        public ActionResult Home(int? page, int? size, string filter, string order, string catid,string supplier)
+        public ActionResult Home(int? page, int? size, string filter, string order, string catid, string supplier)
         {
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -55,7 +56,7 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
-        public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "",string supplier="")
+        public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "", string supplier = "")
         {
             if (Session[CommonsConst.SessionCart] == null)
                 return RedirectToAction("Index", "Account");
@@ -66,7 +67,7 @@ namespace MVCProject.Controllers
 
             var cartview = (CartView)Session[CommonsConst.SessionCart];
             OrderProductView od = new OrderProductView();
-            if (page != "" || size != "" || filter != "" || catid != ""|| supplier!="")
+            if (page != "" || size != "" || filter != "" || catid != "" || supplier != "")
             {
                 cartview.Page = page;
                 cartview.Catalogid = catid;
@@ -76,7 +77,7 @@ namespace MVCProject.Controllers
                 cartview.Supplier = supplier;
             }
             InitItem(false);
-            od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Subid,cartview.Supplier);
+            od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Subid, cartview.Supplier);
             Session[CommonsConst.SessionCart] = cartview;
             return View(od);
         }
@@ -90,7 +91,7 @@ namespace MVCProject.Controllers
                 return RedirectToAction("AccessDenied", "Account");
 
             var orderadditemview = (OrderAddItemView)Session[CommonsConst.SessionOrder];
-            if (page != "" || size != "" || filter != "" || catid != "" || supplier!="")
+            if (page != "" || size != "" || filter != "" || catid != "" || supplier != "")
             {
                 orderadditemview.Page = page;
                 orderadditemview.Catalogid = catid;
@@ -357,8 +358,26 @@ namespace MVCProject.Controllers
         {
             var list = from p in db.Products
                        select p;
+            var _list = new List<Product>();
+            string[] _filter;
             if (!string.IsNullOrEmpty(filter))
-                list = list.Where(a => a.ProductName.Contains(filter));
+            {
+                _filter = filter.Split('+');
+                if (_filter.Length > 1)
+                {
+                    filter = _filter[0].Trim();
+                    list = list.Where(a => a.ProductName.Contains(filter));
+                    _list = db.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", _filter[1].ToString().Trim())).ToList();
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(filter))
+                    {
+                        list = list.Where(a => a.ProductName.Contains(filter));
+                        _list = db.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' ", filter)).ToList();
+                    }
+                }
+            }
             if (cid != "0")
             { long cat = long.Parse(cid); list = list.Where(a => a.CatID == cat); }
             if (show)
@@ -368,7 +387,10 @@ namespace MVCProject.Controllers
 
             ViewBag.Order = order ?? "";
             ViewBag.Filter = filter ?? "";
-            return list.ToList();
+            var listMain = list.ToList();
+            if (_list.Count > 0)
+            { listMain.AddRange(_list); }
+            return listMain.OrderBy(a => a.ProductName);
         }
 
         void InitItem(bool isAdmin)

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
-<section>
+<section class="content-header">
     <h2>
         Danh mục nhà cung cấp
     </h2>
@@ -16,51 +16,66 @@
         }
     </div>
 </section>
-<section class="content">
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr style="background-color: #3c8dbc; color:#fff">
-                    <th>Tên</th>
-                    <th>Địa chỉ</th>
-                    <th>Điện thoại</th>
-                    <th>MST</th>
-                    <th>Ngân hàng</th>
-                    <th>STK</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <th>
-                            @if (roles.Contains("4"))
-                            {
-                                @Html.ActionLink(item.Name, "Edit", new { id = item.ID })
-                            }
-                            else
-                            {
-                                @item.Name
-                            }
-                        </th>
-                        <td>
-                            @item.Address
-                        </td>
-                        <td>
-                            @item.Phone
-                        </td>
-                        <td>
-                            @item.TaxCode
-                        </td>
-                        <td>
-                            @item.NameBank
-                        </td>
-                        <td>
-                            @item.AccountBank
-                        </td>
+<form action="~/Supplier/Index" method="get" id="supplierForm">
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="supplierFormSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            <!-- <input type="button" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat" value="Tìm Kiếm"><i class="fa fa-search"></i></input>-->
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>MST</th>
+                        <th>Ngân hàng</th>
+                        <th>STK</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</section>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>
+                                @if (roles.Contains("4"))
+                                {
+                                    @Html.ActionLink(item.Name, "Edit", new { id = item.ID })
+                                }
+                                else
+                                {
+                                    @item.Name
+                                }
+                            </th>
+                            <td>
+                                @item.Address
+                            </td>
+                            <td>
+                                @item.Phone
+                            </td>
+                            <td>
+                                @item.TaxCode
+                            </td>
+                            <td>
+                                @item.NameBank
+                            </td>
+                            <td>
+                                @item.AccountBank
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</form>

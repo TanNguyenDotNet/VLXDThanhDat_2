@@ -4,9 +4,10 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form action="/Supplier/Create" method="post" enctype="multipart/form-data">
+<form action="/Supplier/Edit" method="post" enctype="multipart/form-data">
     <section class="content-header">
         <h2>@ViewBag.Title</h2>
+        @Html.HiddenFor(Model=>Model.ID)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
     </section>
@@ -15,42 +16,42 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Title">Tên:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @maxlenght = "50" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @maxlength = "50" })
                     @Html.ValidationMessageFor(model => model.Name)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Address">Địa chỉ:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @maxlenght = "128" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @maxlength = "128" })
                     @Html.ValidationMessageFor(model => model.Address)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Phone">Điện thoại:</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @maxlenght = "20" })
+                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @maxlength = "20" })
                     @Html.ValidationMessageFor(model => model.Phone)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="MST"></label>
+                <label class="text-label col-md-2" for="MST">Mã số thuế</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.TaxCode, new { @class = "form-control", @maxlenght = "20" })
+                    @Html.TextBoxFor(model => model.TaxCode, new { @class = "form-control", @maxlength = "20" })
                     @Html.ValidationMessageFor(model => model.TaxCode)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="NameBank"></label>
+                <label class="text-label col-md-2" for="NameBank">Tên ngân hàng</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.NameBank, new { @class = "form-control", @maxlenght = "128" })
+                    @Html.TextBoxFor(model => model.NameBank, new { @class = "form-control", @maxlength = "128" })
                     @Html.ValidationMessageFor(model => model.NameBank)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="AccBank"></label>
+                <label class="text-label col-md-2" for="AccBank">Số tài khoản</label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.AccountBank, new { @class = "form-control", @maxlenght = "50" })
+                    @Html.TextBoxFor(model => model.AccountBank, new { @class = "form-control", @maxlength = "50" })
                     @Html.ValidationMessageFor(model => model.AccountBank)
                 </div>
             </div>
@@ -62,7 +63,7 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="Del">Hiển thị</label>
+                <label class="text-label col-md-2" for="Del">Xóa</label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.IsDel)
                     @Html.ValidationMessageFor(model => model.IsDel)

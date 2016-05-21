@@ -51,21 +51,21 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Address">Địa chỉ:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @maxlenght = "128" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @maxlength = "128" })
                     @Html.ValidationMessageFor(model => model.Address)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="District">Quận/huyện:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.District, new { @class = "form-control", @maxlenght = "32" })
+                    @Html.TextBoxFor(model => model.District, new { @class = "form-control", @maxlength = "32" })
                     @Html.ValidationMessageFor(model => model.District)
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Email">Email:</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @maxlenght = "64" })
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @maxlength = "64" })
                     @Html.ValidationMessageFor(model => model.Email)
                 </div>
             </div>
@@ -102,12 +102,22 @@
             <div style="text-align:center" class="col-md-12">
                 <input type="submit" value="Lưu Lại" class="btn btn-info" />
                 <a href="~/Account/Index" class="btn btn-info">Về danh sách</a>
-                <a href="~/Account/RestPassword/@ViewData["UserName"].ToString()" class="btn btn-info">Đặt lại mật khẩu</a>
+                <a href="#"  onclick="FunctionAccept();" id="link_rest_pass" class="btn btn-info">Đặt lại mật khẩu</a>
             </div>
             <div class="clearfix"></div>
         </div>
     </section>
 </form>
+<script>
+    function FunctionAccept() {
+        var a = alertify.confirm('Đặt lại mật khẩu cho tài khoản này?', function (e) {
+            if (e) {
+                window.location = '../RestPassword/' + '@ViewData["UserName"].ToString()';
+            }
+        }).set('title', 'Thông Báo').show();
+    }
+</script>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

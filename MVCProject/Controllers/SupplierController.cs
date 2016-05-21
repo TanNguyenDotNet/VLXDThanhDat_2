@@ -22,7 +22,7 @@ namespace MVCProject.Controllers
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
                 return RedirectToAction("AccessDenied", "Account");
-            return View(db.Suppliers.ToList());
+            return View(db.Suppliers.Where(a => a.IsDel == false).ToList());
         }
 
         // GET: /Supplier/Details/5

@@ -127,8 +127,8 @@ namespace MVCProject.Controllers
             o.DateProcessed = DateTime.Now.ToString("yyyyMMddHHmmss");
             o.State = "2";
             db.SaveChanges();
-            Response.Redirect("~/Order/Index");
-            return null;
+            return Redirect("~/Order/Index");
+            //return null;
         }
         private IEnumerable<Models.Order> GetList(string filter, string state, string datefrom, string dateto)
         {

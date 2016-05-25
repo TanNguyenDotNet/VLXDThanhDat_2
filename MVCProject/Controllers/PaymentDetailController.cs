@@ -90,8 +90,8 @@ namespace MVCProject.Controllers
                 Payment.IDAccountInput = User.Identity.GetUserId();
                 modelAspnet.PaymentDetails.Add(Payment);
                 modelAspnet.SaveChanges();
-                Response.Redirect("~/PaymentDetail/index?idaccount=" + Payment.IDAccount);
-                return null;
+                return Redirect("~/PaymentDetail/index?idaccount=" + Payment.IDAccount);
+                //return null;
             }
             return View(Payment);
         }

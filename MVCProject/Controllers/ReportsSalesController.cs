@@ -17,7 +17,7 @@ namespace MVCProject.Controllers
         {
             return View();
         }
-        public ActionResult RevenueInvoice(int? page, int? size, string filter, string dateFrom, string dateTo)
+        public ActionResult RevenueInvoice(int? page, int? size, string filter, string dateFrom, string dateTo, string name)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -28,7 +28,7 @@ namespace MVCProject.Controllers
                 dateFrom = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                 dateTo = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             }
-            var list = AReportSales.GetRevenueInvoice(filter, "2", dateFrom, dateTo);
+            var list = AReportSales.GetRevenueInvoice(filter, "2", dateFrom, dateTo, name);
 
             TempData["ExportExcel"] = list;
             TempData["header"] = new string[] { "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền" };

@@ -29,6 +29,15 @@
                 </div>
                 <div class="form-group col-sm-2">
                     <div class="input-group">
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Tên đại lý" value="@Request.QueryString["name"]">
+                        >
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="RevenueInvoice.submit();" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
                         <input class="form-control" type="text" name="DateFrom" id="DateFrom" />
                     </div>
@@ -36,7 +45,7 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
-                        <input class="form-control" type="text" name="DateTo"  id="DateTo" />
+                        <input class="form-control" type="text" name="DateTo" id="DateTo" />
                     </div>
                 </div>
                 <div class="form-group col-sm-2">
@@ -45,7 +54,7 @@
                         <select class="form-control" name="size" id="size" onchange="RevenueInvoice.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")       }>@s</option>
                             }
                         </select>
                     </div>
@@ -92,7 +101,10 @@
                            {
                                page,
                                filter = ViewBag.Filter,
-                               size = size
+                               size = size,
+                               name = Request.QueryString["name"],
+                               dateFrom = Request.QueryString["DateFrom"],
+                               dateTo = Request.QueryString["DateTo"]
                            }))
             </nav>
         </div>

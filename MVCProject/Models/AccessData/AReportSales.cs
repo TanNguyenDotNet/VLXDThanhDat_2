@@ -9,18 +9,24 @@ namespace MVCProject.Models.AccessData
 {
     public class AReportSales
     {
-        public static IEnumerable<Models.RevenueInvoice> GetRevenueInvoice(string filter = "", string state = "", string datefrom = "", string dateto = "")
+        public static IEnumerable<Models.RevenueInvoice> GetRevenueInvoice(string filter = "", string state = "", string datefrom = "", string dateto = "",string name="")
         {
             using (var model = Params.ModelaspnetEntities)
             {
                 var listOrder = AOrders.Instance.GetList(filter, state, datefrom, dateto);
+                var listuser = from u in model.AppNetUserTypes select u;
+                if(!string.IsNullOrEmpty(name))
+                {
+                    listuser = listuser.Where(a => a.UserOfName.Contains(name) || a.DisplayName.Contains(name));
+                }
+                var listuserid = from u in model.AspNetUsers.ToList() join l in listuser.ToList() on u.UserName equals l.UserOfName select u;
                 if (listOrder.Count() > 0)
                 {
                     var listRpt = from od in listOrder.ToList()
                                   join
-                                      u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
+                                      u in listuserid on od.IDAccount equals u.Id
                                   join
-                                  a in model.AppNetUserTypes on u.UserName equals a.UserOfName
+                                  a in listuser.ToList() on u.UserName equals a.UserOfName
                                   select new RevenueInvoice()
                                   {
                                       AccountName = a.DisplayName,

@@ -120,7 +120,7 @@
                                 @item.Amount
                             </td>
                             <td>
-                                @item.Discount
+                                @item.Discount.Value.ToString("n0")%
                             </td>
                             <td align="right">
                                 @Html.DisplayFor(modelItem => item.Tax)%

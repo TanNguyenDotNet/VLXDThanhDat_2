@@ -61,7 +61,7 @@ namespace MVCProject.Controllers
             if (Session[CommonsConst.SessionCart] == null)
                 return RedirectToAction("Index", "Account");
             var cartview = (CartView)Session[CommonsConst.SessionCart];
-
+            quantity = quantity == "" ? "1" : quantity;
             if (cartview.Ordersdetail != null & cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).Count() >= 1)
             {
                 int amount = int.Parse(quantity) + int.Parse(cartview.Ordersdetail.Where(a => a.IDProduct == int.Parse(id)).FirstOrDefault().Amount);

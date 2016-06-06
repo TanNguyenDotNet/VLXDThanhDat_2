@@ -8,6 +8,8 @@
         <h2>Thanh toán</h2>
         @Html.ValidationSummary(true)
         @Html.AntiForgeryToken()
+    </section>
+    <section class="content">
         <div class='arrage-popup'>
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="ProductID">Ngày thanh toán</label>
@@ -18,7 +20,7 @@
             <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Price">Tiền thanh toán</label>
                 <div class="col-md-6">
-                    <input class="form-control" id="PayModel" name="PayModel" type="text" onchange="SetPrice();" maxlength="10"/>
+                    <input class="form-control" id="PayModel" name="PayModel" type="text" onchange="SetPrice();" maxlength="10" />
                     @Html.TextBoxFor(model => model.Pay, new { @class = "form-control", @type = "hidden" })
                     @Html.ValidationMessageFor(model => model.Pay)
                 </div>

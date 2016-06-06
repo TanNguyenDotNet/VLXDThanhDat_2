@@ -109,8 +109,8 @@ namespace MVCProject.Controllers
                 {
                     db.ProductPrices.Remove(pp);
                     ALogSystem.Instance.save("ProductPrice", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), pp.ProductID.ToString(), pp.Price.ToString(), pp.LocationID.ToString(), pp.UserID);
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
                 productprice.Created = DateTime.Now;
                 productprice.UserID = User.Identity.GetUserId();
                 db.ProductPrices.Add(productprice);

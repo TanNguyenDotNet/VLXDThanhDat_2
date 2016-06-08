@@ -358,23 +358,20 @@ namespace MVCProject.Controllers
         {
             var list = from p in db.Products
                        select p;
-            //var _list = new List<Product>();
             string[] _filter;
             if (!string.IsNullOrEmpty(filter))
             {
                 _filter = filter.Split('+');
                 if (_filter.Length > 1)
                 {
-                    filter = _filter[0].Trim();
-                    //list = list.Where(a => a.ProductName.Contains(filter));
+                    filter = UtilString.RemoveSign4VietnameseString(_filter[0].Trim());
                     list = db.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' or productname like '%{1}%' ", _filter[1].ToString().Trim(), filter)).AsQueryable();
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(filter))
                     {
-                        filter = filter.Trim();
-                        //list = list.Where(a => a.ProductName.Contains(filter));
+                        filter = UtilString.RemoveSign4VietnameseString(filter.Trim());
                         list = db.Products.SqlQuery(string.Format("Select * from dbo.Product where id like '%{0}%' or productname like '%{0}%' ", filter)).AsQueryable();
                     }
                 }

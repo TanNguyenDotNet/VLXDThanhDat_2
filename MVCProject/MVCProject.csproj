@@ -193,6 +193,7 @@
     <Compile Include="Common\UtilDatetime.cs" />
     <Compile Include="Common\UtilEntities.cs" />
     <Compile Include="Common\UtilException.cs" />
+    <Compile Include="Common\UtilString.cs" />
     <Compile Include="Common\UtilXML.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\CatalogUnitController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSubController.cs">

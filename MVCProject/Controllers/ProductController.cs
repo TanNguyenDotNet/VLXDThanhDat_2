@@ -53,8 +53,9 @@ namespace MVCProject.Controllers
 
                 list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
             }
-            return View(list.ToPagedList(page == null ||
-                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
+            if (page != null || size != null)
+                Session[CommonsConst.SessionPage] = page;
+            return View(list.ToPagedList(Session[CommonsConst.SessionPage] == null ? 1 : (int)Session[CommonsConst.SessionPage], size == null || size == 0 ? 20 : (int)size));
         }
         public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "", string supplier = "")
         {
@@ -121,6 +122,7 @@ namespace MVCProject.Controllers
             if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
                 return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
+            //Common.UtilException.ErrorLog(AppDomain.CurrentDomain.BaseDirectory + "LogError/", "dasdasd");// test
             var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));

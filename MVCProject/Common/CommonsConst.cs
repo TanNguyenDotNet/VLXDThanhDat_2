@@ -9,5 +9,6 @@ namespace MVCProject.Common
     {
         public const string SessionCart = "SessionCart";
         public const string SessionOrder = "SessionOrder";
+        public const string SessionPage = "SessionPage";
     }
 }

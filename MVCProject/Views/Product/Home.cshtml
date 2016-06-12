@@ -13,7 +13,7 @@
     if (catid == null || catid == "") { catid = "0"; }
 
 }
-<form action="~/Product/Home" method="get" id="productViewForm">
+<form action="Home" method="get" id="HomeViewForm">
     <section class="content-header">
         <h2>
             @ViewBag.Title
@@ -26,7 +26,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
                         <span class="input-group-btn">
-                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                             <!-- <input type="button" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat" value="Tìm Kiếm"><i class="fa fa-search"></i></input>-->
                         </span>
                     </div>
@@ -41,11 +41,11 @@
                 <div class="form-group col-sm-3">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Danh Mục</span>
-                        <select class="form-control" name="catid" id="catid" onchange="filterFromSubmit()">
+                        <select class="form-control" name="catid" id="catid" onchange="HomeViewForm.submit()">
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")    }>
+                                <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")     }>
                                     @i.Title
                                 </option>
                             }
@@ -55,10 +55,10 @@
                 <div class="form-group col-sm-2">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
-                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                        <select class="form-control" name="size" id="size" onchange="HomeViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")    }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
                             }
                         </select>
                     </div>
@@ -164,10 +164,7 @@
                 function GoToCart() {
                     window.location = '../OrderDetail/Index';
                 }
-                function filterFromSubmit() {
-                    productViewForm.submit();
-                }
-
+               
                 function AddToCart(code) {
                     var val = document.getElementById("Cart").value;
                     if (val.indexOf(code) == -1) {
@@ -175,7 +172,7 @@
                         val += code;
                         document.getElementById("Cart").value = val;
                         $(".elem-demo-" + code).notify("Đã thêm giỏ hàng", "success");
-                        productViewForm.submit();
+                        HomeViewForm.submit();
                     }
                     else
                         $(".elem-demo-" + code).notify("Sản phẩm đã được chọn", "warn");
@@ -183,16 +180,15 @@
             </script>
             <nav style="text-align:right">
                 @Html.PagedListPager(Model, page => Url.Action("Home", new
-       {
-           page,
-           order = ViewBag.Order,
-           filter = ViewBag.Filter,
-           size = size,
-           catid = catid
-       }))
+                   {
+                       page,
+                       order = ViewBag.Order,
+                       filter = ViewBag.Filter,
+                       size = size,
+                       catid = catid
+                   }))
             </nav>
         </div>
         <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
-        <input type="hidden" name="page" id="page" value="@Request.QueryString["page"]" />
     </section>
 </form>

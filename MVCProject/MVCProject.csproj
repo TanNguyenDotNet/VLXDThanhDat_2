@@ -221,6 +221,7 @@
     <Compile Include="Controllers\ReportsSalesController.cs" />
     <Compile Include="Controllers\ReportViewController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\TutorialController.cs" />
     <Compile Include="Datasets\DataSetRetails2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -444,6 +445,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="File\HDSD.pdf" />
     <None Include="Properties\PublishProfiles\MVCProject.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -572,6 +574,8 @@
     <Content Include="Views\Order\SuccessOrderByAdmin.cshtml" />
     <Content Include="Views\Product\ListProductOrder.cshtml" />
     <Content Include="Views\ReportView\InvoiceDetails.cshtml" />
+    <Content Include="Views\ReportsSales\RevenueInvoiceOfCustomer.cshtml" />
+    <Content Include="Views\Tutorial\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

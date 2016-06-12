@@ -163,5 +163,31 @@ namespace MVCProject.Controllers
             Response.End();
             return RedirectToAction(TempData["action"].ToString());
         }
+        public ActionResult RevenueInvoiceOfCustomer(int? page, int? size, string filter, string dateFrom, string dateTo)
+        {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            if (string.IsNullOrEmpty(dateFrom))
+            {
+                dateFrom = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            }
+            if (string.IsNullOrEmpty(dateTo))
+            {
+                dateTo = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            }
+
+            TimeSpan time = UtilDatetime.ToTime(dateTo) - UtilDatetime.FromTime(dateFrom);
+            if(time.TotalDays > 93)
+            {
+                return RedirectToAction("RevenueInvoiceOfCustomer"); 
+            }
+
+            var list = AReportSales.GetRevenueInvoiceOfCus(filter, "2", dateFrom, dateTo, User.Identity.GetUserName());
+
+            ViewBag.Filter = filter;
+            ViewData["Total"] = list.Sum(a => a.Total);
+            return View(list.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
+        }
     }
 }

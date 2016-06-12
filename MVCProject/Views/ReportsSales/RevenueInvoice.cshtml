@@ -1,7 +1,7 @@
 ﻿@model PagedList.IPagedList<MVCProject.Models.RevenueInvoice>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Doanh thu theo hóa đơn";
+    ViewBag.Title = "Bảng kê hóa đơn";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "50"; }

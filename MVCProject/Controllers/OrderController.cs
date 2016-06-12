@@ -36,7 +36,7 @@ namespace MVCProject.Controllers
             }
             catch (Exception ex)
             {
-                Common.UtilException.ErrorLog(HttpContext.Server.MapPath("~/App_Data/"), ex);
+                Common.UtilException.ErrorLog(HttpContext.Server.MapPath("~/LogError/"), ex);
                 return View(ex);
             }
         }
@@ -84,20 +84,33 @@ namespace MVCProject.Controllers
             Session[CommonsConst.SessionOrder] = orderview;
             return Redirect("~/Product/ListProductOrder");
         }
-        public ActionResult OrderList()
+        public ActionResult OrderList(int? page, int? size, string state, string datefrom, string dateto)
         {
             if (!Request.IsAuthenticated)
                 return null;
+            if (string.IsNullOrEmpty(datefrom))
+            {
+                datefrom = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            }
+            if (string.IsNullOrEmpty(dateto))
+            {
+                dateto = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            }
 
+            TimeSpan time = UtilDatetime.ToTime(dateto) - UtilDatetime.FromTime(datefrom);
+            if (time.TotalDays > 93)
+            {
+                return RedirectToAction("OrderList");
+            }
             Common.UserType ut = Common.Commons.GetUserType(Request, Response, User.Identity.GetUserName(), _db);
-
-            string us = User.Identity.GetUserId();
+            string usid = User.Identity.GetUserId();
             IEnumerable<Models.Order> list = null;
             if (ut == Common.UserType.Delivery)
-                list = db.Orders.Where(c => c.DeliveryMan == us).ToList();
+                list = GetList("", "", datefrom, dateto, usid).ToList();
             else
-                list = db.Orders.Where(c => c.IDAccount == us).ToList();
-            return View(list);
+                list = GetList("", "", datefrom, dateto, usid).ToList();
+            return View(list.ToList().ToPagedList(page == null ||
+                    page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
 
         public ActionResult Success()
@@ -130,7 +143,7 @@ namespace MVCProject.Controllers
             return Redirect("~/Order/Index");
             //return null;
         }
-        private IEnumerable<Models.Order> GetList(string filter, string state, string datefrom, string dateto)
+        private IEnumerable<Models.Order> GetList(string filter, string state, string datefrom, string dateto,string userid="")
         {
             var list = from l in db.Orders select l;
             if (!string.IsNullOrEmpty(datefrom) & !string.IsNullOrEmpty(dateto))
@@ -154,7 +167,8 @@ namespace MVCProject.Controllers
                 list = list.Where(a => a.OrderCode.Contains(filter));
             if (!string.IsNullOrEmpty(state) && state != "3")
                 list = list.Where(a => a.State == state);
-
+            if (!string.IsNullOrEmpty(userid))
+                list = list.Where(a => a.IDAccount == userid);
             return list = list.OrderBy(a => a.DateCreate);
         }
     }

@@ -4,19 +4,25 @@
     <form action="/Account/LogOff" method="post" id="logoutForm">
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav">
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle">
+                    HOT LINE: 0913.633.986
+                </a>
+            </li>
             <!-- Messages: style can be found in dropdown.less-->
             <li class="dropdown messages-menu">
                 <!-- Menu toggle button -->
                 <a href="../OrderDetail/Index" class="dropdown-toggle">
                     <i class="fa fa-shopping-basket">&nbsp;&nbsp;</i>giỏ hàng
                     <span class="label label-success">
-                    @{
-                        string cc = "";
-                        if (Session["CartCount"] != null)
-                        {
-                            cc = Session["CartCount"].ToString();
-                        }
-                    }@cc</span>
+                        @{
+                            string cc = "";
+                            if (Session["CartCount"] != null)
+                            {
+                                cc = Session["CartCount"].ToString();
+                            }
+                        }@cc
+                    </span>
                 </a>
 
             </li><!-- /.messages-menu -->

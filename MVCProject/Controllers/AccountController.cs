@@ -213,7 +213,7 @@ namespace MVCProject.Controllers
 
                         }
                         else
-                        { returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
+                        { returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); Session[CommonsConst.SessionPage] = 1; return RedirectToLocal(returnUrl); }
                     }
                     else
                     { await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
@@ -336,6 +336,12 @@ namespace MVCProject.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
+            string layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+            if (Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db) != MVCProject.Common.UserType.User)
+            {
+                layout = "~/Views/Shared/_Layout.cshtml";
+            }
+            ViewBag.layout = layout;
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }

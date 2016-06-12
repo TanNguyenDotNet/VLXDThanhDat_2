@@ -39,6 +39,36 @@ namespace MVCProject.Models.AccessData
                 return new List<RevenueInvoice>();
             }
         }
+        public static IEnumerable<Models.RevenueInvoice> GetRevenueInvoiceOfCus(string filter = "", string state = "", string datefrom = "", string dateto = "", string name = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                var listOrder = AOrders.Instance.GetList(filter, state, datefrom, dateto);
+                var listuser = from u in model.AppNetUserTypes select u;
+                if (!string.IsNullOrEmpty(name))
+                {
+                    listuser = listuser.Where(a => a.UserOfName == name);
+                }
+                var listuserid = from u in model.AspNetUsers.ToList() join l in listuser.ToList() on u.UserName equals l.UserOfName select u;
+                if (listOrder.Count() > 0)
+                {
+                    var listRpt = from od in listOrder.ToList()
+                                  join
+                                      u in listuserid on od.IDAccount equals u.Id
+                                  join
+                                  a in listuser.ToList() on u.UserName equals a.UserOfName
+                                  select new RevenueInvoice()
+                                  {
+                                      AccountName = a.DisplayName,
+                                      DateCreate = DateTime.ParseExact(od.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"),
+                                      OrderCode = od.OrderCode,
+                                      Total = od.Total
+                                  };
+                    return listRpt.ToList();
+                }
+                return new List<RevenueInvoice>();
+            }
+        }
         public static IEnumerable<Models.RevenueOfMonth> GetRevenueOfMonth(string state = "", string month = "", string year = "", string filterName = "")
         {
             using (var model = Params.ModelaspnetEntities)

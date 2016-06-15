@@ -36,6 +36,7 @@ namespace MVCProject.Controllers
                 foreach (var item in listpp)
                 {
                     item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                    item.DateUpdate = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Created;
                 }
 
                 list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?

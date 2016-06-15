@@ -49,6 +49,7 @@ namespace MVCProject.Controllers
                 foreach (var item in listpp)
                 {
                     item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                    item.DateUpdate = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Created;
                 }
 
                 list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
@@ -168,7 +169,8 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix")] ProductViewModel _product)
+        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color," +
+            "Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix,DateUpdate")] ProductViewModel _product)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -184,6 +186,8 @@ namespace MVCProject.Controllers
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
                 product.UserID = User.Identity.GetUserId();
+                product.DateCreate = DateTime.Now;
+                product.DateUpdate = DateTime.Now;
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -229,7 +233,8 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix")] ProductViewModel _product)
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,"+
+            "Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix,DateUpdate")] ProductViewModel _product)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -241,6 +246,7 @@ namespace MVCProject.Controllers
                 product = SetObj(_product);
                 product.PriceFix = product.PriceFix == null ? 0 : product.PriceFix;
                 product.ProductCost = product.ProductCost == null ? 0 : product.ProductCost;
+                product.DateUpdate = DateTime.Now;
                 Upload();
                 SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
@@ -498,6 +504,7 @@ namespace MVCProject.Controllers
             p.Warranty = _product.Warranty;
             p.ProductCost = _product.ProductCost;
             p.PriceFix = _product.PriceFix;
+            p.DateUpdate = _product.DateUpdate;
             return p;
         }
         private ProductViewModel SetObjViewModel(Product _product)
@@ -526,6 +533,7 @@ namespace MVCProject.Controllers
             p.Warranty = _product.Warranty;
             p.ProductCost = _product.ProductCost;
             p.PriceFix = _product.PriceFix;
+            p.DateUpdate = _product.DateUpdate;
             return p;
         }
         #endregion

@@ -39,7 +39,7 @@
                             <option value="1">Chọn khu vực</option>
                             @foreach (var i in listLocatSub)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")              }>
+                                <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")               }>
                                     @i.Name
                                 </option>
                             }
@@ -54,7 +54,7 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")            }>
+                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")             }>
                                     @i.Title
                                 </option>
                             }
@@ -67,7 +67,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")  }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
                             }
                         </select>
                     </div>
@@ -83,6 +83,7 @@
                         <th>Mã Danh Mục</th>
                         <th>ĐVT</th>
                         <th>Giá</th>
+                        <th>Cập nhật gần nhất</th>
                         <th>Thêm</th>
                     </tr>
                 </thead>
@@ -107,6 +108,13 @@
                                 <td style="text-align:right">
                                     @double.Parse(item.Price.ToString()).ToString("#,###")
                                 </td>
+                                <td style="color:red;font-weight:bold">
+                                    @{
+                                        double time = ((TimeSpan)(DateTime.Now.Date - item.DateUpdate.Value.Date)).TotalDays;
+                                    }
+                                    @time.ToString("n0") ngày
+                                </td>
+
                                 <td>
                                     @if (roles.Contains("7"))
                                     {

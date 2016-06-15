@@ -26,7 +26,7 @@ namespace MVCProject.Models.AccessData
         }
         private AProductPriceLocationSub()
         { }
-        public IPagedList<Product> GetList(string page = "", string size = "", string filter = "", string order = "", string catid = "", string subid = "",string supplier="", List<long> ExceptIdProduct = null)
+        public IPagedList<Product> GetList(string page = "", string size = "", string filter = "", string order = "", string catid = "", string subid = "", string supplier = "", List<long> ExceptIdProduct = null)
         {
             using (var model = Params.ModelaspnetEntities)
             {
@@ -55,7 +55,7 @@ namespace MVCProject.Models.AccessData
                         }
                     }
                 }
-              
+
                 if (!string.IsNullOrEmpty(supplier))
                 { int sup = int.Parse(supplier); list = list.Where(a => a.SupplierID == sup); }
                 if (!string.IsNullOrEmpty(catid) && catid != "0")
@@ -67,12 +67,12 @@ namespace MVCProject.Models.AccessData
 
                 var listpp = (from p in model.Products
                               join pp in model.ProductPrices.Where(a => a.LocationID == _subid) on p.ID equals pp.ProductID
-                              select new { p, pp.Price }).ToList();
+                              select new { p, pp.Price, pp.Created }).ToList();
 
                 list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
                 if (listpp.Count > 0)
                 {
-                    listpp.ForEach(a => a.p.Price = a.Price);
+                    listpp.ForEach(a => { a.p.Price = a.Price; a.p.DateUpdate = a.Created; });
                     list.ToList().AddRange(listpp.Select(a => a.p).ToList());
                 }
 

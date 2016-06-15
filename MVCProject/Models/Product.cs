@@ -37,5 +37,6 @@ namespace MVCProject.Models
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> ProductCost { get; set; }
         public Nullable<decimal> PriceFix { get; set; }
+        public Nullable<System.DateTime> DateUpdate { get; set; }
     }
 }

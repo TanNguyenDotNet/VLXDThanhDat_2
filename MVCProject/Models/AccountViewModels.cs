@@ -104,6 +104,7 @@ namespace MVCProject.Models
             get;
             set;
         }
+        public Nullable<System.DateTime> DateUpdate { get; set; }
     }
     public class ManageUserViewModel
     {

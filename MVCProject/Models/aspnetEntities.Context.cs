@@ -37,7 +37,6 @@ namespace MVCProject.Models
         public virtual DbSet<LocationSub> LocationSubs { get; set; }
         public virtual DbSet<LogSystem> LogSystems { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCode> ProductCodes { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<ProductName> ProductNames { get; set; }
@@ -48,5 +47,6 @@ namespace MVCProject.Models
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Warranty> Warranties { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     }
 }

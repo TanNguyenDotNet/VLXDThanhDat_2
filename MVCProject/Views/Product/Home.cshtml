@@ -85,7 +85,7 @@
                             Giá
                         </th>
                         <th>
-                            Bảo hành
+                            Cập nhật gần nhất
                         </th>
                         @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User)
                         {
@@ -144,9 +144,13 @@
                                 <td align="right">
                                     @item.Price.Value.ToString("n0")
                                 </td>
-                                <td align="center">
-                                    @Html.DisplayFor(modelItem => item.Warranty)
+                                <td style="color:red;font-weight:bold">
+                                    @{
+                                        double time = ((TimeSpan)(DateTime.Now.Date - item.DateUpdate.Value.Date)).TotalDays;
+                                    }
+                                    @time.ToString("n0") ngày
                                 </td>
+
                                 @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User)
                                 {
                                     <td align="center">

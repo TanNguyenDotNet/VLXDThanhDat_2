@@ -10,6 +10,7 @@ using MVCProject.Models;
 using System.Net;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
+using MVCProject.Models.AccessData;
 namespace MVCProject.Controllers
 {
     public class LocationSubController : Controller
@@ -84,11 +85,13 @@ namespace MVCProject.Controllers
                 if (ModelState.IsValid)
                 {
                     double n;
+                    ALogSystem.Instance.save("LocationSub", DateTime.Now.ToString(CommonsConst.formatedatetime), User.Identity.GetUserId(), _LocationSub.ID.ToString(), _LocationSub.Name, model.LocationSubs.Where(a => a.ID == _LocationSub.ID).Select(a => a.LocationPrice).FirstOrDefault());
                     if (string.IsNullOrEmpty(_LocationSub.Name))
                         _LocationSub.Name = "Chưa nhập tên";
                     if (string.IsNullOrEmpty(_LocationSub.LocationPrice) || double.TryParse(_LocationSub.LocationPrice.ToString(), out n) == false)
                         _LocationSub.LocationPrice = "0";
                     model.Entry(_LocationSub).State = EntityState.Modified;
+                    
                     model.SaveChanges();
                     return RedirectToAction("Index");
                 }

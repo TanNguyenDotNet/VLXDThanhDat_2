@@ -207,6 +207,7 @@
     <Compile Include="Controllers\LocationSubController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\LoginHistoryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderDetailController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -233,6 +234,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccessData\AAppNetUserType.cs" />
+    <Compile Include="Models\AccessData\ALoginHistory.cs" />
     <Compile Include="Models\AccessData\ALogSystem.cs" />
     <Compile Include="Models\AccessData\AOrders.cs" />
     <Compile Include="Models\AccessData\AOrdersDetail.cs" />
@@ -288,10 +290,14 @@
     <Compile Include="Models\LocationSub.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginHistory.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LogSystem.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelView\CartView.cs" />
+    <Compile Include="Models\ModelView\LoginHistoryView.cs" />
     <Compile Include="Models\ModelView\OrderAddItemView.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>retailEntities.tt</DependentUpon>
@@ -576,6 +582,7 @@
     <Content Include="Views\ReportView\InvoiceDetails.cshtml" />
     <Content Include="Views\ReportsSales\RevenueInvoiceOfCustomer.cshtml" />
     <Content Include="Views\Tutorial\Order.cshtml" />
+    <Content Include="Views\LoginHistory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

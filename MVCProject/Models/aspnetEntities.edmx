@@ -127,6 +127,16 @@
           <Property Name="IsDel" Type="tinyint" />
           <Property Name="Show" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LoginHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" />
+          <Property Name="datelogin" Type="datetime" />
+          <Property Name="ip" Type="nvarchar" MaxLength="50" />
+          <Property Name="computername" Type="nvarchar" MaxLength="512" />
+        </EntityType>
         <EntityType Name="LogSystem">
           <Key>
             <PropertyRef Name="ID" />
@@ -378,6 +388,7 @@
           <EntitySet Name="CatalogUnit" EntityType="Self.CatalogUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationSub" EntityType="Self.LocationSub" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginHistory" EntityType="Self.LoginHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSystem" EntityType="Self.LogSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentDetail" EntityType="Self.PaymentDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
@@ -448,6 +459,7 @@
           </AssociationSet>
           <EntitySet Name="Suppliers" EntityType="Models.Supplier" />
           <EntitySet Name="Products" EntityType="Models.Product" />
+          <EntitySet Name="LoginHistories" EntityType="Models.LoginHistory" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -784,6 +796,16 @@
           <Property Name="PriceFix" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="DateUpdate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="LoginHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="datelogin" Type="DateTime" Precision="3" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="computername" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1110,6 +1132,17 @@
                 <ScalarProperty Name="CatID" ColumnName="CatID" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
                 <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginHistories">
+            <EntityTypeMapping TypeName="Models.LoginHistory">
+              <MappingFragment StoreEntitySet="LoginHistory">
+                <ScalarProperty Name="computername" ColumnName="computername" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="datelogin" ColumnName="datelogin" />
+                <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

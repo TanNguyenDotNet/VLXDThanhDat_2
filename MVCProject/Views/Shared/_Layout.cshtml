@@ -10,6 +10,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
 
     @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
@@ -97,6 +98,7 @@
                         <li><a href="~/Payment/Index"><i class="fa fa-credit-card"></i> <span>Công nợ</span></a></li>
                         <li><a href="~/Order/Index"><i class="fa fa-list-ol"></i> <span>Đơn hàng</span></a></li>
                         <li><a href="~/Account/Index"><i class="fa fa-user"></i> <span>Tài khoản</span></a></li>
+                        <li><a href="~/LoginHistory/Index"><i class="fa fa-hdd-o"></i> <span>Lịch sử truy cập</span></a></li>
                     </ul><!-- /.sidebar-menu -->
                 }
                 else
@@ -124,6 +126,6 @@
             <strong>Copyright &copy; @DateTime.Now.Year <a href="#">Công ty</a>.</strong>TNHH XD Thành Đạt.
         </footer>
     </div>
-    @RenderSection("scripts", required: false)
+ 
 </body>
 </html>

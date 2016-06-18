@@ -213,7 +213,16 @@ namespace MVCProject.Controllers
 
                         }
                         else
-                        { returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); Session[CommonsConst.SessionPage] = 1; return RedirectToLocal(returnUrl); }
+                        { 
+                            returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); Session[CommonsConst.SessionPage] = 1;
+                            LoginHistory obj = new LoginHistory();
+                            obj.ip = HttpContext.Request.UserHostName + " - " + HttpContext.Request.UserHostAddress;// HttpContext.Request.UserHostAddress;
+                            obj.username = user.UserName;
+                            obj.datelogin = DateTime.Now;
+                            obj.computername = HttpContext.Request.LogonUserIdentity.Name;
+                            ALoginHistory.Instance.save(obj);
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
                     else
                     { await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
@@ -330,7 +339,7 @@ namespace MVCProject.Controllers
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Mật khẩu được thay đổi."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."

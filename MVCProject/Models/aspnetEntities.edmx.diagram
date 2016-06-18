@@ -31,6 +31,7 @@
         <AssociationConnector Association="Models.AspNetUserRoles" />
         <EntityTypeShape EntityType="Models.Supplier" Width="1.5" PointX="13.375" PointY="11.75" />
         <EntityTypeShape EntityType="Models.Product" Width="1.5" PointX="5.375" PointY="14.75" />
+        <EntityTypeShape EntityType="Models.LoginHistory" Width="1.5" PointX="7.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

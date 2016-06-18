@@ -48,5 +48,6 @@ namespace MVCProject.Models
         public virtual DbSet<Warranty> Warranties { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<LoginHistory> LoginHistories { get; set; }
     }
 }

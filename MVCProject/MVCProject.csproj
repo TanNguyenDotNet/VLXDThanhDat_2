@@ -583,6 +583,7 @@
     <Content Include="Views\ReportsSales\RevenueInvoiceOfCustomer.cshtml" />
     <Content Include="Views\Tutorial\Order.cshtml" />
     <Content Include="Views\LoginHistory\Index.cshtml" />
+    <Content Include="Views\LoginHistory\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Report\ReportOrderDetail.rdlc" />

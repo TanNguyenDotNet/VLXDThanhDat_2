@@ -1,0 +1,101 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.LoginHistory>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Thống kê online";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "50"; }
+}
+
+<form action="~/LoginHistory/Detail" method="get" id="detailForm">
+    <section class="content-header">
+        <h2>
+            Lịch sử truy cập web
+        </h2>
+        <div class="arrange-button">
+            <a href="../LoginHistory/ExportExcel" class="btn btn-info" id="modaltrigger" rel="leanModal">Xuất Excel</a>
+        </div>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
+                        <input class="form-control" type="text" name="datefrom" id="DateFrom" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
+                        <input class="form-control" type="text" name="dateto" id="DateTo" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="detailForm.submit();">
+                            @for (int s = 50; s <= 100; s += 50)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")         }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tài khoản</th>
+                        <th>Tên máy</th>
+                        <th>Ngày đăng nhập</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @item.username
+                            </th>
+                            <td>
+                                @item.computername
+                            </td>
+                            <td>
+                                @item.datelogin.Value.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="arrange-button">
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                           {
+                               page,
+                               size = size,
+                               datefrom = Request.QueryString["datefrom"],
+                               dateto = Request.QueryString["dateto"]
+                           }))
+            </nav>
+        </div>
+    </section>
+    <script>
+        $('#DateFrom').datetimepicker({
+            value: '@Request.QueryString["datefrom"]', step: 1
+        });
+        $('#DateTo').datetimepicker({
+            value: '@Request.QueryString["dateto"]', step: 1
+        });
+    </script>
+</form>

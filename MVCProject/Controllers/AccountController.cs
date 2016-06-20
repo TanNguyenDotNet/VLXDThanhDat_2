@@ -219,7 +219,7 @@ namespace MVCProject.Controllers
                             obj.ip = HttpContext.Request.UserHostName + " - " + HttpContext.Request.UserHostAddress;// HttpContext.Request.UserHostAddress;
                             obj.username = user.UserName;
                             obj.datelogin = DateTime.Now;
-                            obj.computername = HttpContext.Request.LogonUserIdentity.Name;
+                            obj.computername = HttpContext.Request.Browser.Browser;
                             ALoginHistory.Instance.save(obj);
                             return RedirectToLocal(returnUrl);
                         }

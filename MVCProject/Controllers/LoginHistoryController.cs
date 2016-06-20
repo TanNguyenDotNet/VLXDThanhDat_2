@@ -18,19 +18,37 @@ namespace MVCProject.Controllers
         {
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), ""))
                 return RedirectToAction("AccessDenied", "Account");
-            var list = ALoginHistory.Instance.GetList(page, size, acc, datefrom, dateto);
-            TempData["ExportExcel"] = list;
+            var list = ALoginHistory.Instance.GetListPaging(page, size, acc, datefrom, dateto);
+            TempData["action"] = "Index";
+            TempData["header"] = new string[] { "TaiKhoan", "TongSoLanDangNhap" };
             return View(list);
         }
-        public ActionResult ExportExcel()
+        public ActionResult Detail(string page = "", string size = "", string acc = "", string datefrom = "", string dateto = "")
+        {
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), ""))
+                return RedirectToAction("AccessDenied", "Account");
+            var list = ALoginHistory.Instance.GetListDetailPaging(page, size, acc, datefrom, dateto);
+            TempData["action"] = "Detail";
+            TempData["header"] = new string[] { "TaiKhoan", "TenMay", "NgayDangNhap" };
+            return View(list);
+        }
+        public ActionResult ExportExcel(string page = "", string size = "", string acc = "", string datefrom = "", string dateto = "")
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "24"))
                 return RedirectToAction("AccessDenied", "Account");
             byte[] buffer = null;
-            buffer = ExcelUtils.ExportByteExcel((List<LoginHistory>)TempData["ExportExcel"], "Code", "TaiKhoan", "TongSoLanDangNhap");
 
+            switch (TempData["action"].ToString())
+            {
+                case "Index":
+                    buffer = ExcelUtils.ExportByteExcel(ALoginHistory.Instance.GetList(page, size, acc, datefrom, dateto), (string[])TempData["header"]);
+                    break;
+                case "Detail":
+                    buffer = ExcelUtils.ExportByteExcel(ALoginHistory.Instance.GetListDetail(page, size, acc, datefrom, dateto).Select(a => new { a.username, a.computername, a.datelogin }).ToList(), (string[])TempData["header"]);
+                    break;
+            }
 
             // Đây là content Type dành cho file excel, còn rất nhiều content-type khác nhưng cái này mình thấy okay nhất
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

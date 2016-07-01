@@ -157,10 +157,10 @@
                                 </td>
                                 <td>
                                     @{
-                            state = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
+                            string states = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
                             item.State == "2" ? "Đã xử lý" : item.State == "2" ? "Đã chuyển hàng" : "";
                                     }
-                                    @state
+                                    @states
                                 </td>
                             </tr>
                         }
@@ -175,7 +175,7 @@
                        filter = ViewBag.Filter,
                        state = state,
                        DateFrom = Request.QueryString["DateFrom"],
-                       DateTo = Request.QueryString["DateFrom"]
+                       DateTo = Request.QueryString["DateTo"]
 
                    }))
             </nav>

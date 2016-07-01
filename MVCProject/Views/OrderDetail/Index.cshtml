@@ -67,11 +67,6 @@
             <div class="arrange-button">
                 <p>Tổng Cộng: &nbsp&nbsp&nbsp&nbsp<span>@ViewData["Total"] VND</span></p>
             </div>
-            <script>
-                function RemoveFromCart(id) {
-                    window.location = "../OrderDetail/Index/" + id;
-                }
-            </script>
         </div>
         @if ((Model != null && Model.Count() > 0) ||  (list != null && list.Count > 0))
         {
@@ -85,6 +80,9 @@
         }   
     </section>
     <script>
+        function RemoveFromCart(id) {
+            window.location = "../OrderDetail/Index/" + id;
+        }
         function FunctionAccept() {
             var a = alertify.confirm('Xác nhận yêu cầu đơn hàng?', function (e) {
                 if (e) {

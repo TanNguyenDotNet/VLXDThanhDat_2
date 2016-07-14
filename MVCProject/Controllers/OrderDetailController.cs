@@ -116,6 +116,7 @@ namespace MVCProject.Controllers
             od.RequestByUser = false;
             od.OrderCode = item.Order.OrderCode;
             od.Price = (decimal)product.Price;
+            od.Cost = product.ProductCost;
             decimal priceDiscount = (decimal)(product.Price - (product.Price * (od.Discount / 100)));
             od.Total = Math.Round(((priceDiscount * (decimal.Parse(od.Tax) / 100)) + priceDiscount) * decimal.Parse(od.Amount));
             db.OrdersDetails.Add(od);
@@ -144,7 +145,7 @@ namespace MVCProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddOrderDetail([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
-            "ProductCode,RequestByUser,OrderCode,Discount,Sale")] OrdersDetail od)
+            "ProductCode,RequestByUser,OrderCode,Discount,Sale,Cost")] OrdersDetail od)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -186,6 +187,8 @@ namespace MVCProject.Controllers
             }
             ViewBag.Price = od.Price.ToString("n0");
             ViewBag.Total = od.Total.ToString("n0");
+            ViewBag.Cost = od.Cost.Value.ToString("n0");
+            ViewBag.DiscountCost = od.Price == 0 ? 0 : Math.Round((decimal)(((od.Price - od.Cost) / od.Price) * 100),1);
             return View(od);
         }
 
@@ -193,7 +196,7 @@ namespace MVCProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description," +
-            "ProductCode,RequestByUser,OrderCode,Discount,Sale")] OrdersDetail od)
+            "ProductCode,RequestByUser,OrderCode,Discount,Sale,Cost")] OrdersDetail od)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -304,7 +307,8 @@ namespace MVCProject.Controllers
                         Tax = "0",
                         Total = 0,
                         Sale = 0,
-                        Discount = 0
+                        Discount = 0,
+                        Cost = 0
                     };
                     li.Add(od);
                 }
@@ -465,6 +469,7 @@ namespace MVCProject.Controllers
                 od.Total = od.Total - (discount * decimal.Parse(od.Amount));
                 od.ProductCode = li.Where(a => a.ID == od.IDProduct).Select(b => b.ItemCode).FirstOrDefault();
                 Total += (double)od.Total;
+                od.Cost = li.Where(a => a.ID == od.IDProduct).Select(b => b.ProductCost).FirstOrDefault();
                 listOd.Add(od);
             }
 

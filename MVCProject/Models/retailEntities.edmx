@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="ID" />
@@ -15,6 +15,7 @@
           <Property Name="TotalWithoutTax" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Tax" Type="varchar" MaxLength="64" />
           <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="TotalSale" Type="decimal" Precision="14" Scale="2" />
           <Property Name="Discount" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="DeliveryMan" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="256" />
@@ -23,7 +24,6 @@
           <Property Name="TaxID" Type="varchar" MaxLength="15" />
           <Property Name="OrderCode" Type="varchar" MaxLength="50" />
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TotalSale" Type="decimal" Precision="14" Scale="2" />
         </EntityType>
         <EntityType Name="OrdersDetail">
           <Key>
@@ -37,12 +37,13 @@
           <Property Name="DateOfOrder" Type="datetime" />
           <Property Name="Tax" Type="varchar" MaxLength="64" />
           <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Sale" Type="decimal" Precision="14" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RequestByUser" Type="bit" Nullable="false" />
           <Property Name="OrderCode" Type="varchar" MaxLength="50" />
           <Property Name="Discount" Type="decimal" Precision="14" Scale="2" />
+          <Property Name="Sale" Type="decimal" Precision="14" Scale="2" />
+          <Property Name="Cost" Type="decimal" Precision="14" Scale="2" />
         </EntityType>
         <EntityContainer Name="RetailDBModelStoreContainer">
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -94,6 +95,7 @@
           <Property Name="RequestByUser" Type="Boolean" Nullable="false" />
           <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Discount" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="Cost" Type="Decimal" Precision="14" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -125,6 +127,7 @@
           <EntitySetMapping Name="OrdersDetails">
             <EntityTypeMapping TypeName="RetailDBModel.OrdersDetail">
               <MappingFragment StoreEntitySet="OrdersDetail">
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
                 <ScalarProperty Name="RequestByUser" ColumnName="RequestByUser" />

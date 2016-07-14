@@ -1,0 +1,122 @@
+﻿@model IEnumerable<MVCProject.Models.Product>
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    List<MVCProject.Models.ProductImage> imgList = (List<MVCProject.Models.ProductImage>)ViewData["ImageList"];
+
+    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
+
+}
+<form action="Home" method="get" id="HomeViewForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="example1">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên mặt hàng
+                        </th>
+                        <th>
+                            Mã hàng
+                        </th>
+                        <th>
+                            ĐVT
+                        </th>
+                        <th>
+                            Giá
+                        </th>
+                        <th>
+                            Cập nhật gần nhất
+                        </th>
+                        @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User)
+                        {
+                            <th>
+                                Thêm đơn hàng
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row" style="text-align:left">
+                                    @item.ProductName
+                                </th>
+                                <td align="center">
+                                    @item.ID.ToString("000000")
+                                </td>
+                                <td align="center"></td>
+                                <td align="right">
+                                    @item.Price.Value.ToString("n0")
+                                </td>
+                                <td style="color:red;font-weight:bold">
+                                    @{
+                            double time = ((TimeSpan)(DateTime.Now.Date - item.DateUpdate.Value.Date)).TotalDays;
+                                    }
+                                    @time.ToString("n0") ngày
+                                </td>
+
+                                @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User)
+                                {
+                                    <td align="center">
+                                        <a href="#" class="elem-demo-@item.ItemCode" onclick="AddToCart('@item.ItemCode');">
+                                            <img class='add-button-disable' src='../Images/imgs/add.png' height="16" width="16" alt='@item.ProductName' />
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <script>
+                $(function () {
+                   
+                    $('#example1').DataTable({
+                        "paging": true,
+                        "lengthChange": false,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "language": {
+                            "search": "Tim kiem:"
+                        }
+
+                    });
+                });
+                function GoToCart() {
+                    window.location = '../OrderDetail/Index';
+                }
+
+                function AddToCart(code) {
+                    var val = document.getElementById("Cart").value;
+                    if (val.indexOf(code) == -1) {
+                        if (val != '') val += ',';
+                        val += code;
+                        document.getElementById("Cart").value = val;
+                        $(".elem-demo-" + code).notify("Đã thêm giỏ hàng", "success");
+                        HomeViewForm.submit();
+                    }
+                    else
+                        $(".elem-demo-" + code).notify("Sản phẩm đã được chọn", "warn");
+                }
+            </script>
+
+        </div>
+        <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
+    </section>
+</form>

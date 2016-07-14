@@ -28,5 +28,6 @@ namespace MVCProject.Models
         public bool RequestByUser { get; set; }
         public string OrderCode { get; set; }
         public Nullable<decimal> Discount { get; set; }
+        public Nullable<decimal> Cost { get; set; }
     }
 }

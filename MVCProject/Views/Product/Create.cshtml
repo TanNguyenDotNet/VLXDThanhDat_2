@@ -57,6 +57,12 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Chiết khấu Nhà Cung Cấp</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="discountModel" name="discountModel" type="text" onchange="CostDiscount(this.value);" value="@ViewBag.DiscountCost">
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
                 <label class="text-label col-md-2" for="Danh mục">Danh mục</label>
                 <div class="col-md-6">
                     @Html.DropDownListFor(model => model.CatID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
@@ -172,6 +178,13 @@
             var f= document.odForm;
             f.ProductCost.value = f.ProductCostModel.value;
             f.ProductCostModel.value = accounting.formatMoney(f.ProductCost.value, { symbol: "đ", precision: 0, format: "%v %s" });
+        }
+        function CostDiscount(val) {
+            var f = document.odForm;
+            var dg = parseFloat(f.Price.value);
+            dg = dg - (val / 100) * dg;
+            f.ProductCostModel.value = accounting.formatMoney(dg, "", 0);
+            f.ProductCost.value = dg;
         }
         function SetUnitName() {
             var f = document.odForm;

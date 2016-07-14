@@ -83,6 +83,9 @@
                     <th width="15%">
                         Giá
                     </th>
+                    <th width="15%">
+                        Giá vốn
+                    </th>
                     <th width="9%">
                         Số lượng
                     </th>
@@ -117,6 +120,9 @@
                                 @item.Price.ToString("#,###")
                             </td>
                             <td align="right">
+                                @item.Cost.Value.ToString("n0")
+                            </td>
+                            <td align="right">
                                 @item.Amount
                             </td>
                             <td>
@@ -134,7 +140,7 @@
                         </tr>
                     }
                     <tr>
-                        <td colspan="7" align="right"><a href="/Order/OpenAddItemToOrder?code=@ViewData["OrderCode"]&subid=@u.LocationSubID">Thêm sản phẩm</a></td>
+                        <td colspan="8" align="right"><a href="/Order/OpenAddItemToOrder?code=@ViewData["OrderCode"]&subid=@u.LocationSubID">Thêm sản phẩm</a></td>
                     </tr>
                 </tbody>
             }

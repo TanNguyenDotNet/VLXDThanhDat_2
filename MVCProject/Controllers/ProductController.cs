@@ -58,6 +58,39 @@ namespace MVCProject.Controllers
                 Session[CommonsConst.SessionPage] = page;
             return View(list.ToPagedList(Session[CommonsConst.SessionPage] == null ? 1 : (int)Session[CommonsConst.SessionPage], size == null || size == 0 ? 20 : (int)size));
         }
+        public ActionResult HomeProduct(int? page, int? size, string filter, string order, string catid, string supplier)
+        {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            ViewBag.UserType = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
+
+            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+            var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
+            int subid = (int)Users.LocationSubID;
+            InitItem(false);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, true);
+            decimal priceSub = decimal.Parse((db.LocationSubs.Where(a => a.ID == subid).FirstOrDefault().LocationPrice)) / 100;
+            list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
+            var listProductPriceSub = db.ProductPrices.Where(a => a.LocationID == subid).ToList();
+            if (listProductPriceSub.Count != 0)
+            {
+                var listpp = (from p in db.Products.ToList()
+                              join pp in listProductPriceSub on p.ID equals pp.ProductID
+                              select p).ToList();
+
+                foreach (var item in listpp)
+                {
+                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+                    item.DateUpdate = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Created;
+                }
+
+                list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
+            }
+            if (page != null || size != null)
+                Session[CommonsConst.SessionPage] = page;
+            return View(list);
+        }
         public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "", string supplier = "")
         {
             if (Session[CommonsConst.SessionCart] == null)
@@ -223,6 +256,7 @@ namespace MVCProject.Controllers
             ViewBag.WarrantyList = Commons.GetWarrantyList(db);
             ViewBag.Price = _productView.Price.Value.ToString("n0");
             ViewBag.ProductCost = _productView.ProductCost == null ? "0" : _productView.ProductCost.Value.ToString("n0");
+            ViewBag.DiscountCost = Math.Round((decimal)((_productView.Price - _productView.ProductCost) / _productView.Price) * 100,2);
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
             return View(_productView);
@@ -233,7 +267,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,"+
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color," +
             "Dimension,Unit,UnitName,Warranty,IsDel,IsState,UserID,ProductName,ProductCost,PriceFix,DateUpdate")] ProductViewModel _product)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
@@ -252,7 +286,7 @@ namespace MVCProject.Controllers
                 SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
-                ALogSystem.Instance.save("Product", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), product.ID.ToString(), product.Price.ToString());
+                ALogSystem.Instance.save("Product", DateTime.Now.GetDateTimeToString(), User.Identity.GetUserId(), product.ID.ToString(), "Price", product.Price.ToString(),"ProductCost",product.ProductCost.ToString());
                 return RedirectToAction("Index");
             }
             return View(_product);

@@ -33,5 +33,13 @@ namespace MVCProject.Models.AccessData
                 return model.OrdersDetails.Where(a => a.OrderCode == code).ToList();
             }
         }
+
+        public List<OrdersDetail> GetListProductCode(List<string> lstOrderCode)
+        {
+            using (var model = Params.ModelRetail)
+            {
+                return model.OrdersDetails.Where(a=> lstOrderCode.Contains(a.OrderCode)).ToList();
+            }
+        }
     }
 }

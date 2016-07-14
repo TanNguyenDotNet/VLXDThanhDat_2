@@ -31,10 +31,11 @@ namespace MVCProject.Controllers
             var list = AReportSales.GetRevenueInvoice(filter, "2", dateFrom, dateTo, name);
 
             TempData["ExportExcel"] = list;
-            TempData["header"] = new string[] { "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền" };
+            TempData["header"] = new string[] { "Tên đại lý", "Ngày lập đơn hàng", "Mã đơn hàng", "Tổng tiền", "Lợi nhuận" };
             TempData["action"] = "RevenueInvoice";
             ViewBag.Filter = filter;
             ViewData["Total"] = list.Sum(a => a.Total);
+            ViewData["TotalProfit"] = list.Where(a => a.Total != a.TotalProfit).Sum(a => a.TotalProfit);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -51,6 +52,7 @@ namespace MVCProject.Controllers
             TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
             TempData["action"] = "RevenueOfMonth";
             ViewData["Total"] = list.Sum(a => a.Total);
+            ViewData["TotalProfit"] = list.Where(a => a.Total != a.TotalProfit).Sum(b => b.TotalProfit);
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
@@ -69,7 +71,7 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
-        public ActionResult RevenueOfYear(int? page, int? size, string year = "",string filterName="")
+        public ActionResult RevenueOfYear(int? page, int? size, string year = "", string filterName = "")
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -103,7 +105,7 @@ namespace MVCProject.Controllers
             return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 50 : (int)size));
         }
-        public ActionResult PaymentOfStore(int? page, int? size, string dateFrom, string dateTo,string filterName)
+        public ActionResult PaymentOfStore(int? page, int? size, string dateFrom, string dateTo, string filterName)
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -114,7 +116,7 @@ namespace MVCProject.Controllers
                 dateFrom = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                 dateTo = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             }
-            var list = AReportSales.GetPaymentOfStore(dateFrom, dateTo,filterName);
+            var list = AReportSales.GetPaymentOfStore(dateFrom, dateTo, filterName);
             TempData["ExportExcel"] = list.ToList();
             TempData["header"] = new string[] { "Đại lý", "Tổng thanh toán" };
             TempData["action"] = "PaymentOfStore";
@@ -177,9 +179,9 @@ namespace MVCProject.Controllers
             }
 
             TimeSpan time = UtilDatetime.ToTime(dateTo) - UtilDatetime.FromTime(dateFrom);
-            if(time.TotalDays > 93)
+            if (time.TotalDays > 93)
             {
-                return RedirectToAction("RevenueInvoiceOfCustomer"); 
+                return RedirectToAction("RevenueInvoiceOfCustomer");
             }
 
             var list = AReportSales.GetRevenueInvoiceOfCus(filter, "2", dateFrom, dateTo, User.Identity.GetUserName());

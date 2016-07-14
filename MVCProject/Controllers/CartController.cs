@@ -123,6 +123,7 @@ namespace MVCProject.Controllers
                 item.RequestByUser = false;
                 item.DateOfOrder = DateTime.Now;
                 item.Sale = 0;
+                item.Cost = list.Where(a => a.ID == item.IDProduct).Select(b => b.ProductCost).FirstOrDefault();
                 decimal PriceDiscount = (item.Price - (item.Price * ((decimal)item.Discount / 100)));// gia da dc chiet khau
                 decimal TotalWithTax = decimal.Parse(item.Amount) * ((PriceDiscount) * (decimal.Parse(item.Tax) / 100) + PriceDiscount);
                 item.Total = Math.Round(TotalWithTax);

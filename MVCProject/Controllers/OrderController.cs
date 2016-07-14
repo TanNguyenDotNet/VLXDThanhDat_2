@@ -153,12 +153,12 @@ namespace MVCProject.Controllers
                 list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
                                            String.Compare(a.DateCreate, dateto) <= 0);
             }
-            else if (!string.IsNullOrEmpty(datefrom))
+            else if (!string.IsNullOrEmpty(datefrom) && string.IsNullOrEmpty(filter))
             {
                 datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
                 list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
             }
-            else if (!string.IsNullOrEmpty(dateto))
+            else if (!string.IsNullOrEmpty(dateto) && string.IsNullOrEmpty(filter))
             {
                 dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
                 list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);

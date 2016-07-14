@@ -4,18 +4,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PagedList;
+using MVCProject.Models.ModelView;
 
 namespace MVCProject.Models.AccessData
 {
     public class AReportSales
     {
-        public static IEnumerable<Models.RevenueInvoice> GetRevenueInvoice(string filter = "", string state = "", string datefrom = "", string dateto = "",string name="")
+        private static IEnumerable<TotalCostInvoice> ListTotalCost(List<string> listOrderCode)
+        {
+            var listOrderDetail = AOrdersDetail.Instance.GetListProductCode(listOrderCode.Cast<string>().ToList());
+            var listCostZero = listOrderDetail.Where(a => a.Cost == 0).ToList().GroupBy(b => b.OrderCode).Select(c => new { ordercode = c.Key });
+
+            foreach (var item in listOrderDetail.Where(a => listCostZero.Select(b => b.ordercode).Contains(a.OrderCode)))
+            {
+                item.Cost = 0;
+            }
+
+            listOrderDetail.ForEach(a => a.Cost = a.Cost * decimal.Parse(a.Amount));
+
+            var listTotalCost = from codes in listOrderDetail
+                                group codes by new { codes.OrderCode }
+                                    into g
+                                    select new TotalCostInvoice { OrderCode = g.Key.OrderCode, TotalCost = (decimal)g.Sum(s => s.Cost) };
+            return listTotalCost;
+        }
+        public static IEnumerable<Models.RevenueInvoice> GetRevenueInvoice(string filter = "", string state = "", string datefrom = "", string dateto = "", string name = "")
         {
             using (var model = Params.ModelaspnetEntities)
             {
                 var listOrder = AOrders.Instance.GetList(filter, state, datefrom, dateto);
+                var listTotalCost = ListTotalCost(listOrder.Select(a => a.OrderCode).ToList());
+
                 var listuser = from u in model.AppNetUserTypes select u;
-                if(!string.IsNullOrEmpty(name))
+                if (!string.IsNullOrEmpty(name))
                 {
                     listuser = listuser.Where(a => a.UserOfName.Contains(name) || a.DisplayName.Contains(name));
                 }
@@ -26,13 +47,16 @@ namespace MVCProject.Models.AccessData
                                   join
                                       u in listuserid on od.IDAccount equals u.Id
                                   join
-                                  a in listuser.ToList() on u.UserName equals a.UserOfName
+                                    a in listuser.ToList() on u.UserName equals a.UserOfName
+                                  join
+                                    c in listTotalCost.ToList() on od.OrderCode equals c.OrderCode
                                   select new RevenueInvoice()
                                   {
                                       AccountName = a.DisplayName,
                                       DateCreate = DateTime.ParseExact(od.DateCreate, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"),
                                       OrderCode = od.OrderCode,
-                                      Total = od.Total
+                                      Total = od.Total,
+                                      TotalProfit = od.Total - c.TotalCost
                                   };
                     return listRpt.ToList();
                 }
@@ -79,29 +103,53 @@ namespace MVCProject.Models.AccessData
                 var listOrder = AOrders.Instance.GetList("", state, datefrom, dateto);
                 if (listOrder.Count() > 0)
                 {
+                    var listTotalCost = ListTotalCost(listOrder.Select(a => a.OrderCode).ToList());
                     var listUser = from l in model.AppNetUserTypes select l;
+
                     if (!string.IsNullOrEmpty(filterName))
                         listUser = listUser.Where(a => a.UserOfName.Contains(filterName) || a.DisplayName.Contains(filterName));
-                    var listRpt = from od in listOrder.ToList()
+                    var listRpt = (from od in listOrder.ToList()
                                   join
                                       u in model.AspNetUsers.ToList() on od.IDAccount equals u.Id
                                   join
                                   a in listUser.ToList() on u.UserName equals a.UserOfName
                                   join
                                   l in model.LocationSubs.ToList() on a.LocationSubID equals l.ID
+                                  join cost in listTotalCost on od.OrderCode equals cost.OrderCode
                                   group od by new
                                   {
                                       od.IDAccount,
                                       a.DisplayName,
-                                      l.Name
+                                      l.Name,
+                                      cost.TotalCost
                                   } into g
                                   select new RevenueOfMonth()
                                   {
                                       AccountName = g.Key.DisplayName,
                                       Total = g.Sum(s => s.Total),
-                                      LocationSub = g.Key.Name
-                                  };
+                                      LocationSub = g.Key.Name,
+                                      TotalProfit = g.Key.TotalCost
+                                  }).ToList();
 
+                    var listZero = listRpt.Where(a => a.TotalProfit == 0).ToList();
+                    foreach (var item in listRpt.Where(a => listZero.Select(b => b.AccountName).Contains(a.AccountName)))
+                    {
+                        item.TotalProfit = 0;
+                    }
+                    listRpt = (from a in listRpt
+                              group a by new
+                              {
+                                  a.AccountName,
+                                  a.LocationSub
+                              } into g
+                              select new RevenueOfMonth()
+                              {
+                                  AccountName = g.Key.AccountName,
+                                  Total = g.Sum(s => s.Total),
+                                  LocationSub = g.Key.LocationSub,
+                                  TotalProfit = g.Sum(s => s.TotalProfit)
+                              }).ToList();
+                    listRpt.ForEach(a => a.TotalProfit = a.Total - a.TotalProfit);
                     return listRpt.ToList();
                 }
                 return new List<RevenueOfMonth>();

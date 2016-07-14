@@ -225,6 +225,7 @@
     <Compile Include="Models\AccessData\ALogSystem.cs" />
     <Compile Include="Models\AccessData\AOrders.cs" />
     <Compile Include="Models\AccessData\AOrdersDetail.cs" />
+    <Compile Include="Models\AccessData\AProduct.cs" />
     <Compile Include="Models\AccessData\AProductPriceLocationSub.cs" />
     <Compile Include="Models\AccessData\AReportSales.cs" />
     <Compile Include="Models\AccessData\ATax.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Models\ModelView\CartView.cs" />
     <Compile Include="Models\ModelView\LoginHistoryView.cs" />
     <Compile Include="Models\ModelView\OrderAddItemView.cs" />
+    <Compile Include="Models\ModelView\TotalCostInvoice.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>retailEntities.tt</DependentUpon>
     </Compile>
@@ -358,6 +360,7 @@
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\modalStyles.css" />
     <Content Include="Content\printStyle.css" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\semantic.min.css" />
     <Content Include="Content\skin-blue.min.css" />
     <Content Include="favicon.ico" />
@@ -427,9 +430,12 @@
     <Content Include="File\HDSD.pdf" />
     <None Include="Properties\PublishProfiles\MVCProject.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Content\dataTables.bootstrap.css" />
+    <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.datetimepicker.min.js" />
@@ -442,6 +448,7 @@
     <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.full.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\LocationSub\index.cshtml">
       <SubType>Code</SubType>
@@ -557,6 +564,7 @@
     <Content Include="Views\Tutorial\Order.cshtml" />
     <Content Include="Views\LoginHistory\Index.cshtml" />
     <Content Include="Views\LoginHistory\Detail.cshtml" />
+    <Content Include="Views\Product\HomeProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -37,7 +37,7 @@
                         <select class="form-control" name="month" id="month">
                             @for (int s = 1; s <= 12; s += 1)
                             {
-                                <option value="@s" @if (month == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
+                                <option value="@s" @if (month == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
                             }
                         </select>
                     </div>
@@ -48,7 +48,7 @@
                         <select class="form-control" name="year" id="year">
                             @for (int s = 2016; s <= 2026; s += 1)
                             {
-                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                                <option value="@s" @if (year == s.ToString()) { @Html.Raw("selected='selected'")              }>@s</option>
                             }
                         </select>
                     </div>
@@ -59,7 +59,7 @@
                         <select class="form-control" name="size" id="size" onchange="RevenueOfMonth.submit();">
                             @for (int s = 50; s <= 100; s += 50)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")          }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
                             }
                         </select>
                     </div>
@@ -73,6 +73,7 @@
                         <th>Tên đại lý</th>
                         <th>Khu vực</th>
                         <th>Tổng tiền</th>
+                        <th>Lợi nhuận</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,15 +86,21 @@
                             <td align="center">
                                 @item.LocationSub
                             </td>
-                            <td>
+                            <td style="text-align:right">
                                 @item.Total.ToString("n0")
+                            </td>
+                            <td style="text-align:right">
+                                @if (item.Total != item.TotalProfit)
+                                { @item.TotalProfit.ToString("n0") }
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <div class="arrange-button">
+                <p>Tổng cộng lợi nhuận: <span>@decimal.Parse(ViewData["TotalProfit"].ToString()).ToString("n0")</span></p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
+                
             </div>
         </div>
         <div class="arrange-button">

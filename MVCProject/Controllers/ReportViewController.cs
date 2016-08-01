@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -26,6 +27,8 @@ namespace MVCProject.Controllers
         }
         public ActionResult InvoiceDetails()
         {
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             dynamic model = new ExpandoObject();
 
             using (var _modelAsp = Params.ModelaspnetEntities)

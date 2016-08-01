@@ -3,12 +3,13 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
-    string size = Request.QueryString["size"];
-    if (size == null || size == "") { size = "20"; }
-    string catid = Request.QueryString["catid"];
-    if (catid == null || catid == "") { catid = "0"; }
+
     MVCProject.Models.ModelView.CartView cart = ((MVCProject.Models.ModelView.CartView)Session[MVCProject.Common.CommonsConst.SessionCart]);
     ViewBag.Title = "Chọn sản phẩm cho đơn hàng của " + cart.Username;
+    string size = cart.Size;
+    if (size == null || size == "") { size = "20"; }
+    string catid = cart.Catalogid;
+    if (catid == null || catid == "") { catid = "0"; }
 }
 <form action="~/Product/Order" method="get" id="productViewForm">
     <section class="content-header">
@@ -21,7 +22,7 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <div class="input-group">
-                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <input class="form-control" type="text" name="filter" id="filter" value="@cart.Filter" />
                         <span class="input-group-btn">
                             <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>
@@ -34,8 +35,8 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in listCat)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == catid){ @Html.Raw("selected='selected'")          }>
-                                @i.Title
+                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")           }>
+                                    @i.Title
                                 </option>
                             }
                         </select>
@@ -47,7 +48,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit()">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")           }>@s</option>
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
                             }
                         </select>
                     </div>
@@ -116,7 +117,7 @@
                 @Html.PagedListPager(Model.PageList, page => Url.Action("Order", new
                {
                    page,
-                   filter = @Request.QueryString["filter"],
+                   filter = cart.Filter,
                    size = size,
                    catid = catid
                }))

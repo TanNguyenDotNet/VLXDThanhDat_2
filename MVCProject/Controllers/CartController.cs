@@ -73,6 +73,22 @@ namespace MVCProject.Controllers
             return RedirectToAction("Order", "Product");
         }
 
+        [HttpPost]
+        public ActionResult CartView(FormCollection form)
+        {
+            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (Session[CommonsConst.SessionCart] == null)
+                return RedirectToAction("Index", "Account");
+            var cartview = (CartView)Session[CommonsConst.SessionCart];
+
+            if (cartview.Ordersdetail != null)
+            {
+                ProcessCartView(cartview, form);
+            }
+            Session[CommonsConst.SessionCart] = cartview;
+            return View(cartview);
+        }
         public ActionResult CartView()
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
@@ -89,7 +105,7 @@ namespace MVCProject.Controllers
             return View(cartview);
         }
 
-        private void ProcessCartView(CartView cartView)
+        private void ProcessCartView(CartView cartView, FormCollection form = null)
         {
             var list = AProductPriceLocationSub.Instance.GetList(cartView.Ordersdetail.Select(a => a.IDProduct).ToList(), cartView.Subid);
             var listTax = ATax.Instance.GetList();
@@ -109,12 +125,16 @@ namespace MVCProject.Controllers
             foreach (var item in cartView.Ordersdetail)
             {
                 item.Discount = item.Discount == null ? 0 : item.Discount;
-                if (Request.QueryString[discount + item.IDProduct] != null && Request.QueryString[discount + item.IDProduct] != "")
-                    item.Discount = decimal.Parse(Request.QueryString[discount + item.IDProduct]);
+                //if (Request.QueryString[discount + item.IDProduct] != null && Request.QueryString[discount + item.IDProduct] != "")
+                //    item.Discount = decimal.Parse(Request.QueryString[discount + item.IDProduct]);
+                if (form != null && form[discount + item.IDProduct] != null && form[discount + item.IDProduct] != "")
+                    item.Discount = decimal.Parse(form[discount + item.IDProduct]);
 
                 item.Amount = string.IsNullOrEmpty(item.Amount) ? "0" : item.Amount;
-                if (Request.QueryString[amount + item.IDProduct] != null && Request.QueryString[amount + item.IDProduct] != "")
-                    item.Amount = Request.QueryString[amount + item.IDProduct] == null ? item.Amount : Request.QueryString[amount + item.IDProduct];
+                //if (Request.QueryString[amount + item.IDProduct] != null && Request.QueryString[amount + item.IDProduct] != "")
+                //    item.Amount = Request.QueryString[amount + item.IDProduct] == null ? item.Amount : Request.QueryString[amount + item.IDProduct];
+                if (form != null && form[amount + item.IDProduct] != null && form[amount + item.IDProduct] != "")
+                    item.Amount = form[amount + item.IDProduct] == null ? item.Amount : form[amount + item.IDProduct];
 
                 item.Tax = listTax.Where(a => a.ID == (byte)list.Where(b => b.ID == item.IDProduct).Select(b => b.TaxID).FirstOrDefault().Value).Select(c => c.TaxRate).FirstOrDefault().Value.ToString();
                 item.Price = list.Where(a => a.ID == item.IDProduct).Select(b => b.Price).FirstOrDefault().Value;

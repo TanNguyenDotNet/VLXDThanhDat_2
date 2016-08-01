@@ -93,8 +93,9 @@
         </div>
     </section>
     <script>
+        $.datetimepicker.setLocale('vi');
         $('#DateFrom').datetimepicker({
-            value: '@Request.QueryString["DateFrom"]', step: 1
+            value: '@Request.QueryString["DateFrom"]', step: 1//, format: 'm/d/Y'
         });
         $('#DateTo').datetimepicker({
             value: '@Request.QueryString["DateTo"]', step: 1

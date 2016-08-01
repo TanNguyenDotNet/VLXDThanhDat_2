@@ -58,39 +58,39 @@ namespace MVCProject.Controllers
                 Session[CommonsConst.SessionPage] = page;
             return View(list.ToPagedList(Session[CommonsConst.SessionPage] == null ? 1 : (int)Session[CommonsConst.SessionPage], size == null || size == 0 ? 20 : (int)size));
         }
-        public ActionResult HomeProduct(int? page, int? size, string filter, string order, string catid, string supplier)
-        {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
+        //public ActionResult HomeProduct(int? page, int? size, string filter, string order, string catid, string supplier)
+        //{
+        //    if (!Request.IsAuthenticated)
+        //        return RedirectToAction("Login", "Account");
 
-            ViewBag.UserType = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
+        //    ViewBag.UserType = Commons.GetUserType(Request, Response, User.Identity.GetUserName(), db);
 
-            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
-            var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
-            int subid = (int)Users.LocationSubID;
-            InitItem(false);
-            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, true);
-            decimal priceSub = decimal.Parse((db.LocationSubs.Where(a => a.ID == subid).FirstOrDefault().LocationPrice)) / 100;
-            list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
-            var listProductPriceSub = db.ProductPrices.Where(a => a.LocationID == subid).ToList();
-            if (listProductPriceSub.Count != 0)
-            {
-                var listpp = (from p in db.Products.ToList()
-                              join pp in listProductPriceSub on p.ID equals pp.ProductID
-                              select p).ToList();
+        //    string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+        //    var Users = db.AppNetUserTypes.Where(a => a.Username == enu).FirstOrDefault();
+        //    int subid = (int)Users.LocationSubID;
+        //    InitItem(false);
+        //    var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid, true);
+        //    decimal priceSub = decimal.Parse((db.LocationSubs.Where(a => a.ID == subid).FirstOrDefault().LocationPrice)) / 100;
+        //    list.ToList().ForEach(a => a.Price = a.Price + (a.Price * priceSub));
+        //    var listProductPriceSub = db.ProductPrices.Where(a => a.LocationID == subid).ToList();
+        //    if (listProductPriceSub.Count != 0)
+        //    {
+        //        var listpp = (from p in db.Products.ToList()
+        //                      join pp in listProductPriceSub on p.ID equals pp.ProductID
+        //                      select p).ToList();
 
-                foreach (var item in listpp)
-                {
-                    item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
-                    item.DateUpdate = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Created;
-                }
+        //        foreach (var item in listpp)
+        //        {
+        //            item.Price = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Price;
+        //            item.DateUpdate = listProductPriceSub.Where(a => a.ProductID == item.ID).FirstOrDefault().Created;
+        //        }
 
-                list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
-            }
-            if (page != null || size != null)
-                Session[CommonsConst.SessionPage] = page;
-            return View(list);
-        }
+        //        list.ToList().AddRange(listpp.ToList());//Tai sao addrange chi? thay doi gia tri cua object?
+        //    }
+        //    if (page != null || size != null)
+        //        Session[CommonsConst.SessionPage] = page;
+        //    return View(list);
+        //}
         public ActionResult Order(string page = "", string size = "", string filter = "", string order = "", string catid = "", string supplier = "")
         {
             if (Session[CommonsConst.SessionCart] == null)
@@ -110,6 +110,7 @@ namespace MVCProject.Controllers
                 cartview.Filter = filter;
                 cartview.OrderAsc = order;
                 cartview.Supplier = supplier;
+            
             }
             InitItem(false);
             od.PageList = AProductPriceLocationSub.Instance.GetList(cartview.Page, cartview.Size, cartview.Filter, cartview.OrderAsc, cartview.Catalogid, cartview.Subid, cartview.Supplier);

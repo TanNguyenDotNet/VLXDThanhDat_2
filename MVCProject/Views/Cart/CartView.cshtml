@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="Cart-View" method="get" id="cartView">
+<form action="Cart-View" method="post" id="cartView">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -34,7 +34,7 @@
                         {
                             <tr>
                                 <th scope="row" style="text-align:left">
-                                    @Html.Raw(Model.Product.Where(a=>a.ID== item.IDProduct).FirstOrDefault().ProductName)
+                                    @Html.Raw(Model.Product.Where(a => a.ID == item.IDProduct).FirstOrDefault().ProductName)
                                 </th>
                                 <td align="right">
                                     @item.Price.ToString("n0")
@@ -68,15 +68,15 @@
                 }
             </script>
         </div>
-            <div class="arrange-button" style="text-align:right; padding-top: 20px">
-                <input type="button" value="Tiếp tục đặt hàng" onclick="ReturnOrders();" class="btn btn-info" id="returnOrder" />
-                @if (Model.Ordersdetail != null && Model.Ordersdetail.Count > 0)
-                {
+        <div class="arrange-button" style="text-align:right; padding-top: 20px">
+            <input type="button" value="Tiếp tục đặt hàng" onclick="ReturnOrders();" class="btn btn-info" id="returnOrder" />
+            @if (Model.Ordersdetail != null && Model.Ordersdetail.Count > 0)
+            {
                 <input type="submit" value="Cập nhật đơn hàng" class="btn btn-info" id="exportOrder" />
                 <input type="button" value="Xác Nhận Đơn Hàng" onclick="FunctionAccept();" class="btn btn-info" id="confirmOrder" />
                 <input type="button" value="Hủy Yêu Cầu" onclick="FunctionClear()" class="btn btn-info" id="confirmOrder" />
-                }
-            </div>
+            }
+        </div>
     </section>
     <script>
         function FunctionAccept() {
@@ -93,8 +93,7 @@
                 }
             }).set('title', 'Thông Báo').show();
         }
-        function ReturnOrders()
-        {
+        function ReturnOrders() {
             window.location = '../Product/Order';
         }
     </script>

@@ -49,7 +49,7 @@ namespace MVCProject.Controllers
             month = string.IsNullOrEmpty(month) == true ? DateTime.Now.Month.ToString() : month;
             var list = AReportSales.GetRevenueOfMonth("2", month, year, filterName);
             TempData["ExportExcel"] = list;
-            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu" };
+            TempData["header"] = new string[] { "Tên đại lý", "Khu vực", "Tổng doanh thu","Lợi nhuận" };
             TempData["action"] = "RevenueOfMonth";
             ViewData["Total"] = list.Sum(a => a.Total);
             ViewData["TotalProfit"] = list.Where(a => a.Total != a.TotalProfit).Sum(b => b.TotalProfit);

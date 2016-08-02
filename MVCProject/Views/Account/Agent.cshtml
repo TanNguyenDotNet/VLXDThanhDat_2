@@ -4,7 +4,11 @@
     ViewBag.Title = "Chi tiết tài khoản";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    span.select2-selection.select2-selection--single {
+        height: 35px;
+    }
+</style>
 <form action="/Account/Agent" method="post" enctype="multipart/form-data">
     <section class="content-header">
         <h2>@ViewBag.Title</h2>
@@ -116,5 +120,9 @@
             }
         }).set('title', 'Thông Báo').show();
     }
+    $(document).ready(function () {
+        $("#LocationSubID").select2();
+        $("#LocationID").select2();
+    });
 </script>
 

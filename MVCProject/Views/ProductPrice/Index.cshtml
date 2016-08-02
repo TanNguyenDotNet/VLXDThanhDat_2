@@ -11,6 +11,11 @@
     List<MVCProject.Models.LocationSub> listLocatSub = (List<MVCProject.Models.LocationSub>)ViewData["SubList"];
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
+<style>
+    span.select2-selection.select2-selection--single {
+        height: 35px;
+    }
+</style>
 <section class="content-header">
     <h2>
         Giá sản phẩm
@@ -123,5 +128,8 @@
             }
         }).set('title', 'Thông Báo').show();   
     }
+    $(document).ready(function () {
+        $("#subid").select2();
+    });
     </script>
 </form>

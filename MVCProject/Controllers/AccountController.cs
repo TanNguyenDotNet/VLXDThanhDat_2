@@ -52,8 +52,8 @@ namespace MVCProject.Controllers
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
-            string enu = Security.EncryptString("User:" + id + "~FrontendUser", false, EncryptType.TripleDES);
-            var u = db.AppNetUserTypes.Find(enu);
+            //string enu = Security.EncryptString("User:" + id + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = AAppNetUserType.Instance.GetUserByUserName(id);
             if (u == null)
             {
                 Response.Redirect("~/Account/Index/?Err=0");
@@ -205,24 +205,18 @@ namespace MVCProject.Controllers
                     var db = new Models.aspnetEntities();
                     var l = db.AppNetUserTypes.Where(d => d.UserOfName == user.UserName).FirstOrDefault();
                     returnUrl = "~/Product/Index";
+                    if (l.IsActive == false)
+                        ModelState.AddModelError("", "Tài khoản chưa được kích hoạt");
                     if (l.UserOfType == "FrontendUser")
                     {
-                        if (l.IsActive == false)
-                        {
-                            ModelState.AddModelError("", "Tài khoản chưa được kích hoạt");
-
-                        }
-                        else
-                        { 
-                            returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); Session[CommonsConst.SessionPage] = 1;
-                            LoginHistory obj = new LoginHistory();
-                            obj.ip = HttpContext.Request.UserHostName + " - " + HttpContext.Request.UserHostAddress;// HttpContext.Request.UserHostAddress;
-                            obj.username = user.UserName;
-                            obj.datelogin = DateTime.Now;
-                            obj.computername = HttpContext.Request.Browser.Browser;
-                            ALoginHistory.Instance.save(obj);
-                            return RedirectToLocal(returnUrl);
-                        }
+                        returnUrl = "~/Product/Home"; await SignInAsync(user, model.RememberMe); Session[CommonsConst.SessionPage] = 1;
+                        LoginHistory obj = new LoginHistory();
+                        obj.ip = HttpContext.Request.UserHostName + " - " + HttpContext.Request.UserHostAddress;// HttpContext.Request.UserHostAddress;
+                        obj.username = user.UserName;
+                        obj.datelogin = DateTime.Now;
+                        obj.computername = HttpContext.Request.Browser.Browser;
+                        ALoginHistory.Instance.save(obj);
+                        return RedirectToLocal(returnUrl);
                     }
                     else
                     { await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }

@@ -39,6 +39,10 @@ namespace MVCProject.Models.AccessData
             {
                 var list = from l in model.LocationSubs select l;
                 list = list.Where(l => l.Show == is_show);
+                if (!string.IsNullOrEmpty(id))
+                { int _id = int.Parse(id); list = list.Where(a => a.ID == _id); }
+                if (!string.IsNullOrEmpty(idlocation))
+                { int _id = int.Parse(idlocation); list = list.Where(a => a.IDLocation == _id); }
                 return list.ToList();
             }
         }

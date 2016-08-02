@@ -10,7 +10,7 @@
         height: 35px;
     }
 </style>
-<form action="~/ProductPriceLocationSub" method="get" id="productViewForm">
+<form action="~/AreaMember/ProductPrice" method="get" id="productViewForm">
     <section class="content-header">
         <h2>
             Giá sản phẩm theo khu vực
@@ -31,15 +31,13 @@
                     <div class="input-group" style="height:35px">
                         <span class="input-group-addon" id="basic-addon1">Khu vực</span>
                         <select class="form-control" name="subid" id="subid" onchange="productViewForm.submit()" style="height:35px">
-                            <option value="1">Chọn khu vực</option>
                             @foreach (var i in Model.Locationsub)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == Model.Subid) { @Html.Raw("selected='selected'")                     }>
+                                <option value="@i.ID" @if (i.ID.ToString() == Model.Subid) { @Html.Raw("selected='selected'")                      }>
                                     @i.Name
                                 </option>
                             }
                         </select>
-
                     </div>
                 </div>
                 <div class="form-group col-sm-4">
@@ -49,7 +47,7 @@
                             <option value="0">Chọn danh mục</option>
                             @foreach (var i in Model.Catalog)
                             {
-                                <option value="@i.ID" @if (i.ID.ToString() == Model.Catalogid) { @Html.Raw("selected='selected'")               }>
+                                <option value="@i.ID" @if (i.ID.ToString() == Model.Catalogid) { @Html.Raw("selected='selected'")                }>
                                     @i.Title
                                 </option>
                             }
@@ -62,7 +60,7 @@
                         <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
                             @for (int s = 10; s <= 50; s += 10)
                             {
-                                <option value="@s" @if (Model.Size == s.ToString()) { @Html.Raw("selected='selected'")     }>@s</option>
+                                <option value="@s" @if (Model.Size == s.ToString()) { @Html.Raw("selected='selected'")      }>@s</option>
                             }
                         </select>
                     </div>
@@ -75,11 +73,9 @@
                     <tr style="background-color: #3c8dbc; color:#fff">
                         <th>Tên Sản Phẩm</th>
                         <th>Mã Sản Phẩm</th>
-                        <th>Mã Danh Mục</th>
                         <th>ĐVT</th>
                         <th>Giá</th>
                         <th>Cập nhật gần nhất</th>
-                        <th>Thêm</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,9 +89,6 @@
                                 </th>
                                 <td>
                                     @item.ID.ToString("000000")
-                                </td>
-                                <td align="center">
-                                    @Html.DisplayFor(modelItem => item.CatID)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.UnitName)
@@ -132,5 +125,4 @@
     $(document).ready(function () {
         $("#subid").select2();
     });
-
 </script>

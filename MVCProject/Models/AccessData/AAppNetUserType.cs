@@ -66,10 +66,29 @@ namespace MVCProject.Models.AccessData
         }
         public AppNetUserType GetUserById(string id)
         {
-            using(var model= Params.ModelaspnetEntities)
+            using (var model = Params.ModelaspnetEntities)
             {
                 var user = model.AspNetUsers.Where(a => a.Id == id).FirstOrDefault();
                 return model.AppNetUserTypes.Where(a => a.UserOfName == user.UserName).FirstOrDefault();
+            }
+        }
+        public List<AppNetUserType> GetListUserFrontendByLocation(string idlocation = "", string idlocationsub = "")
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                var users = from u in model.AppNetUserTypes where u.UserOfType == "FrontendUser" select u;
+                if (idlocation != "")
+                { int _id = int.Parse(idlocation); users = users.Where(a => a.LocationID == _id); }
+                if (idlocationsub != "")
+                { int _id = int.Parse(idlocationsub); users = users.Where(a => a.LocationSubID == _id); }
+                return users.ToList();
+            }
+        }
+        public AppNetUserType GetUserByUserName(string username)
+        {
+            using (var model = Params.ModelaspnetEntities)
+            {
+                return model.AppNetUserTypes.Where(a => a.UserOfName == username).FirstOrDefault();
             }
         }
         /// <summary>

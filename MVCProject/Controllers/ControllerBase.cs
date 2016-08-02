@@ -14,6 +14,7 @@ namespace MVCProject.Controllers
         {
             base.Initialize(requestContext);
             Common.Commons.CheckLogin(requestContext.HttpContext.Request, requestContext.HttpContext.Response, User.Identity.GetUserName());
+
         }
     }
 }

@@ -16,7 +16,7 @@ namespace MVCProject.Controllers
         // GET: LoginHistory
         public ActionResult Index(string page = "", string size = "", string acc = "", string datefrom = "", string dateto = "")
         {
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), ""))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "30"))
                 return RedirectToAction("AccessDenied", "Account");
             var list = ALoginHistory.Instance.GetListPaging(page, size, acc, datefrom, dateto);
             TempData["action"] = "Index";
@@ -25,7 +25,7 @@ namespace MVCProject.Controllers
         }
         public ActionResult Detail(string page = "", string size = "", string acc = "", string datefrom = "", string dateto = "")
         {
-            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), ""))
+            if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "30"))
                 return RedirectToAction("AccessDenied", "Account");
             var list = ALoginHistory.Instance.GetListDetailPaging(page, size, acc, datefrom, dateto);
             TempData["action"] = "Detail";
@@ -34,8 +34,6 @@ namespace MVCProject.Controllers
         }
         public ActionResult ExportExcel(string page = "", string size = "", string acc = "", string datefrom = "", string dateto = "")
         {
-            if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
             if (!Commons.CheckPermission(ViewData, Params.ModelaspnetEntities, User.Identity.GetUserName(), "24"))
                 return RedirectToAction("AccessDenied", "Account");
             byte[] buffer = null;

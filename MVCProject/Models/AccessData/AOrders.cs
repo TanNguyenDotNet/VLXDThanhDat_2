@@ -50,7 +50,7 @@ namespace MVCProject.Models.AccessData
         }
         public Order GetOrderByCode(string code)
         {
-            using(var model= Params.ModelRetail)
+            using (var model = Params.ModelRetail)
             {
                 return model.Orders.Where(a => a.OrderCode == code).FirstOrDefault();
             }
@@ -79,6 +79,36 @@ namespace MVCProject.Models.AccessData
                 }
                 if (!string.IsNullOrEmpty(filter))
                     list = list.Where(a => a.OrderCode.Contains(filter));
+                if (!string.IsNullOrEmpty(state) && state != "3")
+                    list = list.Where(a => a.State == state);
+
+                return list.OrderBy(a => a.DateCreate).ToList();
+            }
+        }
+        public IEnumerable<Models.Order> GetListByIDAcount(List<string> IDAccounts = null, string state = "", string datefrom = "", string dateto = "")
+        {
+            using (var model = Params.ModelRetail)
+            {
+                var list = from l in model.Orders select l;
+                if (!string.IsNullOrEmpty(datefrom) & !string.IsNullOrEmpty(dateto))
+                {
+                    datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
+                    dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
+                                               String.Compare(a.DateCreate, dateto) <= 0);
+                }
+                else if (!string.IsNullOrEmpty(datefrom) && IDAccounts.Count == 0)
+                {
+                    datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
+                }
+                else if (!string.IsNullOrEmpty(dateto) && IDAccounts.Count == 0)
+                {
+                    dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
+                    list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);
+                }
+                if (IDAccounts.Count > 0)
+                    list = list.Where(a => IDAccounts.Contains(a.IDAccount));
                 if (!string.IsNullOrEmpty(state) && state != "3")
                     list = list.Where(a => a.State == state);
 

@@ -1,0 +1,129 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.RevenueInvoice>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Bảng kê hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "50"; }
+    List<MVCProject.Models.AppNetUserType> ListUsers = (List<MVCProject.Models.AppNetUserType>)ViewData["Users"];
+}
+<style>
+    span.select2-selection.select2-selection--single {
+        height: 35px;
+    }
+</style>
+<form action="~/AreaMember/Orders" method="get" id="Orders">
+    <section class="content-header">
+        <h2>
+            Bảng kê hóa đơn
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="Orders.submit();" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group" style="height:35px">
+                        <span class="input-group-addon" id="basic-addon1">Đại lý</span>
+                        <select class="form-control" name="name" id="name" onchange="Orders.submit()" style="height:35px">
+                            @foreach (var i in ListUsers)
+                            {
+                                <option value="@i.UserOfName" @if (i.UserOfName.ToString() == Request.QueryString["name"]) { @Html.Raw("selected='selected'") }>
+                                    @i.DisplayName
+                                </option>
+                            }
+                        </select>
+
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Từ ngày</span>
+                        <input class="form-control" type="text" name="DateFrom" id="DateFrom" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Đến ngày</span>
+                        <input class="form-control" type="text" name="DateTo" id="DateTo" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="Orders.submit();">
+                            @for (int s = 50; s <= 100; s += 50)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Mã đơn hàng</th>
+                        <th>Tên đại lý</th>
+                        <th>Ngày lập đơn hàng</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @item.OrderCode
+                            </th>
+                            <td>
+                                @item.AccountName
+                            </td>
+                            <td align="center">
+                                @item.DateCreate
+                            </td>
+                            <td style="text-align:right">
+                                @item.Total.ToString("n0")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="arrange-button">
+                <p>Tổng cộng: <span>@decimal.Parse(ViewData["Total"].ToString()).ToString("n0")</span></p>
+            </div>
+        </div>
+        <div class="arrange-button">
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("RevenueInvoice", new
+                           {
+                               page,
+                               filter = ViewBag.Filter,
+                               size = size,
+                               name = Request.QueryString["name"],
+                               dateFrom = Request.QueryString["DateFrom"],
+                               dateTo = Request.QueryString["DateTo"]
+                           }))
+            </nav>
+        </div>
+    </section>
+    <script>
+        $('#DateFrom').datetimepicker({
+            value: '@Request.QueryString["DateFrom"]', step: 1
+        });
+        $('#DateTo').datetimepicker({
+            value: '@Request.QueryString["DateTo"]', step: 1
+        });
+        $(document).ready(function () {
+            $("#name").select2();
+        });
+    </script>
+</form>

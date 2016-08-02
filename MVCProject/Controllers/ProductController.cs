@@ -56,7 +56,7 @@ namespace MVCProject.Controllers
             }
             if (page != null || size != null)
                 Session[CommonsConst.SessionPage] = page;
-            return View(list.ToPagedList(Session[CommonsConst.SessionPage] == null ? 1 : (int)Session[CommonsConst.SessionPage], size == null || size == 0 ? 20 : (int)size));
+            return View(list.ToPagedList(page == null ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
         //public ActionResult HomeProduct(int? page, int? size, string filter, string order, string catid, string supplier)
         //{
@@ -154,7 +154,7 @@ namespace MVCProject.Controllers
         {
             if (!Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "34"))
                 return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
             //Common.UtilException.ErrorLog(AppDomain.CurrentDomain.BaseDirectory + "LogError/", "dasdasd");// test

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MVCProject.Models.ModelView.UserView>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+<form action="~/AreaMember/Accounts" method="get" id="AccountsForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="name" id="name" value="@Request.QueryString["name"]" p placeholder="Tên đại lý" />
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên đại lý
+                        </th>
+                        <th>
+                            Tên tài khoản
+                        </th>
+                        <th>
+                            Khu vực
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="left">
+                               @item.Username
+                            </td>
+                            <td align="left">
+                                @item.Displayname
+                            </td>
+                            <td align="center">
+                                @item.Locationsubname
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</form>

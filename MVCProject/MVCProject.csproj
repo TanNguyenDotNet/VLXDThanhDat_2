@@ -228,6 +228,7 @@
     <Compile Include="Models\AccessData\ALogSystem.cs" />
     <Compile Include="Models\AccessData\AOrders.cs" />
     <Compile Include="Models\AccessData\AOrdersDetail.cs" />
+    <Compile Include="Models\AccessData\APaymentDetails.cs" />
     <Compile Include="Models\AccessData\AProduct.cs" />
     <Compile Include="Models\AccessData\AProductPriceLocationSub.cs" />
     <Compile Include="Models\AccessData\AReportSales.cs" />
@@ -292,8 +293,10 @@
     <Compile Include="Models\ModelView\ListProductView.cs" />
     <Compile Include="Models\ModelView\LoginHistoryView.cs" />
     <Compile Include="Models\ModelView\OrderAddItemView.cs" />
+    <Compile Include="Models\ModelView\PaymentDetailsView.cs" />
     <Compile Include="Models\ModelView\TotalCostInvoice.cs" />
     <Compile Include="Models\ModelView\UsersView.cs" />
+    <Compile Include="Models\ModelView\UserView.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>retailEntities.tt</DependentUpon>
     </Compile>
@@ -573,6 +576,9 @@
     <Content Include="Views\Product\HomeProduct.cshtml" />
     <Content Include="Views\AreaMember\ProductPrice.cshtml" />
     <Content Include="Views\AreaMember\Orders.cshtml" />
+    <Content Include="Views\AreaMember\Debt.cshtml" />
+    <Content Include="Views\AreaMember\Accounts.cshtml" />
+    <Content Include="Views\AreaMember\LoginHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

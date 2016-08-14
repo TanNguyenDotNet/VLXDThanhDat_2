@@ -67,12 +67,12 @@ namespace MVCProject.Models.AccessData
                     list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
                                                String.Compare(a.DateCreate, dateto) <= 0);
                 }
-                else if (!string.IsNullOrEmpty(datefrom) && string.IsNullOrEmpty(filter))
+                else if (!string.IsNullOrEmpty(datefrom))
                 {
                     datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
                     list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
                 }
-                else if (!string.IsNullOrEmpty(dateto) && string.IsNullOrEmpty(filter))
+                else if (!string.IsNullOrEmpty(dateto))
                 {
                     dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
                     list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);
@@ -97,12 +97,12 @@ namespace MVCProject.Models.AccessData
                     list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0 &&
                                                String.Compare(a.DateCreate, dateto) <= 0);
                 }
-                else if (!string.IsNullOrEmpty(datefrom) && IDAccounts.Count == 0)
+                else if (!string.IsNullOrEmpty(datefrom))
                 {
                     datefrom = UtilDatetime.FromTime(datefrom).ToString("yyyyMMddHHmmss");
                     list = list.Where(a => String.Compare(a.DateCreate, datefrom) >= 0);
                 }
-                else if (!string.IsNullOrEmpty(dateto) && IDAccounts.Count == 0)
+                else if (!string.IsNullOrEmpty(dateto))
                 {
                     dateto = UtilDatetime.ToTime(dateto).ToString("yyyyMMddHHmmss");
                     list = list.Where(a => String.Compare(a.DateCreate, dateto) <= 0);

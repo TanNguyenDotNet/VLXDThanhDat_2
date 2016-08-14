@@ -68,7 +68,9 @@ namespace MVCProject.Controllers
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
                 return RedirectToAction("AccessDenied", "Account");
-
+            if (catalog.Title == "")
+                catalog.Title = "Chưa đặt tên";
+            catalog.UserID = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
                 db.Catalogs.Add(catalog);
@@ -113,7 +115,7 @@ namespace MVCProject.Controllers
                 return null;
             if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
                 return RedirectToAction("AccessDenied", "Account");
-
+            catalog.UserID = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
                 db.Entry(catalog).State = EntityState.Modified;

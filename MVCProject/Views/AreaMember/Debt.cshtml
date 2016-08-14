@@ -1,0 +1,105 @@
+﻿@model PagedList.IPagedList<MVCProject.Models.ModelView.PaymentDetailsView>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Công nợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "50"; }
+
+    decimal total = 0;
+
+}
+<form action="~/AreaMember/Index" method="get" id="DebtForm">
+    <section class="content-header">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </section>
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="name" id="name" value="@Request.QueryString["name"]" p placeholder="Tên đại lý" />
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4" style="float:left">
+
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>
+                            Tên đại lý
+                        </th>
+                        <th>
+                            Khu vực
+                        </th>
+                        <th align="right">
+                            Tổng nợ
+                        </th>
+                        <th align="right">
+                            Đã thanh toán
+                        </th>
+                        <th align="right">
+                            Tổng công nợ
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        total += item.Totaldebt;
+                        <tr>
+                            <td align="left">
+                                @item.Username
+                            </td>
+                            <td align="left">
+                                @item.Locationname
+                            </td>
+                            <td align="right">
+                                @item.Debt.ToString("n0")
+                            </td>
+                            <td align="right">
+                                @item.Payment.ToString("n0")
+                            </td>
+                            <td align="right">
+                                @item.Totaldebt.ToString("n0")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="arrange-button">
+                <p>Tổng Cộng: <span>@total.ToString("n0")</span></p>
+            </div>
+        </div>
+        <div class="arrange-button">
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("DebtForm", new
+                           {
+                               page,
+                               size = size,
+                               filter = ViewBag.Filter
+                           }))
+            </nav>
+        </div>
+    </section>
+</form>

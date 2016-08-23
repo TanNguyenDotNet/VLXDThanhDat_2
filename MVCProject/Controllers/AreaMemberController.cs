@@ -89,7 +89,7 @@ namespace MVCProject.Controllers
             if (listUsers.ListUsers.Count == 0)
                 return RedirectToAction("AccessDenied", "Account");
             if (!string.IsNullOrEmpty(name))
-                listUsers.ListAppUsers = listUsers.ListAppUsers.Where(a => a.UserOfName.Contains(name) && a.DisplayName.Contains(name)).ToList();
+                listUsers.ListAppUsers = listUsers.ListAppUsers.Where(a => a.UserOfName.Contains(name) || a.DisplayName.Contains(name)).ToList();
 
             var locations = ALocationSub.Instance.GetList();
 

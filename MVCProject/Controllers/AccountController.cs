@@ -219,7 +219,18 @@ namespace MVCProject.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                     else
-                    { await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); }
+                    {
+                        if (user.UserName != "admin")
+                        {
+                            LoginHistory obj = new LoginHistory();
+                            obj.ip = HttpContext.Request.UserHostName + " - " + HttpContext.Request.UserHostAddress;// HttpContext.Request.UserHostAddress;
+                            obj.username = user.UserName;
+                            obj.datelogin = DateTime.Now;
+                            obj.computername = HttpContext.Request.Browser.Browser;
+                            ALoginHistory.Instance.save(obj);
+                        }
+                        await SignInAsync(user, model.RememberMe); return RedirectToLocal(returnUrl); 
+                    }
                 }
                 else
                 {

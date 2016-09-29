@@ -75,6 +75,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Hình</th>
                         <th>Tên Sản Phẩm</th>
                         <th>Mã Sản Phẩm</th>
                         <th>Mã Danh Mục</th>
@@ -92,6 +93,19 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <th scope="row" style="text-align:left">
+                                @if(!string.IsNullOrEmpty(item.ImageLink))
+                                {
+                                    List<string> listImages = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<string>>(item.ImageLink);
+                                    @Html.Raw(string.Format("<img class='img-link' src='{0}' alt='{1}' width='100' data-id='{2}'  />", listImages[0], item.ProductName,item.ImageLink));
+                                    
+                                }
+                                else
+                                {
+                                    @Html.Raw("<img class='product-intro' src='/Images/Intro/no-image.png' alt='" + item.ProductName + "' />"); 
+                                }
+                                
+                            </th>
                             <th scope="row" style="text-align:left">
                                 @if (roles.Contains("2"))
                                 {
@@ -138,3 +152,13 @@
         <!-- Your Page Content Here -->
     </section><!-- /.content -->
 </form>
+<script>
+    $(document).ready(function () {
+        $('.img-link').off('click').on('click', function (e) {
+            e.preventDefault();
+            var link = $(this);
+            var id = link.data('id');
+            $.fancybox.open(id);
+        });
+    })
+</script>

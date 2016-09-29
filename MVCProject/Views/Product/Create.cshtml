@@ -132,22 +132,15 @@
                 </div>
             </div>
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="intro">Ảnh tiêu đề</label>
+                <label class="text-label col-md-2" for="ImageLink">Hình ảnh</label>
                 <div class="col-md-6">
-                    <input type="file" name="intro" id="intro" style="height: 30px; line-height :30px; width: 600px;" />
-                </div>
-            </div>
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="result">Ảnh chi tiết</label>
-                <div class="col-md-6">
-                    <input type="file" name="Image" id="Image" style="height: 30px; line-height :30px; width: 600px;" />
-                </div>
-            </div>
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="ImageLink">Liên kết</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
+                    <ul class="list-inline" id="showMoreImgs">
+
+                    </ul>
+                    @Html.HiddenFor(model => model.ImageLink, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ImageLink)
+                    <input type="button" value="Chọn hình" class="btn btn-info" id="openimg"/>
+                    <input type="button" value="Xóa" class="btn btn-info" id="delImgs" />
                 </div>
             </div>
             <div style="text-align:center" class="col-md-12">
@@ -158,6 +151,37 @@
         </div>
     </section>
     <script>
+        $(document).ready(function () {
+
+            var moreimgs = [];
+
+            function BrowseServer() {
+                // You can use the "CKFinder" class to render CKFinder in a page:
+                var finder = new CKFinder();
+                //finder.basePath = '/img/';
+                finder.skin = 'bootstrap';
+                finder.selectActionFunction = SetImg;
+                finder.popup();
+            }
+            function SetImg(fileUrl) {
+                var html = '<li><img src="' + fileUrl + '" width="100px"></li>';
+                $("#showMoreImgs").append(html);
+                moreimgs.push(fileUrl);
+                $("#ImageLink").val(JSON.stringify(moreimgs));
+            };
+
+            $('#openimg').click(function () {
+                BrowseServer();
+            });
+            $("#delImgs").click(function () {
+                if (moreimgs.length != 0) {
+                    moreimgs.splice(moreimgs.length - 1, 1);
+                    $('#showMoreImgs li:last-child').remove();
+                    $("#moreimages").val(JSON.stringify(moreimgs));
+                }
+            });
+        });
+
         var useCatCode = '@ViewData["UseCatCode"].ToString()';
         var arrCatCode = new Array();
 

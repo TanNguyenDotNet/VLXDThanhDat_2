@@ -21,6 +21,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, modelAspnet, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
             dynamic model = new ExpandoObject();
             using (var _model = Params.ModelaspnetEntities)
             {

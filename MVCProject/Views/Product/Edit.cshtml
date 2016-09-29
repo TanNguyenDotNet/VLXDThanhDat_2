@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Chỉnh sửa";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    dynamic imgs= null;
+    if(!string.IsNullOrEmpty(Model.ImageLink))
+    { imgs = Json.Decode(Model.ImageLink);    }
+    
+    
 }
 <form action="/Product/Edit" method="post" enctype="multipart/form-data" id="odForm" name="odForm">
     <section class="content-header">
@@ -144,22 +149,21 @@
             </div>
 
             <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="intro">Ảnh tiêu đề:</label>
+                <label class="text-label col-md-2" for="ImageLink">Hình ảnh</label>
                 <div class="col-md-6">
-                    <input type="file" name="intro" id="intro" style="height: 30px; line-height :30px; width: 600px;" />
-                </div>
-            </div>
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="Image">Ảnh chi tiết:</label>
-                <div class="col-md-6">
-                    <input type="file" name="Image" id="Image" style="height: 30px; line-height :30px; width: 600px;" />
-                </div>
-            </div>
-            <div class="arrange-div form-group col-md-12">
-                <label class="text-label col-md-2" for="ImageLink">Liên kết:</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
+                    <ul class="list-inline" id="showMoreImgs">
+                        @if(imgs!= null)
+                        {
+                            foreach (var item in imgs)
+                            {
+                                <li><img src="@item" width="100"></li>
+                            }
+                        }
+                    </ul>
+                    @Html.HiddenFor(model => model.ImageLink, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ImageLink)
+                    <input type="button" value="Chọn hình" class="btn btn-info" id="openimg" />
+                    <input type="button" value="Xóa" class="btn btn-info" id="delImgs" />
                 </div>
             </div>
             <div style="text-align:center" class="col-md-12">
@@ -170,9 +174,43 @@
         </div>
 
         <script>
-            var useCatCode = '@ViewData["UseCatCode"].ToString()';
-            var arrCatCode = new Array();
-            @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
+    $(document).ready(function () {
+
+        var moreimgs = [];
+        var _moreimgs = '@Html.Raw(Model.ImageLink)';
+        if (_moreimgs != '' )
+            moreimgs = JSON.parse('@Html.Raw(Model.ImageLink)');
+        //$("#ImageLink").val(JSON.stringify(moreimgs));
+        function BrowseServer() {
+            // You can use the "CKFinder" class to render CKFinder in a page:
+            var finder = new CKFinder();
+            //finder.basePath = '/img/';
+            finder.skin = 'bootstrap';
+            finder.selectActionFunction = SetImg;
+            finder.popup();
+        }
+        function SetImg(fileUrl) {
+            var html = '<li><img src="' + fileUrl + '" width="100px"></li>';
+            $("#showMoreImgs").append(html);
+            moreimgs.push(fileUrl);
+            $("#ImageLink").val(JSON.stringify(moreimgs));
+        };
+
+        $('#openimg').click(function () {
+            BrowseServer();
+        });
+        $("#delImgs").click(function () {
+            if (moreimgs.length != 0) {
+                moreimgs.splice(moreimgs.length - 1, 1);
+                $('#showMoreImgs li:last-child').remove();
+                $("#moreimages").val(JSON.stringify(moreimgs));
+            }
+        });
+    });
+
+    var useCatCode = '@ViewData["UseCatCode"].ToString()';
+    var arrCatCode = new Array();
+    @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
                 int count = 0;
                 foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
                 {
@@ -180,50 +218,50 @@
                     count++;
                 }
             }
-            function SetUnitName() {
-                var f = document.odForm;
-                f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
-            }
-            function SetPrice() {
-                var f = document.odForm;
-                f.Price.value = f.PriceModel.value;
-                f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
-            }
-            function SetProductCost() {
-                var f = document.odForm;
-                f.ProductCost.value = f.ProductCostModel.value;
-                f.ProductCostModel.value = accounting.formatMoney(f.ProductCost.value, { symbol: "đ", precision: 0, format: "%v %s" });
-            }
-            function CostDiscount(val) {
-                var f = document.odForm;
-                var dg = parseFloat(f.Price.value);
-                dg = dg - (val / 100) * dg;
-                f.ProductCostModel.value = accounting.formatMoney(dg, "", 0);
-                f.ProductCost.value = dg;
-            }
-            function SetUnitName() {
-                var f = document.odForm;
-                f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
-            }
-            function SetCode(catid) {
-                if (useCatCode == '0')
-                    return;
+    function SetUnitName() {
+        var f = document.odForm;
+        f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
+    }
+    function SetPrice() {
+        var f = document.odForm;
+        f.Price.value = f.PriceModel.value;
+        f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
+    }
+    function SetProductCost() {
+        var f = document.odForm;
+        f.ProductCost.value = f.ProductCostModel.value;
+        f.ProductCostModel.value = accounting.formatMoney(f.ProductCost.value, { symbol: "đ", precision: 0, format: "%v %s" });
+    }
+    function CostDiscount(val) {
+        var f = document.odForm;
+        var dg = parseFloat(f.Price.value);
+        dg = dg - (val / 100) * dg;
+        f.ProductCostModel.value = accounting.formatMoney(dg, "", 0);
+        f.ProductCost.value = dg;
+    }
+    function SetUnitName() {
+        var f = document.odForm;
+        f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
+    }
+    function SetCode(catid) {
+        if (useCatCode == '0')
+            return;
 
-                var icode = document.getElementById("ItemCode").value;
-                var strs = icode.split('.');
-                var code = "";
-                for (var i = 0; i < arrCatCode.length; i++) {
-                    var parts = arrCatCode[i].split(',');
-                    if (parts[0] == (catid + '')) {
-                        code = parts[1];
-                        break;
-                    }
-                }
-                if (strs.length == 3 && code != '')
-                    document.getElementById("ItemCode").value = code + '.' + icode;
-                else if (strs.length == 4 && code != '')
-                    document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
+        var icode = document.getElementById("ItemCode").value;
+        var strs = icode.split('.');
+        var code = "";
+        for (var i = 0; i < arrCatCode.length; i++) {
+            var parts = arrCatCode[i].split(',');
+            if (parts[0] == (catid + '')) {
+                code = parts[1];
+                break;
             }
+        }
+        if (strs.length == 3 && code != '')
+            document.getElementById("ItemCode").value = code + '.' + icode;
+        else if (strs.length == 4 && code != '')
+            document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
+    }
         </script>
     </section>
 

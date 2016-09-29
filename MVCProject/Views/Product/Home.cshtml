@@ -69,9 +69,9 @@
             <table class="table table-striped wide-clickable">
                 <thead>
                     <tr style="background-color: #3c8dbc; color:#fff">
-                        <!--<th>
-                            Tên mặt hàng
-                        </th>-->
+                        <th>
+                            Hình
+                        </th>
                         <th>
                             Tên mặt hàng
                         </th>
@@ -101,37 +101,19 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <!--<th scope="row" style="text-align:left">
-                                    @*if (imgList != null && imgList.Count() > 0) {
-                                        string img = "";
+                                <th scope="row" style="text-align:left">
+                                    @if (!string.IsNullOrEmpty(item.ImageLink))
+                                    {
+                                        List<string> listImages = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<string>>(item.ImageLink);
+                                        @Html.Raw(string.Format("<img class='img-link' src='{0}' alt='{1}' width='100' data-id='{2}'  />", listImages[0], item.ProductName, item.ImageLink));
 
-                                        try
-                                        {
-                                            MVCProject.Models.ProductImage i = imgList.Single(c => c.ProductCode == item.ItemCode && c.ImageAddIn == "Intro");
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw("<img class='product-intro' src='/Images/Intro/no-image.png' alt='" + item.ProductName + "' />");
+                                    }
 
-                                            if (i != null && i.Image != null && i.Image != "")
-                                            {
-                                                if (i.ImageLink != null && i.ImageLink != "")
-                                                {
-                                                    img += "<a href='" + i.ImageLink + "' alt='" + item.ProductName + "'/>";
-                                                }
-
-                                                img += "<img class='product-intro' src='../Images/Intro/" + i.Image + "' title='" + item.ProductName + "'/>";
-
-                                                if (i.ImageLink != null && i.ImageLink != "")
-                                                {
-                                                    img += "</a>";
-                                                }
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            img = "<img class='product-intro' src='../Images/Intro/no-image.png' alt='" + item.ProductName + "'/>";
-                                        }
-
-                                        @Html.Raw(img);
-                                    }*@
-                                </th>-->
+                                </th>
                                 <th scope="row" style="text-align:left">
                                     @item.ProductName
                                 </th>
@@ -150,7 +132,6 @@
                                     }
                                     @time.ToString("n0") ngày
                                 </td>
-
                                 @if ((MVCProject.Common.UserType)ViewBag.UserType == MVCProject.Common.UserType.User)
                                 {
                                     <td align="center">
@@ -196,3 +177,13 @@
         <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
     </section>
 </form>
+<script>
+    $(document).ready(function () {
+        $('.img-link').off('click').on('click', function (e) {
+            e.preventDefault();
+            var link = $(this);
+            var id = link.data('id');
+            $.fancybox.open(id);
+        });
+    })
+</script>

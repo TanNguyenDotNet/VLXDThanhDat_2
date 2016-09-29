@@ -30,7 +30,10 @@ namespace MVCProject
                       "~/Scripts/accounting.min.js",
                       "~/Scripts/alertify.min.js",
                       "~/Scripts/jquery.dataTables.min.js",
-                      "~/Scripts/dataTables.bootstrap.min.js", "~/Scripts/select2.full.min.js"));
+                      "~/Scripts/dataTables.bootstrap.min.js", 
+                      "~/Scripts/select2.full.min.js",
+                      "~/Scripts/libs/ckfinder/ckfinder.js",
+                      "~/Scripts/libs/fancybox/jquery.fancybox.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
@@ -42,7 +45,8 @@ namespace MVCProject
                       "~/Content/alertify.css",
                       "~/Content/semantic.min.css",
                       "~/Content/dataTables.bootstrap.css",
-                      "~/Content/select2.min.css"));
+                      "~/Content/select2.min.css", 
+                      "~/Scripts/libs/fancybox/jquery.fancybox.css"));
         }
     }
 }

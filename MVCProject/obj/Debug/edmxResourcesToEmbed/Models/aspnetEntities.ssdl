@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="__MigrationHistory">
     <Key>
       <PropertyRef Name="MigrationId" />
@@ -15,18 +15,23 @@
       <PropertyRef Name="Username" />
     </Key>
     <Property Name="Username" Type="varchar" MaxLength="150" Nullable="false" />
-    <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
     <Property Name="Fax" Type="varchar" MaxLength="20" />
-    <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
-    <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="255" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" />
     <Property Name="UserType" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="DateCreate" Type="varchar" MaxLength="14" Nullable="false" />
+    <Property Name="Expire" Type="varchar" MaxLength="14" Nullable="false" />
     <Property Name="LocationID" Type="int" Nullable="false" />
+    <Property Name="LocationSubID" Type="int" />
     <Property Name="District" Type="nvarchar" MaxLength="255" />
     <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
     <Property Name="TaxID" Type="varchar" MaxLength="15" />
     <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserOfName" Type="nvarchar" MaxLength="128" />
+    <Property Name="UserOfType" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDel" Type="bit" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="AspNetRoles">
     <Key>
@@ -86,6 +91,16 @@
     <Property Name="Code" Type="varchar" MaxLength="5" />
     <Property Name="UserID" Type="nvarchar" MaxLength="128" />
   </EntityType>
+  <EntityType Name="CatalogUnit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="NameCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="Show" Type="bit" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="Location">
     <Key>
       <PropertyRef Name="ID" />
@@ -105,6 +120,60 @@
     <Property Name="LocationPrice" Type="nvarchar" MaxLength="3" />
     <Property Name="Description" Type="nvarchar" MaxLength="255" />
     <Property Name="IsDel" Type="tinyint" />
+    <Property Name="Show" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LoginHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" />
+    <Property Name="datelogin" Type="datetime" />
+    <Property Name="ip" Type="nvarchar" MaxLength="50" />
+    <Property Name="computername" Type="nvarchar" MaxLength="512" />
+  </EntityType>
+  <EntityType Name="LogSystem">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="nvarchar" MaxLength="20" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="F1" Type="nvarchar" MaxLength="50" />
+    <Property Name="F2" Type="nvarchar" MaxLength="50" />
+    <Property Name="F3" Type="nvarchar" MaxLength="50" />
+    <Property Name="F4" Type="nvarchar" MaxLength="50" />
+    <Property Name="F5" Type="nvarchar" MaxLength="50" />
+    <Property Name="F6" Type="nvarchar" MaxLength="50" />
+    <Property Name="F7" Type="nvarchar" MaxLength="50" />
+    <Property Name="F8" Type="nvarchar" MaxLength="50" />
+    <Property Name="F9" Type="nvarchar" MaxLength="50" />
+    <Property Name="F10" Type="nvarchar" MaxLength="50" />
+    <Property Name="F11" Type="nvarchar" MaxLength="50" />
+    <Property Name="F12" Type="nvarchar" MaxLength="50" />
+    <Property Name="F13" Type="nvarchar" MaxLength="50" />
+    <Property Name="F14" Type="nvarchar" MaxLength="50" />
+    <Property Name="F15" Type="nvarchar" MaxLength="50" />
+    <Property Name="F16" Type="nvarchar" MaxLength="50" />
+    <Property Name="F17" Type="nvarchar" MaxLength="50" />
+    <Property Name="F18" Type="nvarchar" MaxLength="50" />
+    <Property Name="F19" Type="nvarchar" MaxLength="50" />
+    <Property Name="F20" Type="ntext" />
+  </EntityType>
+  <EntityType Name="PaymentDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IDAccount" Type="nvarchar" MaxLength="36" />
+    <Property Name="IDAccountInput" Type="nvarchar" MaxLength="36" />
+    <Property Name="IDLocationSub" Type="int" />
+    <Property Name="Pay" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PayDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="PayDateSystem" Type="nvarchar" MaxLength="20" />
+    <Property Name="DebtBefore" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="DebtAfter" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Description" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="Product">
     <Key>
@@ -123,6 +192,7 @@
     <Property Name="Color" Type="nvarchar" MaxLength="150" />
     <Property Name="Dimension" Type="varchar" MaxLength="50" />
     <Property Name="Unit" Type="nvarchar" MaxLength="255" />
+    <Property Name="UnitName" Type="nvarchar" MaxLength="50" />
     <Property Name="Warranty" Type="varchar" MaxLength="5" />
     <Property Name="IsDel" Type="bit" Nullable="false" />
     <Property Name="IsState" Type="tinyint" />
@@ -130,6 +200,9 @@
     <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="TaxID" Type="tinyint" />
     <Property Name="Price" Type="decimal" Precision="14" Scale="2" />
+    <Property Name="ProductCost" Type="decimal" Precision="14" Scale="2" />
+    <Property Name="PriceFix" Type="decimal" Precision="14" Scale="2" />
+    <Property Name="DateUpdate" Type="datetime" />
   </EntityType>
   <EntityType Name="ProductCode">
     <Key>
@@ -214,6 +287,8 @@
     <Property Name="TaxCode" Type="varchar" MaxLength="20" />
     <Property Name="AccountBank" Type="varchar" MaxLength="50" />
     <Property Name="NameBank" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsDel" Type="bit" Nullable="false" />
+    <Property Name="IsShow" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Tax">
     <Key>
@@ -240,7 +315,7 @@
     <Property Name="Value" Type="tinyint" />
     <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
-  <Association Name="FK__AspNetUse__RoleI__7E8CC4B1">
+  <Association Name="FK__AspNetUse__RoleI__5CD6CB2B">
     <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -254,7 +329,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__AspNetUse__User___7CA47C3F">
+  <Association Name="FK__AspNetUse__User___5AEE82B9">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -268,7 +343,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__AspNetUse__UserI__7D98A078">
+  <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -282,7 +357,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__AspNetUse__UserI__7F80E8EA">
+  <Association Name="FK__AspNetUse__UserI__5DCAEF64">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -305,8 +380,12 @@
     <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CatalogUnit" EntityType="Self.CatalogUnit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LocationSub" EntityType="Self.LocationSub" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoginHistory" EntityType="Self.LoginHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LogSystem" EntityType="Self.LogSystem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentDetail" EntityType="Self.PaymentDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCode" EntityType="Self.ProductCode" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="dbo" store:Type="Tables" />
@@ -318,19 +397,19 @@
     <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__AspNetUse__RoleI__7E8CC4B1" Association="Self.FK__AspNetUse__RoleI__7E8CC4B1">
+    <AssociationSet Name="FK__AspNetUse__RoleI__5CD6CB2B" Association="Self.FK__AspNetUse__RoleI__5CD6CB2B">
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
       <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
     </AssociationSet>
-    <AssociationSet Name="FK__AspNetUse__User___7CA47C3F" Association="Self.FK__AspNetUse__User___7CA47C3F">
+    <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Self.FK__AspNetUse__User___5AEE82B9">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
     </AssociationSet>
-    <AssociationSet Name="FK__AspNetUse__UserI__7D98A078" Association="Self.FK__AspNetUse__UserI__7D98A078">
+    <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Self.FK__AspNetUse__UserI__5BE2A6F2">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
     </AssociationSet>
-    <AssociationSet Name="FK__AspNetUse__UserI__7F80E8EA" Association="Self.FK__AspNetUse__UserI__7F80E8EA">
+    <AssociationSet Name="FK__AspNetUse__UserI__5DCAEF64" Association="Self.FK__AspNetUse__UserI__5DCAEF64">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
     </AssociationSet>

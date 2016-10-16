@@ -94,7 +94,7 @@
                     {
                         <tr>
                             <th scope="row" style="text-align:left">
-                                @if(!string.IsNullOrEmpty(item.ImageLink))
+                                @if(!string.IsNullOrEmpty(item.ImageLink) && item.ImageLink.Length > 2)
                                 {
                                     List<string> listImages = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<List<string>>(item.ImageLink);
                                     @Html.Raw(string.Format("<img class='img-link' src='{0}' alt='{1}' width='100' data-id='{2}'  />", listImages[0], item.ProductName,item.ImageLink));

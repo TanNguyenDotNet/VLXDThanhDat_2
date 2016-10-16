@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Orders">
     <Key>
       <PropertyRef Name="ID" />
@@ -8,8 +8,9 @@
     <Property Name="DateCreate" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="DateShip" Type="varchar" MaxLength="20" />
     <Property Name="TotalWithoutTax" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Tax" Type="varchar" MaxLength="10" />
+    <Property Name="Tax" Type="varchar" MaxLength="64" />
     <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
+    <Property Name="TotalSale" Type="decimal" Precision="14" Scale="2" />
     <Property Name="Discount" Type="decimal" Precision="14" Scale="2" Nullable="false" />
     <Property Name="DeliveryMan" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="256" />
@@ -26,16 +27,18 @@
     <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="IDProduct" Type="bigint" Nullable="false" />
     <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Amount" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Amount" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="ReturnGood" Type="bit" Nullable="false" />
     <Property Name="DateOfOrder" Type="datetime" />
-    <Property Name="Tax" Type="varchar" MaxLength="10" />
+    <Property Name="Tax" Type="varchar" MaxLength="64" />
     <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
     <Property Name="Description" Type="nvarchar" MaxLength="255" />
     <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="RequestByUser" Type="bit" Nullable="false" />
     <Property Name="OrderCode" Type="varchar" MaxLength="50" />
     <Property Name="Discount" Type="decimal" Precision="14" Scale="2" />
+    <Property Name="Sale" Type="decimal" Precision="14" Scale="2" />
+    <Property Name="Cost" Type="decimal" Precision="14" Scale="2" />
   </EntityType>
   <EntityContainer Name="RetailDBModelStoreContainer">
     <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />

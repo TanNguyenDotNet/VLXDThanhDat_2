@@ -5,40 +5,45 @@
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-<h2>Danh mục</h2>
-<p>
-    @if (roles.Contains("3"))
-    {
-        @Html.ActionLink("Thêm mới", "Create")
-    }
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Tiêu đề
-        </th>
-        <th width="40%">
-           Mô tả
-        </th>
-        
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if (roles.Contains("4"))
-            {
-                @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
-            }
-            else
-            {
-                @item.Title
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-    </tr>
-}
-
-</table>
+<section class="content-header">
+    <h2>
+        Danh mục
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("3"))
+        {
+            <a href="../CatalogUnit/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        } 
+    </div>
+</section>
+<section class="content">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tiêu đề</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <th>
+                                @if (roles.Contains("4"))
+                                {
+                                    @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
+                                }
+                                else
+                                {
+                                    @item.Title
+                                }
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+</section>

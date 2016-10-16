@@ -9,108 +9,121 @@
     string lname = l != null ? l.LocationName : "";
 }
 
-<h2>Thông tin đơn hàng</h2>
-<div class="form-group">
-    <div style="float:right;">
-        <input type="button" value="Xác Nhận Đơn Hàng"
-               onclick="if(confirm('Xác nhận yêu cầu?') == true) { window.location = '../OrderDetail/Create'; }" class="btn btn-default" />
+<section class="content-header">
+    <h2>
+        @ViewBag.Title
+    </h2>
+</section>
+<!-- Main content -->
+<section class="content">
+    <form class="sidebar-form" style="border:none">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <div class="input-group">
+                    <input type="button" value="Xác Nhận Đơn Hàng" onclick="FunctionAccept();" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <h3>I. Thông tin đại lý:</h3>
+        <div class="left-info col-md-6">
+            <p>Tên cá nhân / đại lý: <strong>@u.DisplayName</strong></p>
+            <p>Đại chỉ: <strong>@u.Address @u.District</strong></p>
+            <p>Điện thoại:<strong>@u.Phone</strong>- Fax: <strong>@u.Fax</strong></p>
+        </div>
+        <div class="right-info col-md-6">
+            <p>Mã số thuế: <strong>@u.TaxID</strong></p>
+            <p>Tỉnh/thành phố: <strong>@lname</strong></p>
+            <p>Email: <strong>@u.Email</strong></p>
+        </div>
     </div>
-</div>
-<br style="clear:both"/>
-<h4>I. Thông tin đại lý:</h4>
-<table class="account-info">
-    <tr>
-        <td>Tên cá nhân/đại lý: <strong>@u.DisplayName</strong></td><td width="30%">Mã số thuế: <strong>@u.TaxID</strong></td>
-    </tr>
-    <tr>
-        <td>Địa chỉ: <strong>@u.Address @u.District</strong></td><td>Tỉnh/thành phố: <strong>@lname</strong></td>
-    </tr>
-    <tr>
-        <td>Điện thoại: <strong>@u.Phone</strong> - Fax: <strong>@u.Fax</strong></td><td>Email: <strong>@u.Email</strong></td>
-    </tr>
-</table>
-<h4>II. Sản phẩm yêu cầu:</h4>
-@if (Model != null && Model.Count() > 0)
-{
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IDProduct)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.DateOfOrder)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Tax)
-        </th>
-        <th width="15%">
-            @Html.DisplayNameFor(model => model.Total)
-        </th>
-        
-    </tr>
-   
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @{
-        var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
-        @Html.Raw(p.ProductName);
-                }
-            </td>
-            <td align="right">
-                @item.Price.ToString("#,###.00")
-            </td>
-            <td align="right">
-                @item.Amount
-            </td>
-            <td align="center">
-                @DateTime.Now.ToString("dd/MM/yyyy")
-            </td>
-            <td align="center">
-                @Html.DisplayFor(modelItem => item.Tax)%
-            </td>
-            <td align="right">
-                @item.Total.ToString("#,###.00")
-            </td>
-        </tr>
-    }
-        
-    <tr>
-        <td colspan="5" align="right">Tổng cộng: </td>
-        <td align="right">@ViewData["Total"]</td>
-    </tr>   
-</table>
-}
-<br style="clear:both;" />
-@if (list != null && list.Count > 0)
-{
-    <h4>III. Sản phẩm ngoài danh mục:</h4>
-    <table class="table">
-        <tr>
-            <th align="left" width="30%">
-                @Html.DisplayNameFor(model => model.IDProduct)
-            </th>
-            <th align="left">
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th align="left">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-        </tr>
-        @foreach (string s in list)
+    <div class="table-responsive">
+        <h3>II. Sản phẩm yêu cầu:</h3>
+        @if (Model != null && Model.Count() > 0)
         {
-            <tr>
-                <td>@s.Split('|')[0]</td>
-                <td align="center">@s.Split('|')[1]</td>
-                <td>@s.Split('|')[2]</td>
-            </tr>
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Mã Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Ngày Order</th>
+                        <th>Thuế</th>
+                        <th>Tổng</th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                @{
+                    var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
+                    @Html.Raw(p.ProductName);
+                                }
+                            </th>
+                            <td align="right">
+                                @item.Price.ToString("#,###")
+                            </td>
+                            <td align="right">
+                                @item.Amount
+                            </td>
+                            <td align="center">
+                                @DateTime.Now.ToString("dd/MM/yyyy")
+                            </td>
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.Tax)%
+                            </td>
+                            <td align="right">
+                                @item.Total.ToString("#,###")
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
         }
-    </table>
-}
+        <div class="arrange-button">
+            <p>Tổng Cộng: <span>@ViewData["Total"]</span></p>
+        </div>
+    </div>
+    <div class="table-responsive" style="display:none">
+        @if (list != null && list.Count > 0)
+        {
+            <h3>III. Sản phẩm ngoài danh mục:</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th align="left" width="30%">
+                            @Html.DisplayNameFor(model => model.IDProduct)
+                        </th>
+                        <th align="left">
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                        <th align="left">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (string s in list)
+                {
+                    <tr>
+                        <td>@s.Split('|')[0]</td>
+                        <td align="center">@s.Split('|')[1]</td>
+                        <td>@s.Split('|')[2]</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <script>
+        function FunctionAccept() {
+            var a = alertify.confirm('Xác nhận yêu cầu', function (e) {
+                if (e) {
+                    window.location = '../OrderDetail/Create';
+                }
+            }).set('title', 'Thông Báo').show();
+        }
+    </script>
+</section>

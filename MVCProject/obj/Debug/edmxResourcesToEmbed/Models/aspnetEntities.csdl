@@ -1,24 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="aspnetEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Models.C__MigrationHistory" />
+    <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
+    <EntitySet Name="AspNetRoles" EntityType="Models.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Models.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Models.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="Models.AspNetUser" />
+    <EntitySet Name="Catalogs" EntityType="Models.Catalog" />
+    <EntitySet Name="CatalogUnits" EntityType="Models.CatalogUnit" />
+    <EntitySet Name="Locations" EntityType="Models.Location" />
+    <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
+    <EntitySet Name="LogSystems" EntityType="Models.LogSystem" />
+    <EntitySet Name="PaymentDetails" EntityType="Models.PaymentDetail" />
+    <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
+    <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
+    <EntitySet Name="ProductNames" EntityType="Models.ProductName" />
+    <EntitySet Name="ProductPrices" EntityType="Models.ProductPrice" />
+    <EntitySet Name="Promotions" EntityType="Models.Promotion" />
+    <EntitySet Name="PromotionTypes" EntityType="Models.PromotionType" />
+    <EntitySet Name="Taxes" EntityType="Models.Tax" />
+    <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
+    <EntitySet Name="Warranties" EntityType="Models.Warranty" />
+    <AssociationSet Name="FK__AspNetUse__User___5AEE82B9" Association="Models.FK__AspNetUse__User___5AEE82B9">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK__AspNetUse__UserI__5BE2A6F2" Association="Models.FK__AspNetUse__UserI__5BE2A6F2">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="Models.AspNetUserRoles">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <EntitySet Name="Suppliers" EntityType="Models.Supplier" />
+    <EntitySet Name="Products" EntityType="Models.Product" />
+    <EntitySet Name="LoginHistories" EntityType="Models.LoginHistory" />
+  </EntityContainer>
   <EntityType Name="C__MigrationHistory">
     <Key>
       <PropertyRef Name="MigrationId" />
       <PropertyRef Name="ContextKey" />
     </Key>
-    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AppNetUserType">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+    <Property Name="Expire" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="LocationSubID" Type="Int32" />
+    <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserOfName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserOfType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDel" Type="Boolean" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="AspNetRole">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Order" Type="Int32" Nullable="false" />
     <Property Name="GroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Models.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
   </EntityType>
   <EntityType Name="AspNetUserClaim">
     <Key>
@@ -27,8 +88,8 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="User_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="Models.FK__AspNetUse__User___5AEE82B9" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
   </EntityType>
   <EntityType Name="AspNetUserLogin">
     <Key>
@@ -36,23 +97,23 @@
       <PropertyRef Name="LoginProvider" />
       <PropertyRef Name="ProviderKey" />
     </Key>
-    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="Models.FK__AspNetUse__UserI__5BE2A6F2" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
   </EntityType>
   <EntityType Name="AspNetUser">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-    <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-    <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+    <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="Models.FK__AspNetUse__User___5AEE82B9" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="Models.FK__AspNetUse__UserI__5BE2A6F2" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="Models.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
   </EntityType>
   <EntityType Name="Catalog">
     <Key>
@@ -66,6 +127,16 @@
     <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
     <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="CatalogUnit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NameCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="Location">
     <Key>
       <PropertyRef Name="ID" />
@@ -75,30 +146,84 @@
     <Property Name="LocationCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
     <Property Name="Order" Type="Int32" />
   </EntityType>
-  <EntityType Name="Product">
+  <EntityType Name="LocationSub">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDLocation" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsDel" Type="Byte" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LogSystem">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ItemCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Barcode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-    <Property Name="CatID" Type="Int64" Nullable="false" />
-    <Property Name="SKU" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="SupplierID" Type="Int32" />
-    <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Adwords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Show" Type="Boolean" Nullable="false" />
-    <Property Name="DateCreate" Type="DateTime" Precision="3" />
-    <Property Name="Color" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="Dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Warranty" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
-    <Property Name="IsDel" Type="Boolean" Nullable="false" />
-    <Property Name="IsState" Type="Byte" />
-    <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
-    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="TaxID" Type="Byte" />
-    <Property Name="Price" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="Date" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F6" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F7" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F8" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F9" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F10" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F11" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F12" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F13" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F14" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F15" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F16" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F17" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F18" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F19" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="F20" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="PaymentDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="IDAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+    <Property Name="IDAccountInput" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+    <Property Name="IDLocationSub" Type="Int32" />
+    <Property Name="Pay" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PayDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PayDateSystem" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DebtBefore" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="DebtAfter" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ProductCode">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="CatID" Type="Boolean" Nullable="false" />
+    <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="CatCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ProductImage">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="ProductName">
     <Key>
@@ -116,166 +241,37 @@
     </Key>
     <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductID" Type="Int64" Nullable="false" />
-    <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="Created" Type="DateTime" Precision="0" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="LocationID" Type="Int32" />
   </EntityType>
   <EntityType Name="Promotion">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ProductID" Type="Int64" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
-    <Property Name="PromotionCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="StartDate" Type="DateTime" Precision="3" />
     <Property Name="EndDate" Type="DateTime" Precision="3" />
-    <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="Created" Type="DateTime" Precision="0" />
     <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
-    <Property Name="PromotionValue" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+    <Property Name="PromotionValue" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="LocationID" Type="Int32" />
     <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ProductID" Type="Int64" />
   </EntityType>
   <EntityType Name="PromotionType">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ProTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="AddType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="AddType" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
     <Property Name="ExRate" Type="Decimal" Precision="5" Scale="2" />
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="Supplier">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
-    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AspNetUsers">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="AspNetUserClaims">
-        <PropertyRef Name="User_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AspNetUsers">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="AspNetUserLogins">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="AspNetUserRoles">
-    <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-  </Association>
-  <EntityContainer Name="aspnetEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
-    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
-    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
-    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-    <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
-    <EntitySet Name="Locations" EntityType="Self.Location" />
-    <EntitySet Name="Products" EntityType="Self.Product" />
-    <EntitySet Name="ProductNames" EntityType="Self.ProductName" />
-    <EntitySet Name="ProductPrices" EntityType="Self.ProductPrice" />
-    <EntitySet Name="Promotions" EntityType="Self.Promotion" />
-    <EntitySet Name="PromotionTypes" EntityType="Self.PromotionType" />
-    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
-    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
-      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-    </AssociationSet>
-    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-    </AssociationSet>
-    <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-    </AssociationSet>
-    <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
-    <EntitySet Name="Warranties" EntityType="Models.Warranty" />
-    <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
-    <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
-    <EntitySet Name="Taxes" EntityType="Models.Tax" />
-    <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
-    <EntitySet Name="LocationSubs" EntityType="Models.LocationSub" />
-  </EntityContainer>
-  <EntityType Name="ProductCode">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-    <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-    <Property Name="CatID" Type="Boolean" Nullable="false" />
-    <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Active" Type="Boolean" />
-    <Property Name="CatCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <EntityType Name="Warranty">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="Value" Type="Byte" />
-    <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="AppNetUserType">
-    <Key>
-      <PropertyRef Name="Username" />
-    </Key>
-    <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="DateCreate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Expire" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="LocationID" Type="Int32" Nullable="false" />
-    <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="ProductImage">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Tax">
     <Key>
@@ -291,17 +287,100 @@
       <PropertyRef Name="RoleId" />
     </Key>
     <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-    <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="LocationSub">
+  <EntityType Name="Warranty">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" />
-    <Property Name="IDLocation" Type="Int32" Nullable="false" />
-    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="IsDel" Type="Byte" />
-    <Property Name="LocationPrice" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Value" Type="Byte" />
+    <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <Association Name="FK__AspNetUse__User___5AEE82B9">
+    <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="Models.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__AspNetUse__UserI__5BE2A6F2">
+    <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="Models.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Type="Models.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+    <End Type="Models.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="TaxCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="AccountBank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="NameBank" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsDel" Type="Boolean" Nullable="false" />
+    <Property Name="IsShow" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Barcode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CatID" Type="Int64" Nullable="false" />
+    <Property Name="SKU" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="SupplierID" Type="Int32" />
+    <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Adwords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="Color" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UnitName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Warranty" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="IsDel" Type="Boolean" Nullable="false" />
+    <Property Name="IsState" Type="Byte" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TaxID" Type="Byte" />
+    <Property Name="Price" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="ProductCost" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="PriceFix" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="DateUpdate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="LoginHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="datelogin" Type="DateTime" Precision="3" />
+    <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="computername" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

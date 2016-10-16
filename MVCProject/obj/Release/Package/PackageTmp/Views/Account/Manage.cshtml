@@ -2,13 +2,16 @@
 @using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Thông tin tài khoản";
+    Layout = ViewBag.layout;
 }
 
-<h2>@ViewBag.Title.</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div class="row">
-    <div class="col-md-12">
+<section class="content-header">
+    <h2>@ViewBag.Title</h2>
+</section>
+<section class="content">
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="arrage-popup">
         @if (ViewBag.HasLocalPassword)
         {
             @Html.Partial("_ChangePasswordPartial")
@@ -18,7 +21,7 @@
             @Html.Partial("_SetPasswordPartial")
         }
     </div>
-</div>
+</section>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

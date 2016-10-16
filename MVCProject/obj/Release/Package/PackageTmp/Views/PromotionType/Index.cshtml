@@ -6,43 +6,54 @@
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-<h2>Hình thức khuyến mãi</h2>
-@if(roles.Contains("21")){
-<p>
-    @Html.ActionLink("Thêm mới", "Create")
-</p>
-}
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProTypeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AddType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExRate)
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-        @if(roles.Contains("21")){
-            @Html.ActionLink(item.ProTypeName, "Edit", new { id = item.ID })
-        }
-        else
+<section class="content-header">
+    <h2>
+        Hình thức khuyến mãi
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("21"))
         {
-            @item.ProTypeName
+            <a href="~/ProductType/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
         }
-        </td>
-        <td width="25%">
-            @Html.DisplayFor(modelItem => item.AddType)
-        </td>
-        <td width="25%">
-            @Html.DisplayFor(modelItem => item.ExRate)
-        </td>
-    </tr>
-}
-
-</table>
+    </div>
+</section>
+<section class="content">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProTypeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AddType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExRate)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <th scope="row" style="text-align:left">
+                        @if(roles.Contains("21")){
+                            @Html.ActionLink(item.ProTypeName, "Edit", new { id = item.ID })
+                        }
+                        else
+                        {
+                            @item.ProTypeName
+                        }
+                        </th>
+                        <td width="25%">
+                            @Html.DisplayFor(modelItem => item.AddType)
+                        </td>
+                        <td width="25%">
+                            @Html.DisplayFor(modelItem => item.ExRate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

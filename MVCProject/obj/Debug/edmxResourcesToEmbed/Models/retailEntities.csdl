@@ -1,23 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="RetailDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="retailEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Orders" EntityType="RetailDBModel.Order" />
+    <EntitySet Name="OrdersDetails" EntityType="RetailDBModel.OrdersDetail" />
+  </EntityContainer>
   <EntityType Name="Order">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="IDAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="DateCreate" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreate" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="DateShip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="TotalWithoutTax" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="Total" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Discount" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+    <Property Name="TotalWithoutTax" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Tax" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Discount" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="DeliveryMan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
     <Property Name="DateProcessed" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
     <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TotalSale" Type="Decimal" Precision="14" Scale="2" />
   </EntityType>
   <EntityType Name="OrdersDetail">
     <Key>
@@ -25,20 +30,18 @@
     </Key>
     <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="IDProduct" Type="Int64" Nullable="false" />
-    <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
-    <Property Name="Amount" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Amount" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="ReturnGood" Type="Boolean" Nullable="false" />
     <Property Name="DateOfOrder" Type="DateTime" Precision="3" />
-    <Property Name="Tax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="Total" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+    <Property Name="Tax" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Sale" Type="Decimal" Precision="14" Scale="2" />
     <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="RequestByUser" Type="Boolean" Nullable="false" />
     <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Discount" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="Cost" Type="Decimal" Precision="14" Scale="2" />
   </EntityType>
-  <EntityContainer Name="retailEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Orders" EntityType="Self.Order" />
-    <EntitySet Name="OrdersDetails" EntityType="Self.OrdersDetail" />
-  </EntityContainer>
 </Schema>

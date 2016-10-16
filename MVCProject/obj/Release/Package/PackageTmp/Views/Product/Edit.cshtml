@@ -1,218 +1,217 @@
-﻿@model MVCProject.Models.Product
+﻿@model MVCProject.Models.ProductViewModel
 
 @{
     ViewBag.Title = "Chỉnh sửa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Chỉnh sửa</h2>
-
-@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+<form action="/Product/Edit" method="post" enctype="multipart/form-data" id="odForm" name="odForm">
+    <section class="content-header">
+        <h2>Chỉnh sửa</h2>
         <h4>Sản phẩm: @Model.ItemCode</h4>
-        <hr />
-        @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ID)
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Tên sản phẩm:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ProductName)
+        @Html.HiddenFor(model => model.Adwords)
+        @Html.HiddenFor(model=>model.DateCreate)
+    </section>
+    <section class="content">
+        <div class='arrage-popup'>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductName">Tên sản phẩm:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProductName)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Mã sản phẩm:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ItemCode)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ItemCode">Mã sản phẩm:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.ItemCode)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Barcode</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Barcode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Barcode)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Barcode">Barcode</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Barcode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Barcode)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">SKU</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.SKU, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SKU)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="SKU">SKU</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.SKU, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SKU)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">Giá</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Price)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Price">Giá</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="PriceModel" name="PriceModel" type="text" onchange="SetPrice();" value="@ViewBag.Price" maxlength="12" />
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.Price)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Danh mục</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CatID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
-                        "Chọn danh mục", new { @class = "form-control", @onchange="SetCode(this.value);" })
-                @Html.ValidationMessageFor(model => model.CatID)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ProductCost">Giá vốn</label>
+                <div class="col-md-6">
+                    <input class="form-control" id="ProductCostModel" name="ProductCostModel" type="text" onchange="SetProductCost();" value="@ViewBag.ProductCost" maxlength="12" />
+                    @Html.TextBoxFor(model => model.ProductCost, new { @class = "form-control", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.ProductCost)
+                </div>
             </div>
-        </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="CatID">Danh mục</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CatID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
+                        "Chọn danh mục", new { @class = "form-control", @onchange = "SetCode(this.value);" })
+                    @Html.ValidationMessageFor(model => model.CatID)
+                </div>
+            </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Nhà phân phối:</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.SupplierID, (IEnumerable<SelectListItem>)ViewBag.SupplierList,
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="SupplierID">Nhà phân phối:</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.SupplierID, (IEnumerable<SelectListItem>)ViewBag.SupplierList,
                         "Chọn nhà phân phối", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SupplierID)
+                    @Html.ValidationMessageFor(model => model.SupplierID)
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Adwords:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Adwords, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Adwords)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Show">Hiển thị:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Show)
+                    @Html.ValidationMessageFor(model => model.Show)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Hiển thị:</span>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Show)
-                @Html.ValidationMessageFor(model => model.Show)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Color">Màu sắc:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Color, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Color)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Màu sắc:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Color, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Color)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Dimension">Kích thước:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Dimension)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Kích thước:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Dimension)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Unit">ĐVT:</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.Unit, (IEnumerable<SelectListItem>)ViewBag.CatalogUnit,
+                                          "Chọn đơn vị tính", new { @class = "form-control", @onchange = "SetUnitName();" })
+                    @Html.TextBoxFor(model => model.UnitName, new { @class = "form-control", @type = "hidden" })
+                    @Html.ValidationMessageFor(model => model.Unit)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">ĐVT:</span>
-            <div class="col-md-10">
-                <select name="Unit" id="Unit" class="form-control">
-                    <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")   }>Cái</option>
-                    <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")   }>Chiếc</option>
-                    <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")   }>Cây</option>
-                    <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")    }>Ống</option>
-                    <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")     }>Thùng</option>
-                    <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")      }>Hộp</option>
-                    <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")       }>Kg</option>
-                    <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")        }>Gam</option>
-                </select>
-                @Html.ValidationMessageFor(model => model.Unit)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Thuế suất</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.TaxID, (IEnumerable<SelectListItem>)ViewBag.TaxList,
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="TaxID">Thuế suất</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.TaxID, (IEnumerable<SelectListItem>)ViewBag.TaxList,
                         "Chọn thuế suất", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TaxID)
+                    @Html.ValidationMessageFor(model => model.TaxID)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Thời gian bảo hành:</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Warranty, (IEnumerable<SelectListItem>)ViewBag.WarrantyList,
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Warranty">Thời gian bảo hành:</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.Warranty, (IEnumerable<SelectListItem>)ViewBag.WarrantyList,
                  "Chọn thời gian bảo hành", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Warranty)
+                    @Html.ValidationMessageFor(model => model.Warranty)
+                </div>
             </div>
+
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="IsDel">Đã xóa:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.IsDel)
+                    @Html.ValidationMessageFor(model => model.IsDel)
+                </div>
+            </div>
+
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="intro">Ảnh tiêu đề:</label>
+                <div class="col-md-6">
+                    <input type="file" name="intro" id="intro" style="height: 30px; line-height :30px; width: 600px;" />
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Image">Ảnh chi tiết:</label>
+                <div class="col-md-6">
+                    <input type="file" name="Image" id="Image" style="height: 30px; line-height :30px; width: 600px;" />
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ImageLink">Liên kết:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ImageLink)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/Product/Index" class="btn btn-info">Về danh sách</a>
+            </div>
+            <div class="clearfix"></div>
         </div>
 
-        <div class="form-group">
-            <span class="control-label col-md-2">Đã xóa:</span>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsDel)
-                @Html.ValidationMessageFor(model => model.IsDel)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <span class="control-label col-md-2">Ảnh tiêu đề:</span>
-            <div class="col-md-10">
-                <input type="file" name="intro" id="intro" style="height: 30px; line-height :30px; width: 600px;" />
-            </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">Ảnh chi tiết:</span>
-            <div class="col-md-10">
-                <input type="file" name="Image" id="Image" style="height: 30px; line-height :30px; width: 600px;" />
-            </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">Liên kết:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ImageLink)
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-    <script>
-        var useCatCode = '@ViewData["UseCatCode"].ToString()';
-        var arrCatCode = new Array();
-        @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
-            int count = 0;
-            foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
-            {
-                 @Html.Raw("arrCatCode[" + count + "]='" + item.ID + "," + item.Code + "';" + Environment.NewLine);
-                                                                                                                  count++;
-            }
-        }
-        
-        function SetCode(catid) {
-            if (useCatCode == '0')
-                return;
-            
-            var icode = document.getElementById("ItemCode").value;
-            var strs = icode.split('.');
-            var code = "";
-            for (var i = 0; i < arrCatCode.length; i++) {
-                var parts = arrCatCode[i].split(',');
-                if (parts[0] == (catid + '')) {
-                    code = parts[1];
-                    break;
+        <script>
+            var useCatCode = '@ViewData["UseCatCode"].ToString()';
+            var arrCatCode = new Array();
+            @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
+                int count = 0;
+                foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
+                {
+                    @Html.Raw("arrCatCode[" + count + "]='" + item.ID + "," + item.Code + "';" + Environment.NewLine);
+                    count++;
                 }
             }
-            if (strs.length == 3 && code != '')
-                document.getElementById("ItemCode").value = code + '.' + icode;
-            else if (strs.length == 4 && code != '')
-                document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
-        }
-    </script>
-}
+            function SetUnitName() {
+                var f = document.odForm;
+                f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
+            }
+            function SetPrice() {
+                var f = document.odForm;
+                f.Price.value = f.PriceModel.value;
+                f.PriceModel.value = accounting.formatMoney(f.Price.value, { symbol: "đ", precision: 0, format: "%v %s" });
+            }
+            function SetProductCost() {
+                var f = document.odForm;
+                f.ProductCost.value = f.ProductCostModel.value;
+                f.ProductCostModel.value = accounting.formatMoney(f.ProductCost.value, { symbol: "đ", precision: 0, format: "%v %s" });
+            }
+            function SetUnitName() {
+                var f = document.odForm;
+                f.UnitName.value = f.Unit.options[f.Unit.selectedIndex].text;
+            }
+            function SetCode(catid) {
+                if (useCatCode == '0')
+                    return;
 
-<div>
-    @Html.ActionLink("Về danh sách", "Index")
-</div>
+                var icode = document.getElementById("ItemCode").value;
+                var strs = icode.split('.');
+                var code = "";
+                for (var i = 0; i < arrCatCode.length; i++) {
+                    var parts = arrCatCode[i].split(',');
+                    if (parts[0] == (catid + '')) {
+                        code = parts[1];
+                        break;
+                    }
+                }
+                if (strs.length == 3 && code != '')
+                    document.getElementById("ItemCode").value = code + '.' + icode;
+                else if (strs.length == 4 && code != '')
+                    document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
+            }
+        </script>
+    </section>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+</form>

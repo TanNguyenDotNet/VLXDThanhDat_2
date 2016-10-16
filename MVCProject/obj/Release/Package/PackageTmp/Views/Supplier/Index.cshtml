@@ -1,64 +1,100 @@
-﻿@model IEnumerable<MVCProject.Models.Supplier>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Supplier>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh mục nhà cung cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TaxCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountBank)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NameBank)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TaxCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountBank)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NameBank)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+<section class="content-header">
+    <h2>
+        Danh mục nhà cung cấp
+    </h2>
+    <div class="arrange-button">
+        @if (roles.Contains("3"))
+        {
+            <a href="../Supplier/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+        }
+    </div>
+</section>
+<form action="~/Supplier/Index" method="get" id="supplierForm">
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="supplierForm.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="supplierForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (Request.QueryString["size"] == s.ToString()) { @Html.Raw("selected='selected'")             }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>MST</th>
+                        <th>Ngân hàng</th>
+                        <th>STK</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>
+                                @if (roles.Contains("4"))
+                                {
+                                    @Html.ActionLink(item.Name, "Edit", new { id = item.ID })
+                                }
+                                else
+                                {
+                                    @item.Name
+                                }
+                            </th>
+                            <td>
+                                @item.Address
+                            </td>
+                            <td>
+                                @item.Phone
+                            </td>
+                            <td>
+                                @item.TaxCode
+                            </td>
+                            <td>
+                                @item.NameBank
+                            </td>
+                            <td>
+                                @item.AccountBank
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                   {
+                       page,
+                       order = ViewBag.Order,
+                       filter = ViewBag.Filter,
+                       size = Request.QueryString["size"]
+                   }))
+            </nav>
+        </div>
+    </section>
+</form>

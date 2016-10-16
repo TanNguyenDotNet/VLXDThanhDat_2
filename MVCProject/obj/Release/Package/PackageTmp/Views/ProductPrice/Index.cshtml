@@ -1,74 +1,127 @@
-﻿@model IEnumerable<MVCProject.Models.ProductPrice>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.ProductPriceViewModel>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
-    string name = "";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string subid = Request.QueryString["SubID"];
+    if (subid == null || subid == "") { subid = "0"; }
+    List<MVCProject.Models.LocationSub> listLocatSub = (List<MVCProject.Models.LocationSub>)ViewData["SubList"];
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
+<section class="content-header">
+    <h2>
+        Giá sản phẩm
+    </h2>
+    <div class="arrange-button">
+        
+    </div>
+</section>
+<form action="~/ProductPrice/Index" method="get" id="productViewForm">
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm sản phẩm..." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="productViewForm.submit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Khu vực</span>
+                        <select class="form-control" name="subid" id="subid" onchange="productViewForm.submit()">
+                            <option value="0">Chọn khu vực</option>
+                            @foreach (var i in listLocatSub)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == subid) { @Html.Raw("selected='selected'")}>
+                                    @i.Name
+                                </option>
+                            }
+                        </select>
 
-<h2>Giá sản phẩm</h2>
-<p>
-@if (roles.Contains("7"))
-{
-    @Html.ActionLink("Thêm mới", "Create")
-}
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Sản phẩm
-        </th>
-        <th width="10%">
-            Giá
-        </th>
-        <th width="10%">
-           Ngày tạo
-        </th>
-        <th width="20%">
-            Mô tả
-        </th>
-        <th width="15%">
-            Mã tỉnh/thành phố
-        </th>
-       
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if (nList != null && nList.Count > 0 && nList.Keys.Contains(long.Parse(item.ProductID.ToString())))
-            {
-                name = nList[long.Parse(item.ProductID.ToString())];
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Ngày tạo</th>
+                        <th>Mô tả</th>
+                        <th>Khu vực</th>
+                        <th>Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left" id="@item.id">
+                                @item.name
+                            </th>
+                            <td align="right">
+                                @item.price.ToString("n0")
+                            </td>
+                            <td>
+                                @item.date.Value.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.desc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.locationsub)
+                            </td>
+                            <td>
+                                @if (roles.Contains("2"))
+                                {
+                                    <a href="#" onclick="FunctionDel('@item.id')">Xóa</a>
+                                }
+                            </td>
+                        </tr>
                     }
-                    else { 
-                        name = ""; 
-                    }
-            @if (roles.Contains("8"))
-            {
-                @Html.ActionLink(name, "Edit", new { id = item.ID })
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("index", new
+                           {
+                               page,
+                               size = size,
+                               filter = ViewBag.Filter,
+                               order = ViewBag.Order,
+                               subid = subid
+                           }))
+            </nav>
+        </div>
+        <!-- Your Page Content Here -->
+    </section><!-- /.content -->
+    <script>
+    function FunctionDel(val) {
+        var name = document.getElementById(val).innerText;
+        var a = alertify.confirm('Xóa sản phẩm ' + name + '?', function (e) {
+            if (e) {
+                var url = 'Delete/' + val;
+                window.location.href = url;
             }
-            else
-            {
-                @name
-            }
-                    
-        </td>
-        <td align="right">
-            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
-        </td>
-        <td>
-            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationID)
-        </td>
-    </tr>
-}
-
-</table>
+        }).set('title', 'Thông Báo').show();   
+    }
+    </script>
+</form>

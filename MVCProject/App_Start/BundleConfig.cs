@@ -32,7 +32,6 @@ namespace MVCProject
                       "~/Scripts/jquery.dataTables.min.js",
                       "~/Scripts/dataTables.bootstrap.min.js", 
                       "~/Scripts/select2.full.min.js",
-                      "~/Scripts/libs/ckfinder/ckfinder.js",
                       "~/Scripts/libs/fancybox/jquery.fancybox.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

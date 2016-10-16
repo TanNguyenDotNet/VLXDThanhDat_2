@@ -1,21 +1,56 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
+    <form action="/Account/LogOff" method="post" id="logoutForm">
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav">
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle">
+                    HOT LINE: 0913.633.986
+                </a>
+            </li>
+            <!-- Messages: style can be found in dropdown.less-->
+            <li class="dropdown messages-menu">
+                <!-- Menu toggle button -->
+                <a href="../OrderDetail/Index" class="dropdown-toggle">
+                    <i class="fa fa-shopping-basket">&nbsp;&nbsp;</i>giỏ hàng
+                    <span class="label label-success">
+                        @{
+                            string cc = "";
+                            if (Session["CartCount"] != null)
+                            {
+                                cc = Session["CartCount"].ToString();
+                            }
+                        }@cc
+                    </span>
+                </a>
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Xin chào " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Tài khoản" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
-    </ul>
-    }
+            </li><!-- /.messages-menu -->
+            <!-- User Account Menu -->
+            <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="~/Account/Manage" class="dropdown-toggle" title="Tài khoản">
+                    <!-- The user image in the navbar-->
+                    <img src="~/Images/imgs/avatar5.png" class="user-image" alt="User Image">
+                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                    <span class="hidden-xs">@User.Identity.GetUserName()</span>
+                </a>
+
+            </li>
+            <!-- Control Sidebar Toggle Button -->
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()" data-toggle="control-sidebar"><i class="fa fa-power-off"></i></a>
+            </li>
+        </ul>
+    </form>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Đăng nhập", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="~/Account/Login.cshtml" class="dropdown-toggle" data-toggle="dropdown" title="Tài khoản" id="loginLink">
+                <span class="hidden-xs">Đăng nhập</span>
+            </a>
+        </li>
     </ul>
 }

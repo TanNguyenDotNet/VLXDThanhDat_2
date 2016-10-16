@@ -10,60 +10,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Chỉnh sửa</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+<form action="/Catalog/Edit" method="post" enctype="multipart/form-data">
+    <section class="content-header">
+        <h2>@ViewBag.Title</h2>
         <h4>Danh mục</h4>
-        <hr />
+        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.UserID)
-        <div class="form-group">
-            <span class="control-label col-md-2">Tiêu đề:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Title)
+    </section>
+    <section class="content">
+        <div class='arrage-popup'>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Title">Tiêu đề:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">Mã danh mục:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Code)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Code">Mã danh mục:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Code)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">PID:</span>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
-             "Chọn danh mục", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PID)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="PID">PID:</label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.PID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
+                 "Chọn danh mục", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PID)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <span class="control-label col-md-2">Mô tả:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Description)
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Description">Mô tả:</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
             </div>
-        </div>
-        @Html.HiddenFor(model=>model.LocationID)        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Lưu Lại" class="btn btn-default" />
+            @Html.HiddenFor(model => model.LocationID)
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Lưu Lại" class="btn btn-info" />
+                <a href="~/Catalog/Index" class="btn btn-info">Về danh sách</a>
             </div>
+            <div class="clearfix"></div>
         </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Về danh sách", "Index")
-</div>
+    </section>
+</form>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

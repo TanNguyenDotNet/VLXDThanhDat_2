@@ -3,65 +3,75 @@
     ViewBag.Title = "Đăng ký";
 }
 
-<h2>@ViewBag.Title.</h2>
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Tạo mới tài khoản.</h4>
-    <hr />
-    @Html.ValidationSummary()
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.UserName)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Password)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)
-        </div>
-    </div>
-    <div class="form-group">
-        <span class = "col-md-2 control-label">Loại tài khoản (Quyền):</span>
-        <div class="col-md-10">
-            <select name="UserType" id="UserType" class="form-control">
-                <option value="BackendUser">Quản trị</option>
-                <option value="FrontendUser" selected="selected">Người dùng</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
-                    "Chọn tỉnh/thành phố", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LocationID)
+<form action="/Account/Register" method="post" enctype="multipart/form-data">
+    <section class="content-header">
+        <h2>@ViewBag.Title</h2>
+        <h4>Tạo mới tài khoản.</h4>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+    </section>
+    <section class="content">
+        <div class="arrage-popup">
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserName">Tên đăng nhập</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" ,@maxlenght="32"})
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
             </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="FullName">Tên cá nhân/đại lý</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @maxlenght = "128" })
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="Password">Mật khẩu</label>
+                <div class="col-md-6">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @maxlenght = "32" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="ConfirmPassword">Nhập lại mật khẩu</label>
+                <div class="col-md-6">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @maxlenght = "32" })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                <label class="text-label col-md-2" for="UserType">Loại tài khoản (Quyền):</label>
+                <div class="col-md-6">
+                    <select name="UserType" id="UserType" class="form-control">
+                        <option value="BackendUser">Quản trị</option>
+                        <option value="FrontendUser" selected="selected">Người dùng</option>
+                        <option value="DeliveryMan">Nhân viên giao hàng</option>
+                    </select>
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                @Html.LabelFor(model => model.LocationID, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,//sửa chọn theo vùng locationSub
+                        "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationID)
+                </div>
+            </div>
+            <div class="arrange-div form-group col-md-12">
+                @Html.LabelFor(model => model.LocationSubID, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.LocationSubID, (IEnumerable<SelectListItem>)ViewBag.LocationSubList,
+                        "Khu vực", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationSubID)
+                </div>
+            </div>
+            <div style="text-align:center" class="col-md-12">
+                <input type="submit" value="Đăng Ký" class="btn btn-info" />
+            </div>
+            <div class="clearfix"></div>
         </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Đăng Ký" />
-        </div>
-    </div>
-}
-
+    </section>
+</form>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

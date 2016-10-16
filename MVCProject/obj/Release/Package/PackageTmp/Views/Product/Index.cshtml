@@ -3,172 +3,138 @@
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
     string size = Request.QueryString["size"];
     if (size == null || size == "") { size = "20"; }
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
-    
+
     List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-@using (Html.BeginForm("Index", "Product", FormMethod.Get, new { id = "productViewForm" }))
-{
-<h2>Sản phẩm</h2>
+<form action="~/Product" method="get" id="productViewForm">
+    <section class="content-header">
+        <h2>
+            Sản phẩm
+        </h2>
+        <div class="arrange-button">
+            @if (roles.Contains("1"))
+            {
+                <a href="~/Product/Create" class="btn btn-info" id="modaltrigger" rel="leanModal">Thêm mới</a>
+            }
+            <i class="fa fa-angle-double-right arrange-icon"></i>
+            @if (roles.Contains("9"))
+            {
+                <a href="../ProductCode/Create/?code=SP" class="btn btn-info" id="modaltrigger" rel="leanModal">Cấu hình mã sản phẩm</a>
+            }
+            <a href="../ProductPrice/Index" class="btn btn-info" id="modaltrigger" rel="leanModal">Giá sản phẩm</a>
 
-<p>
-    @if(roles.Contains("1")){ 
-        @Html.ActionLink("Thêm mới", "Create") 
-        @Html.Raw(" :::: ")
-    }
-    @if(roles.Contains("9"))
-    {
-        <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a> 
-        @Html.Raw("|") 
-    }
-    @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
-</p>
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, order = ViewBag.Order, 
-    filter = ViewBag.Filter, size=size, catid=catid }))
-<table class="table">
-    <tr>
-        <td align="right" width="10%">
-            Danh mục:
-        </td>
-        <td align="left" width="18%">
-            <select class="form-control" name="catid" id="catid" onchange="productViewForm.submit()">
-                <option value="0">Chọn danh mục</option>
-                @foreach (var i in listCat)
-                {
-                    <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")   }>
-                        @i.Title
-                    </option>
-                }
-            </select>
-        </td>
-        <td align="right" width="10%">
-            Sản phẩm:
-        </td>
-        <td align="left" width="18%">
-            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
-        </td>
-        <td align="right" width="7%">
-            Số dòng:
-        </td>
-        <td align="left" width="7%">
-            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
-                @for (int s = 10; s <= 50; s += 10)
-                {
-                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
-                }
-            </select>
-        </td>
-    </tr>
-</table>
+        </div>
+    </section>
 
-<table class="table">
-    <tr>
-        <th>
-            Tên sản phẩm
-        </th>
-        <th>
-            Mã sản phẩm
-        </th>
-        
-        <th>
-            Nhà cung cấp
-        </th>
-        <!--<th>
-            Mã danh mục
-        </th>
-        <th>
-            Hiện/Ẩn
-        </th>
-        <th>
-            Ngày tạo
-        </th>
-        <th>
-           BH
-        </th>    
-            -->
-        <th>
-            ĐVT
-        </th>
-        <th>
-            Giá
-        </th>
-        
-        <th>
-           Đã xóa
-        </th>
-        <th>
-            Thêm
-            </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if(roles.Contains("2"))
-            {
-                @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
-            }
-            else
-            {
-                @item.ProductName
-            }
-        </td>
-        <td align="center">
-            @Html.DisplayFor(modelItem => item.ItemCode)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.SupplierID)
-        </td>
-        <!--<td align="center">
-            @Html.DisplayFor(modelItem => item.CatID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Show)
-        </td>
-        <td>
-            @if (item.DateCreate != null)
-            {
-                DateTime.Parse(item.DateCreate.ToString()).ToString("dd/MM/yyyy");
-            }
-            &nbsp;
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Warranty)
-        </td>-->
-        <td>
-            @Html.DisplayFor(modelItem => item.Unit)
-        </td>
-        <td align="right">
-            @double.Parse(item.Price.ToString()).ToString("#,###")
-        </td>
-        <td align="center">
-            @Html.DisplayFor(modelItem => item.IsDel)
-        </td>
-        <td>
-            @if(roles.Contains("17"))
-            {
-                @Html.ActionLink("Tên", "Create/" + item.ID, "ProductName") 
-                @Html.Raw(" | ")
-            }
-            @if (roles.Contains("7"))
-            {
-                @Html.ActionLink("Giá", "Create/" + item.ID, "ProductPrice")
-                @Html.Raw(" | ")
-            }
-            @if (roles.Contains("5"))
-            {
-                @Html.ActionLink("KM", "Create/" + item.ID, "Promotion")
-            }
-        </td>
-    </tr>
-}
-
-</table>
-}
+    <section class="content">
+        <div class="sidebar-form">
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="filter" id="filter" class="form-control" placeholder="Tìm sản phẩm..." value="@Request.QueryString["filter"]">
+                        <span class="input-group-btn">
+                            <button type="submit" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            <!-- <input type="button" onclick="filterFromSubmit()" name="search" id="search-btn" class="btn btn-flat" value="Tìm Kiếm"><i class="fa fa-search"></i></input>-->
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Danh Mục</span>
+                        <select class="form-control" name="catid" id="catid" onchange="productViewForm.submit()">
+                            <option value="0">Chọn danh mục</option>
+                            @foreach (var i in listCat)
+                            {
+                                <option value="@i.ID" @if (i.ID.ToString() == catid) { @Html.Raw("selected='selected'")            }>
+                                    @i.Title
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Số Dòng</span>
+                        <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                            @for (int s = 10; s <= 50; s += 10)
+                            {
+                                <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")            }>@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="background-color: #3c8dbc; color:#fff">
+                        <th>Tên Sản Phẩm</th>
+                        <th>Mã Sản Phẩm</th>
+                        <th>Mã Danh Mục</th>
+                        <!-- <th>Nhà Cung Cấp</th>-->
+                        <!--<th>Hiện/Ẩn</th>-->
+                        <!--<th>Ngày Tạo</th>-->
+                        <th>ĐVT</th>
+                        <th>Giá</th>
+                        <!--<th>BH</th>-->
+                        <th>Cập nhật gần nhất</th>
+                        <th>Thêm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" style="text-align:left">
+                                @if (roles.Contains("2"))
+                                {
+                                    @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
+                                }
+                                else
+                                {
+                                    @item.ProductName
+                                }
+                            </th>
+                            <td>@item.ID.ToString("000000")</td>
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.CatID)
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.UnitName)</td>
+                            <td style="text-align:right">@double.Parse(item.Price.ToString()).ToString("#,###")</td>
+                            <td style="color:red;font-weight:bold">
+                                @{
+                                    double time = ((TimeSpan)(DateTime.Now.Date - item.DateUpdate.Value.Date)).TotalDays;
+                                }
+                                @time.ToString("n0") ngày
+                            </td>
+                            <td>
+                                @if (roles.Contains("5"))
+                                    {
+                                    <a class="circle-bt" href="~/Promotion/Create/@item.ID"><img src="~/Images/imgs/promotions.png" height="12" width="12" alt="product name"></a>
+                                    }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav style="text-align:right">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new
+                           {
+                               page,
+                               order = ViewBag.Order,
+                               filter = ViewBag.Filter,
+                               size = size,
+                               catid = catid
+                           }))
+            </nav>
+        </div>
+        <!-- Your Page Content Here -->
+    </section><!-- /.content -->
+</form>
